@@ -31,7 +31,7 @@ CREATE TABLE Products_467(
     Quantity    INTEGER   NOT NULL,       -- Quantity of the product in stock
 
     PRIMARY KEY(ProductID)                -- Sets the primary key (ProductID)
-);
+) AUTO_INCREMENT = 1;
 
 
 -- Customers table
