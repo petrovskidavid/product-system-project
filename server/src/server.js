@@ -9,18 +9,45 @@ const port = 8800
 server.use(cors())
 
 server.listen(port, () => {
-    console.log(`Server is online!\nListening to port ${port}`)
+    console.log(`Server is online!\nListening to port ${port}\n`)
 });
 
 server.get("/api/getProducts", (req, res) => {
     console.log("Recieved GET for getProducts")
 
-    legacyDb.query("SELECT * FROM parts", (err, rows) => {
+    // Retrieve all products from legacy database
+    legacyDb.query("SELECT * FROM parts", (err, legacyRows) => {
         if (err)
             throw err
+        
+        console.log("Retriving legacy DB data...")
+        // Initiate internal database with default quantity values if possible
+        for(let i = 0; i < legacyRows.length; i++) {
+            internalDb.query("INSERT IGNORE INTO Products VALUES (?, ?)", [legacyRows[i].number, 20], (err, internalRows) => {
+                if (err)
+                    throw err
 
-        res.send(rows)
-        console.log("Sent response")
+            })
+        }
+
+
+        const productsList = []
+
+        // Gets all the products and quantities from internal databse
+        console.log("Retriving internal DB data...")
+        internalDb.query("SELECT * FROM Products", (err, internalRows) => {
+            if (err)
+                throw err
+            
+            // Combines legact database data with the corresponding internal database data
+            console.log("Combining data...")
+            for (let i = 0; i < legacyRows.length; i++) {
+                productsList.push({...legacyRows[i], ...internalRows[i]})
+            }
+
+            res.send(productsList)
+            console.log("Sent response\n")
+        })
     })
 })
 
