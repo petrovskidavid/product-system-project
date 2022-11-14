@@ -1,0 +1,9 @@
+.navbar {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    height: 100px;
+    width: 100%;
+    margin: 0px;
+    text-align: center;
+  }

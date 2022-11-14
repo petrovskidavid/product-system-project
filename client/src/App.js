@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import Axios from "axios";
+import './App.css';
 import Navbar from "./components/Navbar"
 import ProductCard from "./components/ProductCard"
 
@@ -22,6 +23,7 @@ function App() {
         description={product.description}
         weight={product.weight}
         price={product.price}
+        quantity={product.Quantity}
       />
 
     )
