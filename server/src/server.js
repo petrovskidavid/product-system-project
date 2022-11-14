@@ -4,12 +4,13 @@ import {internalDb, legacyDb} from "./db.js"
 
 // Initializes express server
 const server = express()
-const port = 8800
+const PORT = 8800
 
 server.use(cors())
 
-server.listen(port, () => {
-    console.log(`Server is online!\nListening to port ${port}\n`)
+server.listen(PORT, () => {
+    console.log("\x1b[32m%s\x1b[0m", "Server is online!")
+    console.log(`Listening to port ${PORT}\n`)
 });
 
 server.get("/api/getProducts", (req, res) => {
@@ -20,7 +21,7 @@ server.get("/api/getProducts", (req, res) => {
         if (err)
             throw err
         
-        console.log("Retriving legacy DB data...")
+        console.log('\x1b[33m%s\x1b[0m', "Retriving legacy DB data...")
         // Initiate internal database with default quantity values if possible
         for(let i = 0; i < legacyRows.length; i++) {
             internalDb.query("INSERT IGNORE INTO Products VALUES (?, ?)", [legacyRows[i].number, 20], (err, internalRows) => {
@@ -34,7 +35,7 @@ server.get("/api/getProducts", (req, res) => {
         const productsList = []
 
         // Gets all the products and quantities from internal databse
-        console.log("Retriving internal DB data...")
+        console.log('\x1b[33m%s\x1b[0m', "Retriving internal DB data...")
         internalDb.query("SELECT * FROM Products", (err, internalRows) => {
             if (err)
                 throw err
@@ -46,9 +47,7 @@ server.get("/api/getProducts", (req, res) => {
             }
 
             res.send(productsList)
-            console.log("Sent response\n")
+            console.log("\x1b[32m%s\x1b[0m", "Sent response\n")
         })
     })
 })
-
-export default server
