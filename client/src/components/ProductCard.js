@@ -1,22 +1,22 @@
 import "./ProductCard.css"
 
-function ProductCard(props) {
+export default function ProductCard(props) {
 
-    let stockData
-    let inStock = true
+    let stockStatus     //< Holds the text to display the status of the stock
+    let inStock = true  //< Indicates if the product is in stock
 
+    // Checks the avaliability of the product and updates it status on the screen
     if (props.quantity > 15) {
-        stockData = <div className="product-card-in-stock">In Stock</div>
+        stockStatus = <div className="product-card-in-stock">In Stock</div>
     }
     else if (props.quantity > 0 && props.quantity <= 15) {
-        stockData = <div className="product-card-low-stock">Hurry! Only {props.quantity} left</div>
+        stockStatus = <div className="product-card-low-stock">Hurry! Only {props.quantity} left</div>
     }
     else {
-        stockData = <div className="product-card-no-stock">Out of Stock</div>
+        stockStatus = <div className="product-card-no-stock">Out of Stock</div>
         inStock = false
     }
     
-
 
     return (
         <div className="product-card">
@@ -27,7 +27,7 @@ function ProductCard(props) {
             <br />
             Weight: <div className="bold">{props.weight} lbs</div>
             <br />
-            {stockData}
+            {stockStatus}
             <br />
             Price: <div className="bold">${props.price}</div>
             <br />
@@ -35,5 +35,3 @@ function ProductCard(props) {
         </div>
     )
 }
-
-export default ProductCard
