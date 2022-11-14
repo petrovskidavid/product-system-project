@@ -9,6 +9,7 @@ function App() {
   const [productsData, setProductsData] = useState([])
 
   useEffect(() => {
+    
     Axios.get("http://localhost:8800/api/getProducts").then((res) => {
       setProductsData(res.data)
     })
@@ -25,7 +26,6 @@ function App() {
         price={product.price}
         quantity={product.Quantity}
       />
-
     )
   })
 
