@@ -22,19 +22,10 @@ server.get("/api/getProducts", (req, res) => {
     console.log(`(${++requestNum}) Recieved GET for getProducts`)
 
     // Retrieve all products from legacy database
+    console.log('\x1b[33m%s\x1b[0m', "Retriving legacy DB data...")
     legacyDb.query("SELECT * FROM parts", (err, legacyRows) => {
         if (err)
             throw err
-        
-        // Initiate internal database with default quantity values if possible
-        console.log('\x1b[33m%s\x1b[0m', "Retriving legacy DB data...")
-        for(let i = 0; i < legacyRows.length; i++) {
-            internalDb.query("INSERT IGNORE INTO Products VALUES (?, ?)", [legacyRows[i].number, 20], (err, internalRows) => {
-                if (err)
-                    throw err
-
-            })
-        }
 
         const productsList = [] //< Stores all the data for the products
 
