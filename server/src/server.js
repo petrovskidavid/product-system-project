@@ -8,6 +8,7 @@ const server = express()
 const PORT = 8800
 server.use(cors())
 
+let requestNum = 0 //< Keeps track of the request number
 
 // Tells server to listen to the specified port
 server.listen(PORT, () => {
@@ -18,7 +19,7 @@ server.listen(PORT, () => {
 
 // API call to retrieve all products withing the database
 server.get("/api/getProducts", (req, res) => {
-    console.log("Recieved GET for getProducts")
+    console.log(`(${++requestNum}) Recieved GET for getProducts`)
 
     // Retrieve all products from legacy database
     legacyDb.query("SELECT * FROM parts", (err, legacyRows) => {
