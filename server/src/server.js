@@ -7,6 +7,7 @@ import {internalDb, legacyDb} from "./db.js"
 const server = express()
 const PORT = 8800
 server.use(cors())
+server.use(express.json())
 
 let requestNum = 0 //< Keeps track of the request number
 
@@ -63,7 +64,7 @@ server.get("/api/getProducts", (req, res) => {
 
 
 
-server.post("/api/signUp", (req, res) => {
+server.post("/api/signup", (req, res) => {
 
-
+    console.log(req.body);
 })
