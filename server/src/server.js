@@ -22,7 +22,7 @@ server.listen(PORT, () => {
 
 // API request to retrieve all products withing the database
 server.get("/api/getProducts", (req, res) => {
-    console.log(`(${++requestNum}) Recieved GET for getProducts`)
+    console.log(`(${++requestNum}) Recieved GET request for getProducts`)
 
     // Retrieve all products from legacy database
     console.log('\x1b[33m%s\x1b[0m', "Retriving legacy DB data...")
@@ -60,7 +60,7 @@ server.get("/api/getProducts", (req, res) => {
 
             // Sends the data to the client
             res.send(productsList)
-            console.log("\x1b[32m%s\x1b[0m", "Sent response\n")
+            console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
         })
     })
 })
@@ -68,16 +68,26 @@ server.get("/api/getProducts", (req, res) => {
 
 /* POST Requests */
 
-//
+// API request to add a customer to the internal database
 server.post("/api/signup", (req, res) => {
+    console.log(`(${++requestNum}) Recieved POST request for signup`)
 
+    
     const name = req.body.firstName + " " + req.body.lastName
     const email = req.body.email
     const password = req.body.password
 
+    // Inserts new customer to Customer table if it doesn't exist, otherwise it ignores
+    console.log('\x1b[33m%s\x1b[0m', "Attempting to insert new customer to internal DB...")
     internalDb.query("INSERT IGNORE INTO Customers VALUES (?, ?, ?)", [email, password, name], (err, rows) => {
         if (err)
             throw err
+
+        if (rows.affectedRows === 0) {
+            console.log('\x1b[41m%s\x1b[0m', "Customer already exists")
+        }
+
         res.send(rows)
+        console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
     })
 })
