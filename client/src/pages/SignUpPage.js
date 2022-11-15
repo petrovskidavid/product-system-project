@@ -20,7 +20,7 @@ export default function SignUpPage() {
             username: username,
             email: email,
             password: password
-        })
+        }).then(res=>{console.log(res)})
     }
 
     return (

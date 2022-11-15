@@ -67,4 +67,14 @@ server.get("/api/getProducts", (req, res) => {
 server.post("/api/signup", (req, res) => {
 
     console.log(req.body);
+    const name = req.body.firstName + " " + req.body.lastName
+    const username = req.body.username
+    const email = req.body.email
+    const password = req.body.password
+
+    internalDb.query("INSERT IGNORE INTO Customers VALUES (?, ?, ?, ?)", [username, password, name, email], (err, rows) => {
+        if (err)
+            throw err
+        res.send(rows)
+    })
 })
