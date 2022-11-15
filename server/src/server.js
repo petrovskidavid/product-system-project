@@ -17,7 +17,10 @@ server.listen(PORT, () => {
     console.log(`Listening to port ${PORT}\n`)
 });
 
-// API call to retrieve all products withing the database
+
+/* GET Requests */
+
+// API request to retrieve all products withing the database
 server.get("/api/getProducts", (req, res) => {
     console.log(`(${++requestNum}) Recieved GET for getProducts`)
 
@@ -63,7 +66,9 @@ server.get("/api/getProducts", (req, res) => {
 })
 
 
+/* POST Requests */
 
+//
 server.post("/api/signup", (req, res) => {
 
     const name = req.body.firstName + " " + req.body.lastName
