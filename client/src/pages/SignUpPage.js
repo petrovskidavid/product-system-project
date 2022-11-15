@@ -1,10 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import Axios from "axios"
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import Navbar from "../components/Navbar"
 import "./SignUpPage.css"
-
 
 const signUpValidation = yup.object().shape({
     firstName: yup.string().max(255).required("This field is required"),
@@ -14,34 +14,46 @@ const signUpValidation = yup.object().shape({
     confirmPassword: yup.string().oneOf([yup.ref("password"), null])
 })
 
+
 export default function SignUpPage() {
 
+    const nav = useNavigate()
 
-    const submitSignUp = (data) => {
-        Axios.post("http://localhost:8800/api/signup", {
+    const submitSignUp = async (data) => {
+        await Axios.post("http://localhost:8800/api/signup", {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
             password: data.password
         }).then((res) => {
             if(res.data.affectedRows === 0){
-                console.log("Email already exists")
+                console.log("invalid")
+                localStorage.setItem("user", "Invalid")
             }
             else
             {
                 console.log("Account created")
+                localStorage.setItem("user", data.email)
+                console.log(localStorage)
+                nav("/store")
             }
         })
     }
 
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(signUpValidation)
     })
-    console.log(errors)
+
     return (
         <div>
             <Navbar />
             <div className="sign-up">
+                <div className="sign-up-error">
+                    <br />
+                    {localStorage.getItem("user") === "Invalid" && "The email address is already in use"}
+                    <br />
+                 </div>
                 <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
                     <div className="sign-up-title">
                         Create an Account!
@@ -61,7 +73,9 @@ export default function SignUpPage() {
                         type="text"
                     />
 
-                    <div className="sign-up-error">{errors.email?.type === "email" ? "Invalid email" : errors.email?.message}</div>
+                    <div className="sign-up-error">
+                        {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
+                    </div>
                     <input 
                         {...register('email')}
                         placeholder="Email"
