@@ -1,151 +1,100 @@
 import Axios from "axios"
-import {useState} from "react"
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import Navbar from "../components/Navbar"
 import "./SignUpPage.css"
 
+
+const signUpValidation = yup.object().shape({
+    firstName: yup.string().max(255).required("This field is required"),
+    lastName: yup.string().max(255).required("This field is required"),
+    email: yup.string().email().max(255).required("This field is required"),
+    password: yup.string().min(8).max(25).required("This field is required"),
+    confirmPassword: yup.string().oneOf([yup.ref("password"), null])
+})
+
 export default function SignUpPage() {
 
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
 
-    const submitSignUp = (event) => {
-        event.preventDefault()
-
+    const submitSignUp = (data) => {
         Axios.post("http://localhost:8800/api/signup", {
-            firstName: firstName,
-            lastName: lastName,
-            username: username,
-            email: email,
-            password: password
-        }).then(res=>{console.log(res)})
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: data.password
+        }).then((res) => {
+            if(res.data.affectedRows === 0){
+                console.log("Email already exists")
+            }
+            else
+            {
+                console.log("Account created")
+            }
+        })
     }
 
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(signUpValidation)
+    })
+    console.log(errors)
     return (
         <div>
             <Navbar />
-            <form className="sign-up">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <div className="sign-up-input">
-                                    <label htmlFor="firstName">First Name: </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="sign-up-input">
-                                    <input 
-                                        type="text" 
-                                        name="firstName" 
-                                        maxLength={255} 
-                                        onChange={(e) => {
-                                            setFirstName(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div className="sign-up-input">
-                                    <label htmlFor="lastName">Last Name: </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="sign-up-input">
-                                    <input 
-                                        type="text" 
-                                        name="lastName" 
-                                        maxLength={255} 
-                                        onChange={(e) => {
-                                            setLastName(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div className="sign-up-input">
-                                    <label htmlFor="username">Username: </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="sign-up-input">
-                                    <input 
-                                        type="text" 
-                                        name="username" 
-                                        maxLength={15} 
-                                        pattern="\\S*$" 
-                                        title="Avoid using spaces in your username." 
-                                        onChange={(e) => {
-                                            setUsername(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                <div className="sign-up-input">
-                                    <label htmlFor="email">Email: </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="sign-up-input">
-                                    <input 
-                                        type="email" 
-                                        name="email" 
-                                        maxLength={255} 
-                                        onChange={(e) => {
-                                            setEmail(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div className="sign-up-input">
-                                    <label htmlFor="password">Password: </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="sign-up-input">
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        minLength={8} 
-                                        onChange={(e) => {
-                                            setPassword(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div className="sign-up-input">
-                                    <label htmlFor="confirm-password">Confirm Password: </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="sign-up-input">
-                                    <input type="password" name="confirm-password" minLength={8} />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colSpan={2}>
-                                <button className="sign-up-button" onClick={submitSignUp} >Sign Up!</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div className="sign-up">
+                <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
+                    <div className="sign-up-title">
+                        Create an Account!
+                    </div>
+
+                    <div className="sign-up-error">{errors.firstName?.type === "max" ? "Exceeds character limit of 255" : errors.firstName?.message}</div>
+                    <input
+                        {...register('firstName')}
+                        placeholder="First Name"
+                        type="text"
+                    />
+
+                    <div className="sign-up-error">{errors.lastName?.type === "max" ? "Exceeds character limit of 255" : errors.lastName?.message}</div>
+                    <input 
+                        {...register('lastName')}
+                        placeholder="Last Name"
+                        type="text"
+                    />
+
+                    <div className="sign-up-error">{errors.email?.type === "email" ? "Invalid email" : errors.email?.message}</div>
+                    <input 
+                        {...register('email')}
+                        placeholder="Email"
+                        type="text"
+                    />
+
+                    <div className="sign-up-error">
+                        {errors.password?.type && errors.password?.type === "required" && "This field is required"}
+                        {errors.password?.type && errors.password?.type === "min" && "Passwords is too short"}
+                        {errors.password?.type && errors.password?.type === "max" && "Passwords is too long"}
+                    </div>
+                    <input 
+                        {...register('password')}
+                        placeholder="Password"
+                        type="password"
+                    />
+                    <div className="sign-up-error">
+                        {errors.confirmPassword?.type && errors.confirmPassword?.type === "required" && "This field is required"}
+                        {errors.confirmPassword?.type && errors.confirmPassword?.type === "oneOf" && "The passwords don't match"}
+                    </div>
+                    <input 
+                        {...register('confirmPassword')}
+                        placeholder="Confirm Password"
+                        type="password"
+                    />
+                    
+                    <input 
+                            type="submit" 
+                            value="Sign Up" 
+                            className="sign-up-btn"
+                    />
                 </form>
+            </div>
         </div>
     )
 }
