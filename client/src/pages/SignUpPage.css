@@ -1,0 +1,27 @@
+table {
+    text-align: center;
+    border: 3px solid pink;
+}
+
+.sign-up {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.sign-up-input {
+    padding: 10px;
+
+}
+
+.sign-up-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 200px;
+
+}
+
+td {
+    /* border: 1px solid black; */
+}
