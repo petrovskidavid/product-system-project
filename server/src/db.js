@@ -21,4 +21,5 @@ const internalDb = mysql.createConnection({
 
 internalDb.connect()
 
+
 export {internalDb, legacyDb}
