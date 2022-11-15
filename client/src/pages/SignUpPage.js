@@ -28,13 +28,12 @@ export default function SignUpPage() {
         }).then((res) => {
             if(res.data.affectedRows === 0){
                 console.log("invalid")
-                localStorage.setItem("user", "Invalid")
+                localStorage.setItem("user", "invalid")
             }
             else
             {
-                console.log("Account created")
                 localStorage.setItem("user", data.email)
-                console.log(localStorage)
+                localStorage.setItem("users-name", data.firstName + " " + data.lastName)
                 nav("/store")
             }
         })
@@ -51,7 +50,7 @@ export default function SignUpPage() {
             <div className="sign-up">
                 <div className="sign-up-error">
                     <br />
-                    {localStorage.getItem("user") === "Invalid" && "The email address is already in use"}
+                    {localStorage.getItem("user") === "invalid" && "The email address is already in use"}
                     <br />
                  </div>
                 <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
