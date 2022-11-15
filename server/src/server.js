@@ -16,7 +16,6 @@ server.listen(PORT, () => {
     console.log(`Listening to port ${PORT}\n`)
 });
 
-
 // API call to retrieve all products withing the database
 server.get("/api/getProducts", (req, res) => {
     console.log(`(${++requestNum}) Recieved GET for getProducts`)
@@ -27,6 +26,19 @@ server.get("/api/getProducts", (req, res) => {
         if (err)
             throw err
 
+        /* 
+            Loops through all the products from the legacy database, checks if they are in internal database
+            and if not it inserts them with a default quantity in the Product table
+        */
+        for(let i = 0; i < legacyRows.length; i++) {
+            
+            // Only runs if the given ProductID is not in the Products table
+            internalDb.query("INSERT IGNORE INTO Products VALUES (?, ?)", [legacyRows[i].number, 20], (err, internalRows) => {
+                if (err)
+                    throw err
+            })
+        }
+
         const productsList = [] //< Stores all the data for the products
 
         // Gets all the products and quantities from internal databse
@@ -35,6 +47,7 @@ server.get("/api/getProducts", (req, res) => {
             if (err)
                 throw err
             
+
             // Combines legact database data with the corresponding internal database data
             console.log("Combining data...")
             for (let i = 0; i < legacyRows.length; i++) {
@@ -46,4 +59,11 @@ server.get("/api/getProducts", (req, res) => {
             console.log("\x1b[32m%s\x1b[0m", "Sent response\n")
         })
     })
+})
+
+
+
+server.post("/api/signUp", (req, res) => {
+
+
 })
