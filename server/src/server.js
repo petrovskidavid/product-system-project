@@ -34,7 +34,7 @@ server.get("/api/getProducts", (req, res) => {
         for(let i = 0; i < legacyRows.length; i++) {
             
             // Only runs if the given ProductID is not in the Products table
-            internalDb.query("INSERT IGNORE INTO Products VALUES (?, ?)", [legacyRows[i].number, 20], (err, internalRows) => {
+            internalDb.query("INSERT IGNORE INTO Products VALUES (?, ?)", [legacyRows[i].number, Math.floor(Math.random() * 100)], (err, internalRows) => {
                 if (err)
                     throw err
             })
@@ -66,13 +66,11 @@ server.get("/api/getProducts", (req, res) => {
 
 server.post("/api/signup", (req, res) => {
 
-    console.log(req.body);
     const name = req.body.firstName + " " + req.body.lastName
-    const username = req.body.username
     const email = req.body.email
     const password = req.body.password
 
-    internalDb.query("INSERT IGNORE INTO Customers VALUES (?, ?, ?, ?)", [username, password, name, email], (err, rows) => {
+    internalDb.query("INSERT IGNORE INTO Customers VALUES (?, ?, ?)", [email, password, name], (err, rows) => {
         if (err)
             throw err
         res.send(rows)
