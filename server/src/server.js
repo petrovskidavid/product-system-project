@@ -72,22 +72,46 @@ server.get("/api/getProducts", (req, res) => {
 server.post("/api/signup", (req, res) => {
     console.log(`(${++requestNum}) Recieved POST request for signup`)
 
-    
     const name = req.body.firstName + " " + req.body.lastName
     const email = req.body.email
-    const password = req.body.password
+    const password = req.body.password //< Not encrypted
 
-    // Inserts new customer to Customer table if it doesn't exist, otherwise it ignores
-    console.log('\x1b[33m%s\x1b[0m', "Attempting to insert new customer to internal DB...")
-    internalDb.query("INSERT IGNORE INTO Customers VALUES (?, ?, ?)", [email, password, name], (err, rows) => {
-        if (err)
-            throw err
+    // Checks if the customer already has an account
+    console.log('\x1b[33m%s\x1b[0m', "Checking if customer already has an account...")
+    internalDb.query("SELECT Email FROM Customers WHERE Email=?", email, (err1, currentCustomer) => {
+        if (err1)
+            return err1
 
-        if (rows.affectedRows === 0) {
-            console.log('\x1b[41m%s\x1b[0m', "Customer already exists")
+
+        if (currentCustomer.length > 0){
+            console.log('\x1b[31m%s\x1b[0m', "Customer already exists")
+
+            // Tells client that the customer already has an account
+            res.send({"addedCustomer": false})
+            console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
+
+        } else {
+
+            // Otherwise, encryptes the provided password
+            console.log('\x1b[33m%s\x1b[0m', "Encrypting password...")
+            internalDb.query("SELECT PASSWORD(?) AS password", password, (err2, encrypted) => {
+                if (err2)
+                    throw (err2)
+
+
+                // Adds new customer account to the internal database with the encrypted version of their passwsord
+                console.log('\x1b[33m%s\x1b[0m', "Attempting to insert new customer to internal DB...")
+                internalDb.query("INSERT INTO Customers VALUES (?, ?, ?)", [email, encrypted[0].password, name], (err3, newCustomer) => {
+                    if (err3)
+                        throw err3
+
+
+                    // Tells the client that the customers account was created
+                    console.log("\x1b[32m%s\x1b[0m", "New customer account created")
+                    res.send({"addedCustomer": true})
+                    console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
+                })
+            })
         }
-
-        res.send(rows)
-        console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
     })
 })
