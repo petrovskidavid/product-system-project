@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar"
 import "./SignUpPage.css"
 
 
+// Holds validation rules for the sign up form inputs
 const signUpValidation = yup.object().shape({
     firstName: yup.string().max(255).required("Please provide your first name"),
     lastName: yup.string().max(255).required("Please provide your last name"),
@@ -18,35 +19,46 @@ const signUpValidation = yup.object().shape({
 
 export default function SignUpPage() {
 
+    const nav = useNavigate() //< Used to redirect client
+
+    // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(signUpValidation)
     })
 
-    const nav = useNavigate()
-
+    // Runs when the submit button is clicked
     const submitSignUp = async (data) => {
+
+        // Sends post request to the backend to handle the data for sign up and awaits a response
         await Axios.post("http://localhost:8800/api/signup", {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
             password: data.password
         }).then((res) => {
-            console.log(res)
+
             if(!res.data.addedCustomer){
+
+                // Indicates that the customer couldn't be added based on the response recieved
                 localStorage.setItem("addedCustomer", false)
                 localStorage.removeItem("customer-name")
                 localStorage.removeItem("user")
             }
             else
             {
+
+                // Indicates that the customer was added based on the response recieved
                 localStorage.setItem("user", data.email)
                 localStorage.setItem("customer-name", data.firstName + " " + data.lastName)
                 localStorage.setItem("addedCustomer", true)
+
+                // Redirects client
                 nav("/store")
             }
         })
     }
 
+    
     return (
         <div>
             <Navbar />
@@ -58,17 +70,21 @@ export default function SignUpPage() {
                  </div>
                 <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
                     <div className="sign-up-title">
-                        Create an Account!
+                        Sign Up
                     </div>
 
-                    <div className="sign-up-error">{errors.firstName?.type === "max" ? "Exceeds character limit of 255" : errors.firstName?.message}</div>
+                    <div className="sign-up-error">
+                        {errors.firstName?.type === "max" ? "Exceeds character limit of 255" : errors.firstName?.message}
+                    </div>
                     <input
                         {...register('firstName')}
                         placeholder="First Name"
                         type="text"
                     />
 
-                    <div className="sign-up-error">{errors.lastName?.type === "max" ? "Exceeds character limit of 255" : errors.lastName?.message}</div>
+                    <div className="sign-up-error">
+                        {errors.lastName?.type === "max" ? "Exceeds character limit of 255" : errors.lastName?.message}
+                    </div>
                     <input 
                         {...register('lastName')}
                         placeholder="Last Name"
@@ -85,7 +101,7 @@ export default function SignUpPage() {
                     />
 
                     <div className="sign-up-error">
-                        {errors.password?.type && errors.password?.type === "required" && "This field is required"}
+                        {errors.password?.type && errors.password?.type === "required" && "Please create a password"}
                         {errors.password?.type && errors.password?.type === "min" && "Passwords is too short"}
                         {errors.password?.type && errors.password?.type === "max" && "Passwords is too long"}
                     </div>
@@ -95,7 +111,6 @@ export default function SignUpPage() {
                         type="password"
                     />
                     <div className="sign-up-error">
-                        {errors.confirmPassword?.type && errors.confirmPassword?.type === "required" && "This field is required"}
                         {errors.confirmPassword?.type && errors.confirmPassword?.type === "oneOf" && "The passwords don't match"}
                     </div>
                     <input 
@@ -109,6 +124,10 @@ export default function SignUpPage() {
                             value="Sign Up" 
                             className="sign-up-btn"
                     />
+
+                    <div className="redirect-log-in">
+                        Already have an account? <a href="/">Log in here</a>
+                    </div>
                 </form>
             </div>
         </div>
