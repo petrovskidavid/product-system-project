@@ -6,16 +6,21 @@ import * as yup from 'yup'
 import Navbar from "../components/Navbar"
 import "./SignUpPage.css"
 
+
 const signUpValidation = yup.object().shape({
-    firstName: yup.string().max(255).required("This field is required"),
-    lastName: yup.string().max(255).required("This field is required"),
-    email: yup.string().email().max(255).required("This field is required"),
-    password: yup.string().min(8).max(25).required("This field is required"),
+    firstName: yup.string().max(255).required("Please provide your first name"),
+    lastName: yup.string().max(255).required("Please provide your last name"),
+    email: yup.string().email().max(255).required("Please provide your email"),
+    password: yup.string().min(8).max(25).required("Please create a password"),
     confirmPassword: yup.string().oneOf([yup.ref("password"), null])
 })
 
 
 export default function SignUpPage() {
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(signUpValidation)
+    })
 
     const nav = useNavigate()
 
@@ -26,23 +31,21 @@ export default function SignUpPage() {
             email: data.email,
             password: data.password
         }).then((res) => {
-            if(res.data.affectedRows === 0){
-                console.log("invalid")
-                localStorage.setItem("user", "invalid")
+            console.log(res)
+            if(!res.data.addedCustomer){
+                localStorage.setItem("addedCustomer", false)
+                localStorage.removeItem("customer-name")
+                localStorage.removeItem("user")
             }
             else
             {
                 localStorage.setItem("user", data.email)
-                localStorage.setItem("users-name", data.firstName + " " + data.lastName)
+                localStorage.setItem("customer-name", data.firstName + " " + data.lastName)
+                localStorage.setItem("addedCustomer", true)
                 nav("/store")
             }
         })
     }
-
-
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(signUpValidation)
-    })
 
     return (
         <div>
