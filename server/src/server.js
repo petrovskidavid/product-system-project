@@ -115,3 +115,10 @@ server.post("/api/signup", (req, res) => {
         }
     })
 })
+
+
+// API request to check customer login info in order to approve login request
+server.post("/api/login", (req, res) => {
+    console.log(`(${++requestNum}) Recieved POST request for login`);
+
+})
