@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Navbar from "../components/Navbar"
 import ProductCard from "../components/ProductCard"
 
 export default function StorePage() {
+
+    const nav = useNavigate() //< Used to redirect client
+
+    if(localStorage.getItem("user") === null)
+    {
+        nav("/")
+    }
 
     const [productsData, setProductsData] = useState([]) //< Holds the list of all the products
 

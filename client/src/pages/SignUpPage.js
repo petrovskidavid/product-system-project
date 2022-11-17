@@ -36,7 +36,7 @@ export default function SignUpPage() {
             email: data.email,
             password: data.password
         }).then((res) => {
-
+            console.log(res)
             if(!res.data.addedCustomer){
 
                 // Indicates that the customer couldn't be added based on the response recieved
@@ -65,7 +65,7 @@ export default function SignUpPage() {
             <div className="sign-up">
                 <div className="sign-up-error">
                     <br />
-                    {localStorage.getItem("user") === "invalid" && "The email address is already in use"}
+                    {localStorage.getItem("addedCustomer") === "false" && "The email address is already in use"}
                     <br />
                  </div>
                 <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
