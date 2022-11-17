@@ -9,7 +9,7 @@
     justify-items: center;
     align-items: center;
     row-gap: 50px;
-    column-gap: 0px;
+    column-gap: 40px;
     margin-top: 20px;
     margin-bottom: 50px;
   }
@@ -18,7 +18,7 @@
     text-align: center;
     margin: 10px;
     padding: 5px;
-    width: 70%;
+    width: 280px;
     height: 100%;
     border: 2px solid grey;
     border-radius: 10px;
