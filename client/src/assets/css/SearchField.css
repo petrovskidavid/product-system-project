@@ -1,0 +1,32 @@
+.search {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.search-border {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 30px;
+    width: 260px;
+    display: inline-block;
+}
+
+.search-field {
+    width: 215px;
+    height: 25px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    margin-top: 1.5px;
+    margin-right: 10px;
+    float: right;
+}
+
+.search-icon {
+    margin-top: 7px;
+    margin-left: 5px;
+    align-items: center;
+    justify-content: center;
+}

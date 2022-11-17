@@ -43,17 +43,17 @@ export default function LogInForm() {
 
 
     return (
-        <div className="log-in">
-            <div className="log-in-error">
+        <div className="form">
+            <div className="form-error">
                 <br />
                 <br />
                 </div>
             <form method="POST" onSubmit={handleSubmit(submitLogIn)}>
-                <div className="log-in-title">
+                <div className="form-title">
                     Log In
                 </div>
 
-                <div className="log-in-error">
+                <div className="form-error">
                     {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
                 </div>
                 <input 
@@ -62,7 +62,7 @@ export default function LogInForm() {
                     type="text"
                 />
 
-                <div className="log-in-error">
+                <div className="form-error">
                     {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
                 </div>
                 <input 
@@ -74,10 +74,10 @@ export default function LogInForm() {
                 <input 
                         type="submit" 
                         value="Log In" 
-                        className="log-in-btn"
+                        className="form-btn"
                 />
 
-                <div className="redirect-sign-up">
+                <div className="redirect-form">
                     Don't have an account? <a href="/signup">Sign up here</a>
                 </div>
             </form>

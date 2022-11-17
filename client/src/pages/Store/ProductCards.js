@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import Axios from "axios";
+import SearchField from "../../components/SearchField";
 import ProductCard from "../../components/ProductCard"
 
 export default function ProductCards() {
@@ -31,8 +32,11 @@ export default function ProductCards() {
 
 
     return (
-        <div className="product-card-container">
-            {productCards}
+        <div className="store">
+            <SearchField placeholder="Search" />
+            <div className="product-cards-container">
+                {productCards}
+            </div>
         </div>
     )
 }

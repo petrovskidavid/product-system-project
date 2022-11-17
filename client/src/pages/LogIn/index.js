@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar"
 import LogInForm from "./LogInForm"
-import "../../assets/css/LogInPage.css"
+import "../../assets/css/FormPages.css"
 
 export default function LogInPage() {
 

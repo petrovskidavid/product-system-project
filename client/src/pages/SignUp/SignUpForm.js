@@ -58,18 +58,18 @@ export default function SignUpForm() {
 
     
     return (
-        <div className="sign-up">
-            <div className="sign-up-error">
+        <div className="form">
+            <div className="form-error">
                 <br />
                 {localStorage.getItem("addedCustomer") === "false" && "The email address is already in use"}
                 <br />
                 </div>
             <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
-                <div className="sign-up-title">
+                <div className="form-title">
                     Sign Up
                 </div>
 
-                <div className="sign-up-error">
+                <div className="form-error">
                     {errors.firstName?.type === "max" ? "Exceeds character limit of 255" : errors.firstName?.message}
                 </div>
                 <input
@@ -78,7 +78,7 @@ export default function SignUpForm() {
                     type="text"
                 />
 
-                <div className="sign-up-error">
+                <div className="form-error">
                     {errors.lastName?.type === "max" ? "Exceeds character limit of 255" : errors.lastName?.message}
                 </div>
                 <input 
@@ -87,7 +87,7 @@ export default function SignUpForm() {
                     type="text"
                 />
 
-                <div className="sign-up-error">
+                <div className="form-error">
                     {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
                 </div>
                 <input 
@@ -96,7 +96,7 @@ export default function SignUpForm() {
                     type="text"
                 />
 
-                <div className="sign-up-error">
+                <div className="form-error">
                     {errors.password?.type && errors.password?.type === "required" && "Please create a password"}
                     {errors.password?.type && errors.password?.type === "min" && "Passwords is too short"}
                     {errors.password?.type && errors.password?.type === "max" && "Passwords is too long"}
@@ -106,7 +106,7 @@ export default function SignUpForm() {
                     placeholder="Password"
                     type="password"
                 />
-                <div className="sign-up-error">
+                <div className="form-error">
                     {errors.confirmPassword?.type && errors.confirmPassword?.type === "oneOf" && "The passwords don't match"}
                 </div>
                 <input 
@@ -118,10 +118,10 @@ export default function SignUpForm() {
                 <input 
                         type="submit" 
                         value="Sign Up" 
-                        className="sign-up-btn"
+                        className="form-btn"
                 />
 
-                <div className="redirect-log-in">
+                <div className="redirect-form">
                     Already have an account? <a href="/">Log in here</a>
                 </div>
             </form>

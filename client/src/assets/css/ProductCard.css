@@ -1,13 +1,17 @@
-.product-card-container {
+.store {
+  display: block;
+  text-align: center;
+}
+
+.product-cards-container {
     display: inline-grid;
     grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
     row-gap: 50px;
     column-gap: 0px;
     margin-top: 20px;
     margin-bottom: 50px;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
   }
   
   .product-card {
