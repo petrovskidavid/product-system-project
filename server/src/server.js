@@ -133,7 +133,7 @@ server.post("/api/login", (req, res) => {
 
         if (currentCustomer.length > 0)
         {
-            console.log('\x1b[31m%s\x1b[0m', "Customer exists")
+            console.log('\x1b[32m%s\x1b[0m', "Customer exists")
             console.log('\x1b[33m%s\x1b[0m', "Verifying password...")
 
             // Hash the entered password
@@ -141,8 +141,8 @@ server.post("/api/login", (req, res) => {
                 if (err2)
                     throw (err2)
 
-                // Retrieves the hashed password from the interanl database
-                internalDb.query("SELECT Password as password FROM Customers", (err3, hashed) => {
+                // Retrieves the hashed password from the internal database
+                internalDb.query("SELECT Password as password FROM Customers WHERE Email=?", email, (err3, hashed) => {
                     if (err3)
                         throw (err3)
 
@@ -150,14 +150,24 @@ server.post("/api/login", (req, res) => {
                     if (hashed[0].password == postHash[0].password)
                     {
                         // Sends data to the client indicating that the login was verified
-                        console.log('\x1b[31m%s\x1b[0m', "Customer's email and password match")
-                        res.send({"loginVerified": true})
+                        console.log('\x1b[32m%s\x1b[0m', "Customer's email and password match")
+
+                        internalDb.query("SELECT Name FROM Customers WHERE Email=?", email, (err4, customer) => {
+
+                            res.send({
+                                "loginVerified": true,
+                                "customerName": customer[0].Name,
+                                "customerEmail": email
+                            })
+                            console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
+                        })
                     }
                     else
                     {
                         // Sends data to the client indicating that the login was not verified
                         console.log('\x1b[31m%s\x1b[0m', "Customer's email and password do not match")
                         res.send({"loginVerified": false})
+                        console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
                     }
 
                 })
@@ -168,6 +178,7 @@ server.post("/api/login", (req, res) => {
             // Sends data to the client indicating that the email was not found in the internal database
             console.log('\x1b[31m%s\x1b[0m', "Customer email does not exist")
             res.send({"customerExists": false})
+            console.log("\x1b[32m%s\x1b[0m", "Sent response to client\n")
         }
     })
 
