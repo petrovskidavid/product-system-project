@@ -18,12 +18,13 @@ const signUpValidation = yup.object().shape({
 
 export default function SignUpForm() {
 
+    // Removes all localStorage items connected to user login info
     localStorage.removeItem("customerName")
     localStorage.removeItem("customerEmail")
 
     const nav = useNavigate() //< Used to redirect client
 
-    const [addedCustomerErr, setAddedCustomerErr] = useState(false)
+    const [addedCustomerErr, setAddedCustomerErr] = useState(false) //< Holds a boolean indicating if an error occured when adding a customer
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({

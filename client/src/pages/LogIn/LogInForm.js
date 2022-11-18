@@ -15,13 +15,14 @@ const logInValidation = yup.object().shape({
 
 export default function LogInForm() {
     
+    // Removes all localStorage items connected to user login info
     localStorage.removeItem("customerName")
     localStorage.removeItem("customerEmail")
 
     const nav = useNavigate() //< Used to redirect client
 
-    const [emailErr, setEmailErr] = useState(false)
-    const [verificationErr, setVerificationErr] = useState(false)
+    const [emailErr, setEmailErr] = useState(false)               //< Holds a boolean indicating if an email error occured while logging in
+    const [verificationErr, setVerificationErr] = useState(false) //< Holds a boolean indicating if a password/email verificaiton error occured while logging in
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -38,21 +39,29 @@ export default function LogInForm() {
 
         }).then((res) => {
             if (res.data.loginVerified) {
-                console.log(res)
+
+                // Indicates that there were no errors
                 setVerificationErr(false)
                 setEmailErr(false)
+
+                // Adds data to localStorage for later use
                 localStorage.setItem("customerName", res.data.customerName)
                 localStorage.setItem("customerEmail", res.data.customerEmail)
+
+                // Redirects client
                 nav("/store")
 
             } else if (res.data.loginVerified === false) {
+
+                // Indicates that there was a password/email verification error
                 setVerificationErr(true)
                 setEmailErr(false)
             
             } else if (res.data.customerExists === false) {
+
+                // Indicates that the email doesn't exist in our database
                 setVerificationErr(false)
                 setEmailErr(true)
-
             }
         })
     }
