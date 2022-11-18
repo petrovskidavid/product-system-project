@@ -12,7 +12,8 @@
 .form-error {
     color: red;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 12px;
+    margin-bottom: 2px;
 }
 
 .form form {
@@ -32,6 +33,7 @@
     sans-serif;
     border-radius: 8px;
     border: 1px solid;
+    text-indent: 5px;
 }
 
 .form-btn{

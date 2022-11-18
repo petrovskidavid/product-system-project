@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Axios from "axios"
 import { useForm } from 'react-hook-form'
@@ -17,7 +18,12 @@ const signUpValidation = yup.object().shape({
 
 export default function SignUpForm() {
 
+    localStorage.removeItem("customerName")
+    localStorage.removeItem("customerEmail")
+
     const nav = useNavigate() //< Used to redirect client
+
+    const [addedCustomerErr, setAddedCustomerErr] = useState(false)
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -33,22 +39,19 @@ export default function SignUpForm() {
             lastName: data.lastName,
             email: data.email,
             password: data.password
+
         }).then((res) => {
-            console.log(res)
             if(!res.data.addedCustomer){
 
                 // Indicates that the customer couldn't be added based on the response recieved
-                localStorage.setItem("addedCustomer", false)
-                localStorage.removeItem("customer-name")
-                localStorage.removeItem("user")
-            }
-            else
-            {
+                setAddedCustomerErr(true)
+            
+            } else {
 
                 // Indicates that the customer was added based on the response recieved
-                localStorage.setItem("user", data.email)
-                localStorage.setItem("customer-name", data.firstName + " " + data.lastName)
-                localStorage.setItem("addedCustomer", true)
+                setAddedCustomerErr(false)
+                localStorage.setItem("customerEmail", data.email)
+                localStorage.setItem("customerName", data.firstName + " " + data.lastName)
 
                 // Redirects client
                 nav("/store")
@@ -61,9 +64,9 @@ export default function SignUpForm() {
         <div className="form">
             <div className="form-error">
                 <br />
-                {localStorage.getItem("addedCustomer") === "false" && "The email address is already in use"}
+                {addedCustomerErr && "The email address is already in use"}
                 <br />
-                </div>
+            </div>
             <form method="POST" onSubmit={handleSubmit(submitSignUp)}>
                 <div className="form-title">
                     Sign Up

@@ -8,7 +8,7 @@ export default function StorePage() {
     const nav = useNavigate() //< Used to redirect client
 
     useEffect(() => {
-        if(localStorage.getItem("user") === null)
+        if(localStorage.getItem("customerEmail") === null)
         {
             nav("/")
         }
