@@ -14,15 +14,15 @@ const logInValidation = yup.object().shape({
 
 
 export default function LogInForm() {
+
+    const nav = useNavigate()                                     //< Used to redirect client
+    const [emailErr, setEmailErr] = useState(false)               //< Holds a boolean indicating if an email error occured while logging in
+    const [verificationErr, setVerificationErr] = useState(false) //< Holds a boolean indicating if a password/email verificaiton error occured while logging in
     
+
     // Removes all localStorage items connected to user login info
     localStorage.removeItem("customerName")
     localStorage.removeItem("customerEmail")
-
-    const nav = useNavigate() //< Used to redirect client
-
-    const [emailErr, setEmailErr] = useState(false)               //< Holds a boolean indicating if an email error occured while logging in
-    const [verificationErr, setVerificationErr] = useState(false) //< Holds a boolean indicating if a password/email verificaiton error occured while logging in
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
