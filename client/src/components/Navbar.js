@@ -11,7 +11,7 @@ export default function Navbar() {
         nav("/")
     }
 
-    if(location.pathname === "/" || location.pathname === "/signup")
+    if(location.pathname === "/" || location.pathname === "/signup" || location.pathname === "/emp/login")
         showLogout = false
 
     return (
