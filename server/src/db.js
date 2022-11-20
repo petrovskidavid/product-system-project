@@ -1,4 +1,5 @@
 import mysql from "mysql"
+import mongodb from "mongodb"
 
 // Creates a connection to the legacy database
 const legacyDb = mysql.createConnection({
@@ -10,16 +11,9 @@ const legacyDb = mysql.createConnection({
 
 legacyDb.connect()
 
+const mongoClient = mongodb.MongoClient;
 
-// Creates a connection to the legacy database
-const internalDb = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'product-system-db'
-});
-
-internalDb.connect()
+const mongoDb = mongoClient.connect("mongodb+srv://testing:testingDB@csci-467-project.rxzknis.mongodb.net/?retryWrites=true&w=majority");
 
 
-export {internalDb, legacyDb}
+export {legacyDb, mongoDb}
