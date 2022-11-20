@@ -11,8 +11,9 @@ const legacyDb = mysql.createConnection({
 
 legacyDb.connect()
 
-const mongoClient = mongodb.MongoClient;
 
+// Creates a connection to the internal MongoDB database
+const mongoClient = mongodb.MongoClient;
 const mongoDb = mongoClient.connect("mongodb+srv://testing:testingDB@csci-467-project.rxzknis.mongodb.net/?retryWrites=true&w=majority");
 
 
