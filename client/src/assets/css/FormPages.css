@@ -52,5 +52,16 @@
 
 .redirect-form {
     font-size: 12px;
+}
+
+.signup-redirect-form {
+    margin-bottom: 8px;
+}
+
+.emp-login-redirect-form {
     margin-bottom: 15px;
+}
+
+.redirect-form a {
+    text-decoration: none;
 }
