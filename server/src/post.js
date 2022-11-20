@@ -11,7 +11,7 @@ const request = {
 
 // Checks if a customer account can be created and creates one if possible
 function signUpCustomer(req, res) {
-    console.log(`[${request.type} #${++request.number}] Recieved for signup`)
+    console.log(`[${request.type} #${++request.number}] Request to create new customer (signup)`)
 
     const name = req.body.firstName + " " + req.body.lastName
     const email = req.body.email
@@ -56,7 +56,7 @@ function signUpCustomer(req, res) {
 
 
 function loginCustomer(req, res) {
-    console.log(`[${request.type} #${++request.number}] Recieved for login`);
+    console.log(`[${request.type} #${++request.number}] Request to login customer (login)`);
     
     const email = req.body.email
     const preHashPassword = req.body.password

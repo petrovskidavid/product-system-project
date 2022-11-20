@@ -11,7 +11,7 @@ const request = {
 
 // Gets all the products from the legacy and internal database and combines then to the client side
 function getProducts(req, res) {
-    console.log(`[${request.type} #${++request.number}] Recieved for getProducts`)
+    console.log(`[${request.type} #${++request.number}] Request to get all products (getProducts)`)
 
     // Retrieve all products from legacy database
     console.log(yellowFont, "Retriving legacy DB data...")
