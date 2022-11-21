@@ -1,4 +1,4 @@
-import "./ProductCard.css"
+import "../assets/css/ProductCard.css"
 
 export default function ProductCard(props) {
 
