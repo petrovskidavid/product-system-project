@@ -56,7 +56,7 @@ function signUpCustomer(req, res) {
 
 
 function loginCustomer(req, res) {
-    console.log(`[${request.type} #${++request.number}] Request to login customer (login)`);
+    console.log(`[${request.type} #${++request.number}] Request to login client (login)`);
     
     const preHashPassword = req.body.password
     const loginType = req.body.type
