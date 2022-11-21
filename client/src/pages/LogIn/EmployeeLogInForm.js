@@ -13,7 +13,7 @@ const logInValidation = yup.object().shape({
 })
 
 
-export default function CustomerLogInForm() {
+export default function EmployeeLogInForm() {
 
     const nav = useNavigate()                                     //< Used to redirect client
     const [empIDErr, setEmpIDErr] = useState(false)               //< Holds a boolean indicating if an email error occured while logging in

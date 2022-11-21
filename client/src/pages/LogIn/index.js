@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar"
 import CustomerLogInForm from "./CustomerLogInForm"
-import EmployeeLogInForm from "./EmployeeLogIn"
+import EmployeeLogInForm from "./EmployeeLogInForm"
 import "../../assets/css/FormPages.css"
 
 export default function LogInPage(props) {
