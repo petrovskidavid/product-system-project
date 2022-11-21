@@ -66,7 +66,6 @@ function loginCustomer(req, res) {
         if(loginType === "customer")
         {
             // The login request is for a customer
-
             const email = req.body.email
             // Checks if the customer email exists in the internal database
             console.log(yellowFont, "Checking if customer has an account...")
@@ -101,7 +100,7 @@ function loginCustomer(req, res) {
                         }
                     })
                 } else {
-                    // Otherwise, the email entered doesn't exists in the database
+                    // Otherwise, the email entered doesn't exist in the database
                     console.log(redFont, "Customer email does not exist")
                     res.send({"customerExists": false})
                     console.log(greenFont, "Sent response to client\n")
@@ -112,9 +111,45 @@ function loginCustomer(req, res) {
         {
             // The login request is for an employee
             const empID = req.body.empID
+            // Checks if the employee exists in the internal database
+            console.log(yellowFont, "Checking if employee exists...")
+            connection.db("InternalDb").collection("Employees").findOne({"EmpID": empID}).then(employee => {
 
-            console.log("employee login")
-            console.log(req.body)
+                if (employee != null){
+                    // The employee exists in the database
+                    console.log(greenFont, "Employee exists")
+    
+                    // Hashes the entered password
+                    legacyDb.query("SELECT PASSWORD(?) AS password", preHashPassword, (err2, encrypted) => {
+                        if (err2)
+                            throw (err2)
+    
+                        console.log(yellowFont, "Verifying password...")
+                        if(employee.Password === encrypted[0].password){
+    
+                            // Sends data to the client indicating that the login was verified
+                            console.log(greenFont, "Employee's ID and password match")
+                            res.send({
+                                "loginVerified": true,
+                                "EmployeeName": employee.Name,
+                                "EmployeeID": empID
+                            })
+                            console.log(greenFont, "Sent response to client\n")
+                        } else {
+    
+                            // Sends data to the client indicating that the login was not verified
+                            console.log(redFont, "Employee's ID and password do not match")
+                            res.send({"loginVerified": false})
+                            console.log(greenFont, "Sent response to client\n")
+                        }
+                    })
+                } else {
+                    // Otherwise, the ID entered doesn't exist in the database
+                    console.log(redFont, "Employee does not exist")
+                    res.send({"employeeExists": false})
+                    console.log(greenFont, "Sent response to client\n")
+                }
+            })
         }
         
     })
