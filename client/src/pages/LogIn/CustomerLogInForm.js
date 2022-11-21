@@ -1,36 +1,29 @@
 import { useState } from "react"
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios"
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 
-// Holds validation rules for the log in form inputs
+// Holds validation rules for the log in form inputs for the customer
 const logInValidation = yup.object().shape({
     email: yup.string().email().max(255).required("Please provide your email"),
-    empID: yup.number().min(7).max(7).required("Please provide your employee ID"),
     password: yup.string().required("Please provide your password")
 })
 
 
-export default function LogInForm(props) {
+export default function CustomerLogInForm() {
 
     const nav = useNavigate()                                     //< Used to redirect client
-    const location = useLocation()
-    let type = props.type
     const [emailErr, setEmailErr] = useState(false)               //< Holds a boolean indicating if an email error occured while logging in
-    //const [empIDErr, setEmpIDErr] = useState(false)
     const [verificationErr, setVerificationErr] = useState(false) //< Holds a boolean indicating if a password/email verificaiton error occured while logging in
     
 
-    // Removes all localStorage items connected to user login info
+    // Removes all localStorage items connected to user login info for customer
     localStorage.removeItem("customerName")
     localStorage.removeItem("customerEmail")
 
-
-    if(location.pathname === "/emp/login")
-        type = "employee"
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -43,7 +36,8 @@ export default function LogInForm(props) {
         // Sends post request to the backend to handle the data for log in and awaits a response
         await Axios.post("http://localhost:8800/api/login", {
             email: data.email,
-            password: data.password
+            password: data.password,
+            type: "customer"
 
         }).then((res) => {
             if (res.data.loginVerified) {
@@ -85,15 +79,16 @@ export default function LogInForm(props) {
                 </div>
             <form method="POST" onSubmit={handleSubmit(submitLogIn)}>
                 <div className="form-title">
-                    {type === "employee" ? "Employee" : "Customer"} Log In
+                    Customer Log In
                 </div>
 
                 <div className="form-error">
                     {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
+                    
                 </div>
                 <input 
-                    {...register(type === "employee" ? "empID" : "email")}
-                    placeholder={type === "employee" ? "Employee ID" : "Email"}
+                    {...register("email")}
+                    placeholder="Email"
                     type="text"
                 />
 
@@ -112,17 +107,14 @@ export default function LogInForm(props) {
                         className="form-btn"
                 />
 
-                {
-                    type !== "employee" &&
-                    <div className="redirect-form">
-                        <div className="signup-redirect-form">
-                            Don't have an account? <a href="/signup">Sign up here</a>
-                        </div>
-                        <div className="emp-login-redirect-form">
-                            Are you an employee? <a href="/emp/login">Log in here</a>
-                        </div>
+                <div className="redirect-form">
+                    <div className="signup-redirect-form">
+                        Don't have an account? <a href="/signup">Sign up here</a>
                     </div>
-                }
+                    <div className="emp-login-redirect-form">
+                        Are you an employee? <a href="/emp/login">Log in here</a>
+                    </div>
+                </div>
             </form>
         </div>
     )
