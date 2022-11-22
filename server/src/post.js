@@ -123,7 +123,8 @@ function loginCustomer(req, res) {
                     legacyDb.query("SELECT PASSWORD(?) AS password", preHashPassword, (err2, encrypted) => {
                         if (err2)
                             throw (err2)
-    
+                        
+                        console.log()
                         console.log(yellowFont, "Verifying password...")
                         if(employee.Password === encrypted[0].password){
     
@@ -131,8 +132,8 @@ function loginCustomer(req, res) {
                             console.log(greenFont, "Employee's ID and password match")
                             res.send({
                                 "loginVerified": true,
-                                "EmployeeName": employee.Name,
-                                "EmployeeID": empID
+                                "empName": employee.Name,
+                                "empID": empID
                             })
                             console.log(greenFont, "Sent response to client\n")
                         } else {
