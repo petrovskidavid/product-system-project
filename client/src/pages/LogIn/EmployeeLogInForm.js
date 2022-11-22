@@ -73,8 +73,8 @@ export default function EmployeeLogInForm() {
         <div className="form">
             <div className="form-error">
                 <br />
-                {verificationErr && "The email and password you entered did not match our records"}
-                {empIDErr && "The email you entered is not in our records"}
+                {verificationErr && "The employee ID and password you entered did not match our records"}
+                {empIDErr && "The employee ID you entered is not in our records"}
                 <br />
                 </div>
             <form method="POST" onSubmit={handleSubmit(submitLogIn)}>
