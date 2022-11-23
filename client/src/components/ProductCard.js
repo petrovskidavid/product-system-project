@@ -1,9 +1,25 @@
-import "../assets/css/ProductCard.css"
+import { useState } from "react"
+import Axios from "axios"
 
 export default function ProductCard(props) {
-
+    console.log(props)
     let stockStatus     //< Holds the text to display the status of the stock
     let inStock = true  //< Indicates if the product is in stock
+    const [selectedQuantity, setSelectedQuantity] = useState(1)
+
+    const handleChange = (e) => {
+        setSelectedQuantity(e.target.value)
+    }
+
+    const addToCart = async () => {
+        await Axios.post("http://localhost:8800/api/addToCart", {
+            email: localStorage.getItem("customerEmail"),
+            productID: props.productID,
+            quantity: parseInt(selectedQuantity)
+        }).then(res => {
+            console.log(res)
+        })
+    }
 
     // Checks the avaliability of the product and updates it status on the screen
     if (props.quantity > 15) {
@@ -27,11 +43,17 @@ export default function ProductCard(props) {
             <br />
             Weight: <div className="bold">{props.weight} lbs</div>
             <br />
+            Price: <div className="bold">${props.price}</div>
             {stockStatus}
             <br />
-            Price: <div className="bold">${props.price}</div>
-            <br />
-            {inStock && <button className="product-card-button">Add to Cart</button>}
+            {
+                inStock 
+                && 
+                <div>
+                    <input className="quantity-selected" type="number" min="1" max={props.quantity} value={selectedQuantity}  onChange={handleChange} />
+                    <button className="product-card-button" onClick={addToCart} >Add to Cart</button>
+                </div>
+            }
         </div>
     )
 }

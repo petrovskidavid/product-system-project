@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import Axios from "axios";
-import SearchField from "../../components/SearchField";
+import SearchField from "../../components/SearchField"
 import ProductCard from "../../components/ProductCard"
+import "../../assets/css/StorePage.css"
 
 export default function ProductCards() {
 
@@ -45,6 +46,7 @@ export default function ProductCards() {
         return (
             <ProductCard 
                 key={product.number}
+                productID={product.number}
                 img={product.pictureURL}
                 description={product.description}
                 weight={product.weight}

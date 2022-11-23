@@ -1,7 +1,7 @@
 import express from "express" 
 import cors from "cors"
 import {getProducts} from "./get.js"
-import {signUpCustomer, loginCustomer} from "./post.js"
+import {signUpCustomer, loginCustomer, addToCart} from "./post.js"
 
 
 // Initializes express server
@@ -35,6 +35,9 @@ server.post("/api/signup", signUpCustomer)
 
 // API request to check customer login info in order to approve login request
 server.post("/api/login", loginCustomer)
+
+// API request to add a certain quantity of a product to a customers cart
+server.post("/api/addToCart", addToCart)
 
 
 export {greenFont, yellowFont, redFont}

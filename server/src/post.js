@@ -156,4 +156,21 @@ function loginCustomer(req, res) {
     })
 }
 
-export {signUpCustomer, loginCustomer}
+
+function addToCart (req, res) {
+    console.log(req.body)
+
+    const email = req.body.email
+    const productID = req.body.productID
+    const requestedQuantity = req.body.quantity
+
+    // Add cart to the Carts table, and also we need to figure out what we will do for the orders and stuff.
+    // Maybe look at the orders table and find all that have the email of customer and use that length + 1 as the new order
+    // number for that customer, but they must be unique so we can maybe use the _id of mongodb that auto generates a key and this
+    // can be the order id for the customers
+
+
+    res.send("Got it")
+}
+
+export {signUpCustomer, loginCustomer, addToCart}

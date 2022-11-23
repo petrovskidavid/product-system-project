@@ -1,4 +1,4 @@
-import { FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa"
 import "../assets/css/SearchField.css"
 
 export default function SearchField(props){
