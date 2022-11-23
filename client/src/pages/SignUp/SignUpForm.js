@@ -126,7 +126,9 @@ export default function SignUpForm() {
                 />
 
                 <div className="redirect-form">
-                    Already have an account? <a href="/">Log in here</a>
+                    <div className="login-redirect-form">
+                        Already have an account? <a href="/">Log in here</a>
+                    </div>
                 </div>
             </form>
         </div>

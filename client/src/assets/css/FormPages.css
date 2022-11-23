@@ -10,18 +10,20 @@
 }
 
 .form-error {
-    color: red;
+    color: rgb(255, 0, 0);
     font-weight: bold;
     font-size: 12px;
     margin-bottom: 2px;
 }
 
 .form form {
-    margin-top: 5px;
-    border: 3px solid pink;
+    margin-top: 10px;
+    background-color: #E8E9EB;
     width: 300px;
     display: inline-block;
     text-align: center;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px 5px #748083;
 }
 
 .form input {
@@ -32,7 +34,7 @@
     'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
     sans-serif;
     border-radius: 8px;
-    border: 1px solid;
+    border: none;
     text-indent: 5px;
 }
 
@@ -44,6 +46,9 @@
     sans-serif;
     margin-bottom: 20px;
     border-radius: 10px;
+    background-color: #748083;
+    color: white;
+    font-weight: bold;
 }
 
 .form-btn:hover  {
@@ -62,6 +67,12 @@
     margin-bottom: 15px;
 }
 
+.login-redirect-form {
+    margin-bottom: 15px;
+}
+
 .redirect-form a {
     text-decoration: none;
+    font-weight: bold;
+    color: #445aa3;
 }
