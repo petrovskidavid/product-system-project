@@ -37,7 +37,7 @@ function signUpCustomer(req, res) {
                     connection.db("InternalDb").collection("Customers").insertOne({"_id": email, "Email": email, "Password": encrypted[0].password, "Name": name}).then(queryRes => {
                         if (!queryRes.acknowledged)
                             throw (queryRes)
-    
+                        console.log(queryRes)
 
                         console.log(greenFont, "New customer account created")
                         res.send({"addedCustomer": true})
@@ -163,14 +163,26 @@ function addToCart (req, res) {
     const email = req.body.email
     const productID = req.body.productID
     const requestedQuantity = req.body.quantity
+    const price = req.body.price
 
-    // Add cart to the Carts table, and also we need to figure out what we will do for the orders and stuff.
-    // Maybe look at the orders table and find all that have the email of customer and use that length + 1 as the new order
-    // number for that customer, but they must be unique so we can maybe use the _id of mongodb that auto generates a key and this
-    // can be the order id for the customers
+    // Look thru DB to find an open order and get that orders _id
+    mongoDb.then(connection => {
+        connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
+            console.log(openOrder)
+            console.log(openOrder._id.toString())
 
+            // If you found one, then update the orders total = prevTotal + (requestedQuantity * price)
 
-    res.send("Got it")
+                // Then you will add the Email, ProductID, Qunatity (requestQuantity), Price (price), OrderNumber (_id of Orders)
+                // to the carts table
+
+            // If not found, insert a new order and give it Email, Open (true), Total (price * requestedQuantity) and using the
+            // respone given you can get the insertedID (_id = OrderNumber)
+            
+                // Then you will add the Email, ProductID, Qunatity (requestQuantity), Price (price), OrderNumber (_id of Orders)
+                // to the carts table
+        })
+    })
 }
 
 export {signUpCustomer, loginCustomer, addToCart}
