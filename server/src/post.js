@@ -164,23 +164,74 @@ function addToCart (req, res) {
     const productID = req.body.productID
     const requestedQuantity = req.body.quantity
     const price = req.body.price
+    
 
-    // Look thru DB to find an open order and get that orders _id
+    // look through DB to find an open order and get that order's _id
+    console.log(yellowFont, "Searching for open order...")
     mongoDb.then(connection => {
         connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
-            console.log(openOrder)
-            console.log(openOrder._id.toString())
+    
+            let orderId = "order"
+            let total = 0
 
-            // If you found one, then update the orders total = prevTotal + (requestedQuantity * price)
+            // there is no open order
+            if(openOrder == null)
+            {
+                console.log(redFont, "No open order found")
+                console.log(yellowFont, "Creating new open order...")
 
-                // Then you will add the Email, ProductID, Qunatity (requestQuantity), Price (price), OrderNumber (_id of Orders)
-                // to the carts table
+                // calculate the total
+                total = price * requestedQuantity
 
-            // If not found, insert a new order and give it Email, Open (true), Total (price * requestedQuantity) and using the
-            // respone given you can get the insertedID (_id = OrderNumber)
-            
-                // Then you will add the Email, ProductID, Qunatity (requestQuantity), Price (price), OrderNumber (_id of Orders)
-                // to the carts table
+                // insert the new open order into Orders table
+                connection.db("InternalDb").collection("Orders").insertOne({Email: email, Open: true, Total: total}).then(queryRes => {
+                    if (!queryRes.acknowledged)
+                        throw (queryRes)
+
+                    console.log(greenFont, "Open order created")
+                    // save the order ID
+                    orderId = queryRes.insertedId
+
+                    // insert the new cart into Carts table
+                    connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderNumber: orderId, Price: price}).then(inserted => {
+                        if (!inserted.acknowledged)
+                            throw (inserted)
+                        
+                        console.log(greenFont, "Product inserted into Carts table")
+                        res.send({"addedToCart": true})
+                        console.log(greenFont, "Sent response to client\n")
+                    })
+                })
+            }
+            else
+            {
+                console.log(greenFont, "Open order found")
+
+                // save the current total from the Orders table
+                total = openOrder.Total
+
+                // calculate the new total
+                total += price * requestedQuantity
+
+                // save the order ID
+                orderId = openOrder._id.toString()
+
+                // update the current total
+                connection.db("InternalDb").collection("Orders").updateOne({Email: email, Open: true}, { $set: {Total: total}})
+
+                console.log(greenFont, "Order total updated")
+
+                // insert the new cart into Carts table
+                connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderNumber: orderId, Price: price}).then(inserted => {
+                    if (!inserted.acknowledged)
+                        throw (inserted)
+                    
+                    console.log(greenFont, "Product inserted into Carts table")
+                    res.send({"addedToCart": true})
+                    console.log(greenFont, "Sent response to client\n")
+                })
+            }
+
         })
     })
 }
