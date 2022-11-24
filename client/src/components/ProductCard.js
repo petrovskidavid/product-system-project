@@ -15,6 +15,7 @@ export default function ProductCard(props) {
         await Axios.post("http://localhost:8800/api/addToCart", {
             email: localStorage.getItem("customerEmail"),
             productID: props.productID,
+            price: props.price,
             quantity: parseInt(selectedQuantity)
         }).then(res => {
             console.log(res)
