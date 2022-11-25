@@ -1,8 +1,10 @@
 import { useState } from "react"
 import Axios from "axios"
+import { toast } from "react-custom-alert"
+import "react-custom-alert/dist/index.css"
 
 export default function ProductCard(props) {
-    console.log(props)
+
     let stockStatus     //< Holds the text to display the status of the stock
     let inStock = true  //< Indicates if the product is in stock
     const [selectedQuantity, setSelectedQuantity] = useState(1)
@@ -18,7 +20,10 @@ export default function ProductCard(props) {
             price: props.price,
             quantity: parseInt(selectedQuantity)
         }).then(res => {
-            console.log(res)
+
+            console.log(res.data)
+            if (res.data.addedToCart)
+                toast.success("Added "+ res.data.quantity + " of " + props.description + " to your cart")
         })
     }
 
@@ -36,17 +41,17 @@ export default function ProductCard(props) {
     
 
     return (
+        
         <div className="product-card">
             <img src={props.img} alt={props.description} className="product-card-img" />
-            <br />
-            <br />
+
             <div className="product-card-description">{props.description}</div>
-            <br />
-            Weight: <div className="bold">{props.weight} lbs</div>
-            <br />
-            Price: <div className="bold">${props.price}</div>
+
+            <div className="product-weight"><span className="bold">Weight:</span> {props.weight} lbs</div>
+
+            <div className="product-price"><span className="bold">Price:</span> ${props.price}</div>
             {stockStatus}
-            <br />
+
             {
                 inStock 
                 && 

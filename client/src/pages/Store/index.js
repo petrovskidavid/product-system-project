@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-custom-alert"
 import Navbar from "../../components/Navbar"
 import ProductCards from "./ProductCards"
 
@@ -12,11 +13,13 @@ export default function StorePage() {
         {
             nav("/")
         }
-    }, [])
+    }, [nav])
+
 
     return (
         <div>
             <Navbar />
+            <ToastContainer floatingTime={5000} />
             <ProductCards />
         </div>
     )

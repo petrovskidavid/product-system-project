@@ -27,7 +27,8 @@ export default function Navbar() {
                 showDropdown 
                 &&
                 <DropdownButton className="dropdown-basic-button" title={<FaBars className="dropdown-icon"/>} size="sm">
-                    <Dropdown.Item href="#/action-1">View Cart</Dropdown.Item>
+                    {location.pathname === "/cart" && <Dropdown.Item href="/store">View Products</Dropdown.Item>}
+                    {location.pathname === "/store" && <Dropdown.Item href="/cart">View Cart</Dropdown.Item>}
                     <Dropdown.Item href="#/action-2">View Orders</Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item href="/">Logout</Dropdown.Item>
