@@ -1,5 +1,7 @@
 import {legacyDb, mongoDb} from "./db.js"
+import {ObjectId} from "mongodb"
 import {greenFont, yellowFont, redFont} from "./server.js"
+import e from "express"
 
 
 /* POST Requests */
@@ -158,7 +160,7 @@ function loginCustomer(req, res) {
 
 
 function addToCart (req, res) {
-    console.log(req.body)
+    console.log(`[${request.type} #${++request.number}] Request to add a new product to the customers cart (addToCart)`)
 
     const email = req.body.email
     const productID = req.body.productID
@@ -171,7 +173,7 @@ function addToCart (req, res) {
     mongoDb.then(connection => {
         connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
     
-            let orderId = "order"
+            let orderId
             let total = 0
 
             // there is no open order
@@ -192,13 +194,13 @@ function addToCart (req, res) {
                     // save the order ID
                     orderId = queryRes.insertedId
 
-                    // insert the new cart into Carts table
-                    connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderNumber: orderId, Price: price}).then(inserted => {
+                    // insert the new item into Carts table
+                    connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
                         if (!inserted.acknowledged)
                             throw (inserted)
                         
                         console.log(greenFont, "Product inserted into Carts table")
-                        res.send({"addedToCart": true})
+                        res.send({"addedToCart": true, "quantity": requestedQuantity})
                         console.log(greenFont, "Sent response to client\n")
                     })
                 })
@@ -214,21 +216,35 @@ function addToCart (req, res) {
                 total += price * requestedQuantity
 
                 // save the order ID
-                orderId = openOrder._id.toString()
+                orderId = openOrder._id
 
                 // update the current total
-                connection.db("InternalDb").collection("Orders").updateOne({Email: email, Open: true}, { $set: {Total: total}})
+                connection.db("InternalDb").collection("Orders").updateOne({_id: orderId}, { $set: {Total: total}})
 
                 console.log(greenFont, "Order total updated")
 
-                // insert the new cart into Carts table
-                connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderNumber: orderId, Price: price}).then(inserted => {
-                    if (!inserted.acknowledged)
-                        throw (inserted)
+                // Checks if the item is already in the cart and tries to update its quantity
+                console.log("Checking if the product is already in the customers Carts table...")
+                connection.db("InternalDb").collection("Carts").findOneAndUpdate({OrderID: orderId, ProductID: productID}, {$inc: {Quantity: requestedQuantity}}).then(updatedQuantity => {
+
+                    // Only runs if the item wasn't in the cart already
+                    if(!updatedQuantity.value){
+
+                        // insert the new item into Carts table
+                        connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
+                            if (!inserted.acknowledged)
+                                throw (inserted)
+                            
+                            console.log(greenFont, "Product inserted into Carts table")
+                            res.send({"addedToCart": true, "quantity": requestedQuantity})
+                            console.log(greenFont, "Sent response to client\n")
+                        })
                     
-                    console.log(greenFont, "Product inserted into Carts table")
-                    res.send({"addedToCart": true})
-                    console.log(greenFont, "Sent response to client\n")
+                    } else {
+                        console.log(greenFont, "Product quantity updated into Carts table")
+                        res.send({"addedToCart": true, "quantity": requestedQuantity})
+                        console.log(greenFont, "Sent response to client\n")
+                    }
                 })
             }
 
@@ -236,4 +252,57 @@ function addToCart (req, res) {
     })
 }
 
-export {signUpCustomer, loginCustomer, addToCart}
+
+function updateCart(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to update product quantity in customers cart (updateCart)`)
+
+    const orderID = req.body.OrderID
+    const productID = req.body.ProductID
+    const newQuantity = req.body.newQuantity
+
+    mongoDb.then(connection => {
+
+        console.log(yellowFont, "Searching for the product in the customers cart...")
+        connection.db("InternalDb").collection("Carts").updateOne({OrderID: ObjectId(orderID), ProductID: productID}, { $set: {Quantity: newQuantity}}).then(updated => {
+            
+            if (updated.modifiedCount > 0){
+                console.log(greenFont, "Updated product quantity in customers cart")
+                res.send({"cartItemUpdated": true})
+                console.log(greenFont, "Sent response to client\n")
+
+            } else {
+                console.log(redFont, "Didn't update product quantity in customers cart")
+                res.send({"cartItemUpdated": false})
+                console.log(greenFont, "Sent response to client\n")
+            }
+        })
+    })
+}
+
+
+function removeFromCart(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to remove product from customers cart (removeFromCart)`)
+
+    const orderID = req.body.OrderID
+    const productID = req.body.ProductID
+    
+    mongoDb.then(connection => {
+
+        console.log(yellowFont, "Searching for the product in the customers cart...")
+        connection.db("InternalDb").collection("Carts").deleteOne({OrderID: ObjectId(orderID), ProductID: productID}).then(deleted => {
+            
+            if(deleted.deletedCount > 0){
+                console.log(greenFont, "Removed product from customers cart")
+                res.send({"cartItemRemoved": true})
+                console.log(greenFont, "Sent response to client\n")
+
+            } else {
+                console.log(redFont, "Didn't remove product from customers cart")
+                res.send({"cartItemRemoved": false})
+                console.log(greenFont, "Sent response to client\n")
+            }
+        })
+    })
+}
+
+export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart}

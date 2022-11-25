@@ -51,4 +51,31 @@ function getProducts(req, res) {
     })
 }
 
-export {getProducts}
+
+function getCart(req, res) {
+
+    const email = req.query.email
+    let orderId
+
+
+    mongoDb.then(connection => {
+        connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
+
+            if (openOrder != null) {
+                orderId = openOrder._id
+            
+                connection.db("InternalDb").collection("Carts").find({OrderID: orderId}).toArray().then(cartItems => {
+
+                    res.send(cartItems)
+                })
+
+            } else {
+                console.log("No open orders")
+            }
+            
+        })
+    })
+
+}
+
+export {getProducts, getCart}
