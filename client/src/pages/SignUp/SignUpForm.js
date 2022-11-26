@@ -73,51 +73,52 @@ export default function SignUpForm() {
                     Sign Up
                 </div>
 
-                <div className="form-error">
-                    {errors.firstName?.type === "max" ? "Exceeds character limit of 255" : errors.firstName?.message}
-                </div>
                 <input
                     {...register('firstName')}
                     placeholder="First Name"
                     type="text"
                 />
-
                 <div className="form-error">
-                    {errors.lastName?.type === "max" ? "Exceeds character limit of 255" : errors.lastName?.message}
+                    {errors.firstName?.type === "max" ? "Exceeds character limit of 255" : errors.firstName?.message}
                 </div>
+
                 <input 
                     {...register('lastName')}
                     placeholder="Last Name"
                     type="text"
                 />
-
                 <div className="form-error">
-                    {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
+                    {errors.lastName?.type === "max" ? "Exceeds character limit of 255" : errors.lastName?.message}
                 </div>
+
                 <input 
                     {...register('email')}
                     placeholder="Email"
                     type="text"
                 />
-
                 <div className="form-error">
-                    {errors.password?.type && errors.password?.type === "required" && "Please create a password"}
-                    {errors.password?.type && errors.password?.type === "min" && "Passwords is too short"}
-                    {errors.password?.type && errors.password?.type === "max" && "Passwords is too long"}
+                    {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
                 </div>
+
                 <input 
                     {...register('password')}
                     placeholder="Password"
                     type="password"
                 />
                 <div className="form-error">
-                    {errors.confirmPassword?.type && errors.confirmPassword?.type === "oneOf" && "The passwords don't match"}
+                    {errors.password?.type && errors.password?.type === "required" && "Please create a password"}
+                    {errors.password?.type && errors.password?.type === "min" && "Passwords is too short"}
+                    {errors.password?.type && errors.password?.type === "max" && "Passwords is too long"}
                 </div>
+
                 <input 
                     {...register('confirmPassword')}
                     placeholder="Confirm Password"
                     type="password"
                 />
+                <div className="form-error">
+                    {errors.confirmPassword?.type && errors.confirmPassword?.type === "oneOf" && "The passwords don't match"}
+                </div>
                 
                 <input 
                         type="submit" 

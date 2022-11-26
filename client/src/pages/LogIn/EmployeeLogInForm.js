@@ -82,24 +82,24 @@ export default function EmployeeLogInForm() {
                     Employee Log In
                 </div>
 
-                <div className="form-error">
-                    {errors.empID?.type === "length" ? "The employee ID must be 7 characters" : errors.empID?.message}
-                    
-                </div>
                 <input 
                     {...register("empID")}
                     placeholder="Employee ID"
                     type="text"
                 />
-
                 <div className="form-error">
-                    {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
+                    {errors.empID?.type === "length" ? "The employee ID must be 7 characters" : errors.empID?.message}
                 </div>
+
+
                 <input 
                     {...register('password')}
                     placeholder="Password"
                     type="password"
                 />
+                <div className="form-error">
+                    {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
+                </div>
 
                 <input 
                         type="submit" 
@@ -108,7 +108,7 @@ export default function EmployeeLogInForm() {
                 />
 
                 <div className="redirect-form">
-                    <div className="emp-login-redirect-form">
+                    <div className="customer-login-redirect-form">
                         Are you a customer? <a href="/">Log in here</a>
                     </div>
                 </div>

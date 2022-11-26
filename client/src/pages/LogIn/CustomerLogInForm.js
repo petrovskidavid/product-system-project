@@ -82,24 +82,25 @@ export default function CustomerLogInForm() {
                     Customer Log In
                 </div>
 
-                <div className="form-error">
-                    {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
-                    
-                </div>
+                
                 <input 
                     {...register("email")}
                     placeholder="Email"
                     type="text"
                 />
-
                 <div className="form-error">
-                    {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
+                        {errors.email?.type === "email" ? "Invalid email" : errors.email?.message}
                 </div>
+
+                
                 <input 
                     {...register('password')}
                     placeholder="Password"
                     type="password"
                 />
+                <div className="form-error">
+                    {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
+                </div>
 
                 <input 
                         type="submit" 
