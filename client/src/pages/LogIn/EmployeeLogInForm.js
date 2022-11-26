@@ -51,7 +51,7 @@ export default function EmployeeLogInForm() {
                 localStorage.setItem("employeeID", res.data.empID)
 
                 // Redirects client
-                nav("/store")
+                nav("/emp/admin")
 
             } else if (res.data.loginVerified === false) {
 

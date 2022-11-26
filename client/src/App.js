@@ -4,6 +4,7 @@ import SignUpPage from "./pages/SignUp"
 import StorePage from "./pages/Store"
 import CartPage from "./pages/Cart"
 import CheckoutPage from "./pages/Checkout"
+import AdminPage from "./pages/Employee/Admin"
 import './assets/css/App.css';
 
 export default function App() {
@@ -14,6 +15,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LogInPage type="customer"/>} />
           <Route path="/emp/login" element={<LogInPage type="employee" />} />
+          <Route path="/emp/admin" element={<AdminPage/>} />
+          <Route path="/emp/admin/weight-brackets" element={<AdminPage/>} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/cart" element={<CartPage />} />
