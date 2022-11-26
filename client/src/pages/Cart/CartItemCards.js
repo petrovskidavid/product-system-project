@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import CartItemCard from "../../components/CartItemCard"
 import "../../assets/css/StorePage.css"
 
 export default function CartItemCards() {
 
+    const nav = useNavigate() //< Used to redirect client
     const [cartItemsData, setCartItemsData] = useState([]) //< Holds the list of all the products
     const [productsData, setProductsData] = useState([]) //< Holds the list of all the products
     const [retrievedProducts, setRetrievedProducts] = useState(false)
@@ -12,6 +14,7 @@ export default function CartItemCards() {
     let cartItemCards
     let totalItems = 0
     let totalPrice = 0
+    
 
     // Only calls once per render of the component
     useEffect(() => {
@@ -66,7 +69,7 @@ export default function CartItemCards() {
                     <span className="bold">Cart Total ({totalItems} Items):</span> ${totalPrice.toFixed(2)}
                 </div>
 
-                <button className="checkout-button">Checkout</button>
+                <button className="checkout-button" onClick={() => {nav("/checkout")}}>Checkout</button>
             </div>
 
             <div className="cart-item-cards-container">

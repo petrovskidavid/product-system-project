@@ -3,6 +3,7 @@ import LogInPage from "./pages/LogIn"
 import SignUpPage from "./pages/SignUp"
 import StorePage from "./pages/Store"
 import CartPage from "./pages/Cart"
+import CheckoutPage from "./pages/Checkout"
 import './assets/css/App.css';
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
       </BrowserRouter>
     </div>
