@@ -1,7 +1,6 @@
 import {legacyDb, mongoDb} from "./db.js"
 import {ObjectId} from "mongodb"
 import {greenFont, yellowFont, redFont} from "./server.js"
-import e from "express"
 
 
 /* POST Requests */
@@ -174,7 +173,6 @@ function addToCart (req, res) {
         connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
     
             let orderId
-            let total = 0
 
             // there is no open order
             if(openOrder == null)
@@ -182,11 +180,9 @@ function addToCart (req, res) {
                 console.log(redFont, "No open order found")
                 console.log(yellowFont, "Creating new open order...")
 
-                // calculate the total
-                total = price * requestedQuantity
 
                 // insert the new open order into Orders table
-                connection.db("InternalDb").collection("Orders").insertOne({Email: email, Open: true, Total: total}).then(queryRes => {
+                connection.db("InternalDb").collection("Orders").insertOne({Email: email, Open: true, Total: 0}).then(queryRes => {
                     if (!queryRes.acknowledged)
                         throw (queryRes)
 
@@ -209,19 +205,8 @@ function addToCart (req, res) {
             {
                 console.log(greenFont, "Open order found")
 
-                // save the current total from the Orders table
-                total = openOrder.Total
-
-                // calculate the new total
-                total += price * requestedQuantity
-
                 // save the order ID
                 orderId = openOrder._id
-
-                // update the current total
-                connection.db("InternalDb").collection("Orders").updateOne({_id: orderId}, { $set: {Total: total}})
-
-                console.log(greenFont, "Order total updated")
 
                 // Checks if the item is already in the cart and tries to update its quantity
                 console.log("Checking if the product is already in the customers Carts table...")
@@ -304,5 +289,6 @@ function removeFromCart(req, res) {
         })
     })
 }
+
 
 export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart}
