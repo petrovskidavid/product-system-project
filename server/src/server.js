@@ -1,6 +1,6 @@
 import express from "express" 
 import cors from "cors"
-import {getProducts, getCart} from "./get.js"
+import {getProducts, getCart, getWeightBrackets} from "./get.js"
 import {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart} from "./post.js"
 
 
@@ -29,6 +29,9 @@ server.get("/api/getProducts", getProducts)
 
 // API request to retrieve all products withing a customers cart
 server.get("/api/getCart", getCart)
+
+// API request to retrieve all weight brackets
+server.get("/api/getWeightBrackets", getWeightBrackets)
 
 
 /* POST Requests */

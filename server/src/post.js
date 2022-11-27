@@ -125,7 +125,6 @@ function loginCustomer(req, res) {
                         if (err2)
                             throw (err2)
                         
-                        console.log()
                         console.log(yellowFont, "Verifying password...")
                         if(employee.Password === encrypted[0].password){
     
