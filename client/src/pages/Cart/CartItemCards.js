@@ -43,6 +43,11 @@ export default function CartItemCards() {
             totalItems += cartItem.Quantity
             totalPrice += (productInCart.price * cartItem.Quantity)
 
+            if (productInCart.Quantity === 0)
+            {
+                return null
+            }
+    
             // Loops through all the above filtered products and creates product cards for each
             return (
                 <CartItemCard 

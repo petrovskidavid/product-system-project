@@ -5,9 +5,7 @@ import "react-custom-alert/dist/index.css"
 export default function CartItemCard(props) {
 
     let stockStatus     //< Holds the text to display the status of the stock
-    let inStock = true  //< Indicates if the cart-item is in stock
     const [selectedQuantity, setSelectedQuantity] = useState(props.selectedQuantity)
-    const [updatedCart, setUpdatedCart] = useState([])
 
     const handleChange = (e) => {
         setSelectedQuantity(e.target.value)
@@ -18,10 +16,15 @@ export default function CartItemCard(props) {
             OrderID: props.orderID,
             ProductID: props.productID,
             newQuantity: parseInt(selectedQuantity)
-        }).then(res => {
-            console.log(res)
-        })
-        
+        })  
+    }
+
+    const updateCartOverflow = (newQuantity) => {
+        Axios.post("http://localhost:8800/api/updateCart", {
+            OrderID: props.orderID,
+            ProductID: props.productID,
+            newQuantity: newQuantity
+        })  
     }
 
 
@@ -30,22 +33,25 @@ export default function CartItemCard(props) {
         await Axios.post("http://localhost:8800/api/removeFromCart", {
             OrderID: props.orderID,
             ProductID: props.productID
-        }).then(res => {
-
-            
         })
     }
 
     // Checks the avaliability of the cart-item and updates it status on the screen
     if (props.quantity > 15) {
-        stockStatus = <div className="cart-item-card-in-stock">In Stock</div>
+        stockStatus = <div className="cart-item-card-in-stock">In Stock! {props.quantity} avaliable</div>
     }
     else if (props.quantity > 0 && props.quantity <= 15) {
         stockStatus = <div className="cart-item-card-low-stock">Hurry! Only {props.quantity} left</div>
     }
     else {
         stockStatus = <div className="cart-item-card-no-stock">Out of Stock</div>
-        inStock = false
+        removeFromCart()
+    }
+
+    if(selectedQuantity > props.quantity)
+    {
+        updateCartOverflow(props.quantity)
+        setSelectedQuantity(props.quantity)
     }
     
 
