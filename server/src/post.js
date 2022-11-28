@@ -169,7 +169,7 @@ function addToCart (req, res) {
     // look through DB to find an open order and get that order's _id
     console.log(yellowFont, "Searching for open order...")
     mongoDb.then(connection => {
-        connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
+        connection.db("InternalDb").collection("Orders").findOne({Email: email, OrderStatus: "cart"}).then(openOrder => {
     
             let orderId
 
@@ -181,7 +181,7 @@ function addToCart (req, res) {
 
 
                 // insert the new open order into Orders table
-                connection.db("InternalDb").collection("Orders").insertOne({Email: email, Open: true, Total: 0}).then(queryRes => {
+                connection.db("InternalDb").collection("Orders").insertOne({Email: email, OrderStatus: "cart"}).then(queryRes => {
                     if (!queryRes.acknowledged)
                         throw (queryRes)
 
@@ -290,4 +290,41 @@ function removeFromCart(req, res) {
 }
 
 
-export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart}
+function updateOrder(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to update the customers order (updateOrder)`)
+
+    const name = req.body.name
+    const orderID = req.body.orderID
+    const newOrderStatus = req.body.orderStatus
+    const itemsTotal = req.body.itemsTotal
+    const itemsTotalWeight = req.body.totalWeight
+    const shipping = req.body.shipping
+    const orderTotal = req.body.orderTotal
+    const authorizationNumber = req.body.authorizationNumber
+    const timeStamp = req.body.timeStamp
+
+
+    mongoDb.then(connection => {
+        
+        console.log(yellowFont, "Searching for the customers open order...")
+        
+        connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set : {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
+            console.log(updatedOrder)
+
+            if(updatedOrder.value != null){
+                console.log(greenFont, "Updated order status and inserted new data")
+                res.send({"updatedOrder": true})
+                console.log(greenFont, "Sent response to client\n")
+
+            } else {
+                console.log(redFont, "Failed to update order status and insert new data")
+                res.send({"updatedOrder": false})
+                console.log(greenFont, "Sent response to client\n")
+            }
+            
+        })
+    })
+}
+
+
+export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder}

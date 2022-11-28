@@ -61,7 +61,7 @@ function getCart(req, res) {
 
     mongoDb.then(connection => {
         console.log(yellowFont, "Looking for customers cart...")
-        connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
+        connection.db("InternalDb").collection("Orders").findOne({Email: email, OrderStatus: "cart"}).then(openOrder => {
 
             if (openOrder != null) {
                 console.log(greenFont, "Customer cart found")
@@ -94,7 +94,7 @@ function getWeightBrackets (req, res) {
     mongoDb.then(connection => {
 
         connection.db("InternalDb").collection("WeightBrackets").find({}).sort({StartRange: 1}).project({_id: 0}).toArray().then(weightBrackets => {
-            console.log(weightBrackets)
+            
             res.send(weightBrackets)
         })
     })
