@@ -302,16 +302,21 @@ function updateOrder(req, res) {
     const orderTotal = req.body.orderTotal
     const authorizationNumber = req.body.authorizationNumber
     const timeStamp = req.body.timeStamp
-
+    const productsPurchased = req.body.productsPurchased
 
     mongoDb.then(connection => {
         
         console.log(yellowFont, "Searching for the customers open order...")
         
-        connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set : {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
+        connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set: {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
             console.log(updatedOrder)
 
             if(updatedOrder.value != null){
+
+                productsPurchased.map(product => {
+                    connection.db("InternalDb").collection("Products").findOneAndUpdate({ProductID: product.ProductID}, {$inc: {Quantity: -(product.Quantity)}})
+                })
+
                 console.log(greenFont, "Updated order status and inserted new data")
                 res.send({"updatedOrder": true})
                 console.log(greenFont, "Sent response to client\n")
