@@ -39,6 +39,7 @@ export default function CheckoutForm() {
     let orderTotal = 0
     let orderAuthorizationNum
     let orderTimeStamp
+    let orderPurchasedProducts = []
     let bottomThreeErrMessage
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
@@ -76,6 +77,8 @@ export default function CheckoutForm() {
             orderTotalWeight += (productInCart.weight * cartItem.Quantity)
             orderTotalBefore += (productInCart.price * cartItem.Quantity)
 
+            orderPurchasedProducts.push({"ProductID": cartItem.ProductID, "Quantity": cartItem.Quantity})
+
             return null
         })
 
@@ -111,13 +114,9 @@ export default function CheckoutForm() {
         }).then(response => {
 
             if(response.data.errors){
-                console.log(response)
                 toast.error("There was an error processing your transaction. Please check your payment infromation. (Error: " + response.data.errors[0] + ")")
             
             } else {
-                
-                console.log("No error")
-                console.log(response)
 
                 orderAuthorizationNum = response.data.authorization
                 orderTimeStamp = response.data.timeStamp
@@ -127,14 +126,15 @@ export default function CheckoutForm() {
                     orderID: cartItemsData[0].OrderID,
                     orderStatus: "authorized",
                     itemsTotal: orderTotalBefore.toFixed(2),
-                    totalWeight: orderTotalWeight,
+                    totalWeight: orderTotalWeight.toFixed(2),
                     shipping: orderShippingCharge,
                     orderTotal: orderTotal.toFixed(2),
                     authorizationNumber: orderAuthorizationNum,
-                    timeStamp: orderTimeStamp
+                    timeStamp: orderTimeStamp,
+                    productsPurchased: orderPurchasedProducts
 
-                }).then((res) => {
-                    console.log(res)
+                }).then(() => {
+                    // Change later
                     nav("/store?authorization=" + orderAuthorizationNum)
                 })
             }
@@ -347,7 +347,7 @@ export default function CheckoutForm() {
                                     Weight:
                                 </td>
                                 <td className="order-summary-table-value">
-                                    {orderTotalWeight} lbs
+                                    {orderTotalWeight.toFixed(2)} lbs
                                 </td>
                             </tr>
                             <tr>
