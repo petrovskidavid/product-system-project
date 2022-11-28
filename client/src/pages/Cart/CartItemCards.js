@@ -65,21 +65,35 @@ export default function CartItemCards() {
         })
     }
     
+    const nonEmpty = (
+                        <div className="cart">
+                            <div className="checkout-container-cart">
+                                <div className="checkout-label-cart">
+                                    <span className="bold">Cart Total ({totalItems} Items):</span> ${totalPrice.toFixed(2)}
+                                </div>
 
+                                <button className="checkout-button-cart" onClick={() => {nav("/checkout")}}>Checkout</button>
+                            </div>
+
+                            <div className="cart-item-cards-container">
+                                {cartItemCards}
+                            </div>
+                        </div>
+                    )
+    
+    const empty = (
+                    <div className="cart">
+                        <div className="checkout-container-cart">
+                            <div className="checkout-label-cart-empty">
+                                <span className="bold">Your cart is empty! Visit our store page and shop for products!</span>
+                            </div>
+                        </div>
+                    </div>
+                )
 
     return (
-        <div className="cart">
-            <div className="checkout-container">
-                <div className="checkout-label">
-                    <span className="bold">Cart Total ({totalItems} Items):</span> ${totalPrice.toFixed(2)}
-                </div>
-
-                <button className="checkout-button" onClick={() => {nav("/checkout")}}>Checkout</button>
-            </div>
-
-            <div className="cart-item-cards-container">
-                {cartItemCards}
-            </div>
+        <div>
+            {totalItems === 0 ? empty : nonEmpty}
         </div>
     )
 }
