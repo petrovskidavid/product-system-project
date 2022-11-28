@@ -78,4 +78,61 @@ function getCart(req, res) {
 
 }
 
-export {getProducts, getCart}
+function retrieveOrders(req, res) {
+    // Store request data
+    const orderState = req.query.State;
+    
+    // error checking data sent
+    if (orderState == undefined) {
+        throw "request data was undefined";
+        return;
+    }
+    
+    // find all documents pertaining to requested "State": ("authorized" or "shipped")
+    mongoDb.then(connection => {
+        // log
+        console.log(yellowFont, `Fetching all ${orderState} orders...`);
+
+        // * find() specified orders in requested state * // 
+        
+        // reference "InternalDb"
+        var dbo = connection.db("InternalDb");
+        var col = dbo.collection("Orders");
+        
+        // run find
+        col.find({OrderStatus: orderState}).toArray().then(listOfOrders => {
+            res.send(listOfOrders);       
+        })
+    })
+}
+
+function retrieveProductsInOrder(req, res) {
+    // Store request data
+    const requestedID = req.query.ID;
+
+    // error check request data
+    if (orderState == undefined) {
+        throw "request data was undefined";
+        return;
+    }
+
+    // retrieve all products in cart linked to requested ID
+    mongoDb.then(connection => {
+        // logging
+        console.log(yellowFont, "Fetching all products in cart with requested ID");
+
+        // * find() specified orders in requested state * //
+        
+        // reference "InternalDb"
+        var dbo = connection.db("InternalDb");
+        var col = connection.db("Carts");
+
+        // run find
+        col.find({OrderID: requestedID}).toArray().then(listofProducts => {
+            res.send(listofProducts);
+        })
+    })
+}
+
+
+export { getProducts, getCart, retrieveOrders, retrieveProductsInOrder}
