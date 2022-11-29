@@ -1,7 +1,8 @@
 import express from "express" 
 import cors from "cors"
-import {getProducts, getCart, getWeightBrackets} from "./get.js"
+import {getProducts, getCart, retrieveOrders, retrieveProductsInOrder, getWeightBrackets} from "./get.js"
 import {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder, updateWeightBrackets, removeWeightBracket} from "./post.js"
+
 
 
 // Initializes express server
@@ -27,8 +28,14 @@ server.listen(PORT, () => {
 // API request to retrieve all products withing the database
 server.get("/api/getProducts", getProducts)
 
-// API request to retrieve all products withing a customers cart
+// API request to retrieve all products within a customers cart
 server.get("/api/getCart", getCart)
+
+// API request to retrieve Order data in a requested state
+server.get("/api/retrieveOrders", retrieveOrders)
+
+// API request to retrieve list of products in a requested order
+server.get("/api/retrieveProductsInOrder", retrieveProductsInOrder)
 
 // API request to retrieve all weight brackets
 server.get("/api/getWeightBrackets", getWeightBrackets)
