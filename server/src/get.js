@@ -53,30 +53,39 @@ function getProducts(req, res) {
 
 
 function getCart(req, res) {
+    console.log(`\n[${request.type} #${++request.number}] Request to get all products in the customers cart (getCart)`)
 
     const email = req.query.email
     let orderId
 
 
     mongoDb.then(connection => {
-        connection.db("InternalDb").collection("Orders").findOne({Email: email, Open: true}).then(openOrder => {
+        console.log(yellowFont, "Looking for customers cart...")
+        connection.db("InternalDb").collection("Orders").findOne({Email: email, OrderStatus: "cart"}).then(openOrder => {
 
             if (openOrder != null) {
+                console.log(greenFont, "Customer cart found")
+                
                 orderId = openOrder._id
-            
+
+                console.log("Retriving cart data...")
                 connection.db("InternalDb").collection("Carts").find({OrderID: orderId}).toArray().then(cartItems => {
 
                     res.send(cartItems)
+                    console.log(greenFont, "Sent response to client\n")
                 })
 
             } else {
-                console.log("No open orders")
+
+                console.log(redFont, "No customer cart found")
+                // res.send({openCart: false});
+                // console.log(greenFont, "Sent response to client\n")
             }
             
         })
     })
-
 }
+
 
 function retrieveOrders(req, res) {
     // Store request data
@@ -105,6 +114,7 @@ function retrieveOrders(req, res) {
         })
     })
 }
+
 
 function retrieveProductsInOrder(req, res) {
     // Store request data
@@ -135,4 +145,18 @@ function retrieveProductsInOrder(req, res) {
 }
 
 
-export { getProducts, getCart, retrieveOrders, retrieveProductsInOrder}
+function getWeightBrackets (req, res) {
+    console.log(`\n[${request.type} #${++request.number}] Request to get the weight brackets data (getWeightBrackets)`)
+
+
+    mongoDb.then(connection => {
+
+        connection.db("InternalDb").collection("WeightBrackets").find({}).sort({StartRange: 1}).project({_id: 0}).toArray().then(weightBrackets => {
+            
+            res.send(weightBrackets)
+        })
+    })
+}
+
+
+export { getProducts, getCart, retrieveOrders, retrieveProductsInOrder, getWeightBrackets}

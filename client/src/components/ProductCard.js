@@ -29,7 +29,7 @@ export default function ProductCard(props) {
 
     // Checks the avaliability of the product and updates it status on the screen
     if (props.quantity > 15) {
-        stockStatus = <div className="product-card-in-stock">In Stock</div>
+        stockStatus = <div className="product-card-in-stock">In Stock! {props.quantity} avaliable</div>
     }
     else if (props.quantity > 0 && props.quantity <= 15) {
         stockStatus = <div className="product-card-low-stock">Hurry! Only {props.quantity} left</div>

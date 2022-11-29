@@ -1,7 +1,8 @@
 import express from "express" 
 import cors from "cors"
-import {getProducts, getCart, retrieveOrders, retrieveProductsInOrder} from "./get.js"
-import {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart} from "./post.js"
+import {getProducts, getCart, retrieveOrders, retrieveProductsInOrder, getWeightBrackets} from "./get.js"
+import {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder, updateWeightBrackets, removeWeightBracket} from "./post.js"
+
 
 
 // Initializes express server
@@ -36,6 +37,9 @@ server.get("/api/retrieveOrders", retrieveOrders)
 // API request to retrieve list of products in a requested order
 server.get("/api/retrieveProductsInOrder", retrieveProductsInOrder)
 
+// API request to retrieve all weight brackets
+server.get("/api/getWeightBrackets", getWeightBrackets)
+
 
 /* POST Requests */
 
@@ -53,6 +57,15 @@ server.post("/api/updateCart", updateCart)
 
 // API request to remove of a product in a customers cart
 server.post("/api/removeFromCart", removeFromCart)
+
+// API request to update a customers order
+server.post("/api/updateOrder", updateOrder)
+
+// API request to add a weight bracket
+server.post("/api/updateWeightBrackets", updateWeightBrackets)
+
+// API request to remove a weight bracket
+server.post("/api/removeWeightBracket", removeWeightBracket)
 
 
 export {greenFont, yellowFont, redFont}
