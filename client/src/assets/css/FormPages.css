@@ -115,7 +115,7 @@ select:invalid {
 }
 
 .checkout-form input::placeholder {
-    color: #696969;;
+    color: #696969;
 }
 
 .checkout-first-name:focus-visible, .checkout-last-name:focus-visible, .checkout-state:focus-visible {

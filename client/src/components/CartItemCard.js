@@ -68,7 +68,7 @@ export default function CartItemCard(props) {
             {stockStatus}
 
             <div>
-                <form >
+                <form>
                     <input className="quantity-selected" type="number" min="1" max={props.quantity} value={selectedQuantity}  onChange={handleChange} />
                     <button className="cart-item-card-update-button" onClick={updateCart}>Update</button>
                     <button className="cart-item-card-remove-button" onClick={removeFromCart}>Remove</button>
