@@ -89,14 +89,10 @@ function getCart(req, res) {
 
 function retrieveOrders(req, res) {
     // Store request data
-    const orderState = req.query.State;
+    const email = req.query.customerEmail;
+    const orderState = req.query.orderStatus;
     
-    // error checking data sent
-    if (orderState == undefined) {
-        throw "request data was undefined";
-        return;
-    }
-    
+
     // find all documents pertaining to requested "State": ("authorized" or "shipped")
     mongoDb.then(connection => {
         // log
@@ -108,10 +104,38 @@ function retrieveOrders(req, res) {
         var dbo = connection.db("InternalDb");
         var col = dbo.collection("Orders");
         
-        // run find
-        col.find({OrderStatus: orderState}).toArray().then(listOfOrders => {
-            res.send(listOfOrders);       
-        })
+        if(orderState === "both") {
+
+            if(email === undefined){
+                // run find
+                col.find({OrderStatus: {$ne: orderState}}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+
+            } else {
+                // run find
+                col.find({OrderStatus: {$ne: orderState}, Email: email}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+                
+            }
+            
+
+        } else {
+
+            if(email === undefined){
+                // run find
+                col.find({OrderStatus: orderState}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+
+            } else {
+                col.find({OrderStatus: orderState, Email: email}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+            }
+        }
+        
     })
 }
 
@@ -120,11 +144,6 @@ function retrieveProductsInOrder(req, res) {
     // Store request data
     const requestedID = req.query.ID;
 
-    // error check request data
-    if (orderState == undefined) {
-        throw "request data was undefined";
-        return;
-    }
 
     // retrieve all products in cart linked to requested ID
     mongoDb.then(connection => {

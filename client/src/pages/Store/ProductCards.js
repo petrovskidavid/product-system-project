@@ -34,6 +34,7 @@ export default function ProductCards() {
             return searchResults
 
         } else if (searchResults.description.toLowerCase().includes(searchQuery.toLowerCase())){
+            
             // Checks to see if any part of the serach query can be found in the products description and returns the matching ones
             return searchResults
         }

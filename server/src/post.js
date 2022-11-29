@@ -309,7 +309,6 @@ function updateOrder(req, res) {
         console.log(yellowFont, "Searching for the customers open order...")
         
         connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set: {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
-            console.log(updatedOrder)
 
             if(updatedOrder.value != null){
 
@@ -378,4 +377,19 @@ function removeWeightBracket(req, res) {
 }
 
 
-export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder, updateWeightBrackets, removeWeightBracket}
+function updateProductQuantity(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to remove a weight bracket (removeWeightBracket)`)
+    
+    const productID = req.body.productID
+    const incQuantity = req.body.incQuantity
+}
+
+
+function shipOrder(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to remove a weight bracket (removeWeightBracket)`)
+
+    const orderID = req.body.orderID
+}
+
+
+export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder, updateWeightBrackets, removeWeightBracket, updateProductQuantity, shipOrder}
