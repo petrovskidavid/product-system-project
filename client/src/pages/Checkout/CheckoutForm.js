@@ -17,9 +17,9 @@ const checkoutValidation = yup.object().shape({
     city: yup.string().max(255).required("Please provide the city of the address"),
     state: yup.string().test("test-state", "Please choose the state of the address", (value) => value !== ""),
     zipCode: yup.string().required("Please provide the ZIP code of the address").matches(/^[0-9]+$/, "Must be only digits").length(5),
-    ccNum: yup.string().required("Please provide your Credit Card number").test("test-ccNum", "Invalid Credit Card number", value => valid.number(value).isValid),
-    expMonth: yup.string().required("Please provide your Credit Cards expiration month").length(2).test("test-expMonth", "Invalid month", value => valid.expirationMonth(value).isValid),
-    expYear: yup.string().required("Please provide your Credit Cards expiration year").length(4).test("test-expYear", "Invalid year", value => valid.expirationYear(value).isValid),
+    ccNum: yup.string().required("Please provide your Credit Card number").test("test-ccNum", "Please provide a valid Credit Card number", value => valid.number(value).isValid),
+    expMonth: yup.string().required("Please provide your Credit Cards expiration month").length(2).test("test-expMonth", "Please provide a valid month", value => valid.expirationMonth(value).isValid),
+    expYear: yup.string().required("Please provide your Credit Cards expiration year").length(4).test("test-expYear", "Please provide a valid year", value => valid.expirationYear(value).isValid),
     cvv: yup.string().required("Please provide your Credit Cards CVV").length(3).test("test-cvv", "Invalid CVV", value => valid.cvv(value).isValid)
 })
 
@@ -104,7 +104,7 @@ export default function CheckoutForm() {
     const submitPurchase = (data) => {
 
         Axios.post("http://blitz.cs.niu.edu/creditcard", {
-            vendor: "MufflerMan",
+            vendor: "Muffler Man",
             trans: cartItemsData[0].OrderID.toUpperCase(),
             cc: data.ccNum,
             name: data.firstName + " " + data.lastName,
@@ -139,18 +139,7 @@ export default function CheckoutForm() {
                 })
             }
             
-        })
-
-        // Axios.post("http://localhost:8800/api/updateOrder", {
-        //     name: localStorage.getItem("customerName"),
-        //     orderID: cartItemsData[0].OrderID,
-        //     orderStatus: "authorized",
-        //     itemsTotal: orderTotalBefore.toFixed(2),
-        //     orderTotalWeight: orderTotalWeight,
-        //     shipping: orderShippingCharge,
-        //     orderTotal: orderTotal.toFixed(2)
-
-        // })    
+        }) 
     }
 
 

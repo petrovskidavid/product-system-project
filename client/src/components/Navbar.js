@@ -21,7 +21,7 @@ export default function Navbar() {
     return (
         <div className="navbar">
             <header className="navbar-title">
-                This will be the navbar
+                Muffler Man
             </header>
             {
                 showDropdown 
