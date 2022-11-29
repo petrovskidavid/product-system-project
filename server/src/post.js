@@ -332,4 +332,50 @@ function updateOrder(req, res) {
 }
 
 
-export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder}
+function updateWeightBrackets(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to update the weight brackets (updateWeightBrackets)`)
+
+    const newStartRange = req.body.newWeight
+    const newCharge = req.body.newCharge
+
+    if(newStartRange === null || newCharge === null)
+        res.send({addedWeightBracket: false})
+
+    mongoDb.then(connection => {
+
+        connection.db("InternalDb").collection("WeightBrackets").findOne({StartRange: newStartRange}).then(found => {
+
+            if(found === null){
+                connection.db("InternalDb").collection("WeightBrackets").insertOne({StartRange: newStartRange, Charge: newCharge}).then(added => {
+                    res.send({addedWeightBracket: true})
+                })
+            
+            } else {
+                res.send({addedWeightBracket: false})
+            }
+        })
+    })
+}
+
+
+function removeWeightBracket(req, res) {
+    console.log(`[${request.type} #${++request.number}] Request to remove a weight bracket (removeWeightBracket)`)
+
+    const removeStartRange = parseInt(req.body.removeWeight)
+    
+    mongoDb.then(connection => {
+
+        connection.db("InternalDb").collection("WeightBrackets").deleteOne({StartRange: removeStartRange}).then(deleted => {
+
+            if(deleted.deletedCount != 0){
+                res.send({removedWeightBracket: true})
+            
+            } else {
+                res.send({removedWeightBracket: false})
+            }
+        })
+    })
+}
+
+
+export {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder, updateWeightBrackets, removeWeightBracket}
