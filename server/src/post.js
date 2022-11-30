@@ -130,7 +130,8 @@ function loginCustomer(req, res) {
                             res.send({
                                 "loginVerified": true,
                                 "empName": employee.Name,
-                                "empID": empID
+                                "empID": empID,
+                                "empType": employee.Type
                             })
                             console.log(greenFont, "Sent response to client\n")
                         } else {
