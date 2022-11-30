@@ -91,7 +91,7 @@ function retrieveOrders(req, res) {
     // Store request data
     const email = req.query.customerEmail;
     const orderState = req.query.orderStatus;
-    
+
 
     // find all documents pertaining to requested "State": ("authorized" or "shipped")
     mongoDb.then(connection => {
@@ -104,38 +104,35 @@ function retrieveOrders(req, res) {
         var dbo = connection.db("InternalDb");
         var col = dbo.collection("Orders");
         
-        if(orderState === "both") {
+        if(orderState === "all") {
 
             if(email === undefined){
                 // run find
-                col.find({OrderStatus: {$ne: orderState}}).toArray().then(listOfOrders => {
+                col.find({OrderStatus: {$ne: "cart"}}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
                     res.send(listOfOrders);       
                 })
 
             } else {
                 // run find
-                col.find({OrderStatus: {$ne: orderState}, Email: email}).toArray().then(listOfOrders => {
+                col.find({OrderStatus: {$ne: "cart"}, Email: email}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
                     res.send(listOfOrders);       
-                })
-                
+                })   
             }
-            
 
         } else {
 
             if(email === undefined){
                 // run find
-                col.find({OrderStatus: orderState}).toArray().then(listOfOrders => {
+                col.find({OrderStatus: orderState}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
                     res.send(listOfOrders);       
                 })
 
             } else {
-                col.find({OrderStatus: orderState, Email: email}).toArray().then(listOfOrders => {
+                col.find({OrderStatus: orderState, Email: email}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
                     res.send(listOfOrders);       
                 })
             }
         }
-        
     })
 }
 

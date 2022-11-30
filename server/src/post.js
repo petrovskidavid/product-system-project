@@ -36,9 +36,6 @@ function signUpCustomer(req, res) {
                     // Adds new customer account to the internal database with the encrypted version of their passwsord
                     console.log(yellowFont, "Attempting to insert new customer to internal DB...")
                     connection.db("InternalDb").collection("Customers").insertOne({"_id": email, "Email": email, "Password": encrypted[0].password, "Name": name}).then(queryRes => {
-                        if (!queryRes.acknowledged)
-                            throw (queryRes)
-                        console.log(queryRes)
 
                         console.log(greenFont, "New customer account created")
                         res.send({"addedCustomer": true})
@@ -121,9 +118,9 @@ function loginCustomer(req, res) {
                     console.log(greenFont, "Employee exists")
     
                     // Hashes the entered password
-                    legacyDb.query("SELECT PASSWORD(?) AS password", preHashPassword, (err2, encrypted) => {
-                        if (err2)
-                            throw (err2)
+                    legacyDb.query("SELECT PASSWORD(?) AS password", preHashPassword, (err, encrypted) => {
+                        if (err)
+                            throw (err)
                         
                         console.log(yellowFont, "Verifying password...")
                         if(employee.Password === encrypted[0].password){
@@ -217,8 +214,6 @@ function addToCart (req, res) {
 
                         // insert the new item into Carts table
                         connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
-                            if (!inserted.acknowledged)
-                                throw (inserted)
                             
                             // Sends data to the client indicating that the product was inserted into the cart
                             console.log(greenFont, "Product inserted into Carts table")
