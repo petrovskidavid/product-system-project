@@ -1,14 +1,10 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom"
 import { ToastContainer } from "react-custom-alert"
 import Navbar from "../../../components/Navbar"
-import Orders from "./Orders"
-import WeightBrackets from "./WeightBrackets"
 
-export default function AdminPage() {
+export default function ReceivingPage() {
 
-    const location = useLocation()
     const nav = useNavigate() //< Used to redirect client
 
     useEffect(() => {
@@ -18,12 +14,12 @@ export default function AdminPage() {
         }
     }, [nav])
 
-    return(
+
+    return (
         <div>
-        <Navbar />
-        <ToastContainer floatingTime={5000} />
-        {location.pathname === "/emp/admin/weight-brackets" && <WeightBrackets />}
-        {location.pathname === "/emp/admin" && <Orders />}
+            <Navbar />
+            <ToastContainer floatingTime={5000} />
+            This is the receiving page
         </div>
     )
 }

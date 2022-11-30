@@ -99,7 +99,7 @@ export default function WeightBrackets() {
     return (
         <div className="weight-brackets">
             <div className="weight-brackets-container">
-                <div className="weight-brackets-title"><span className="bold">Weight Brackets</span></div>
+                <div className="weight-brackets-title"><span className="bold">Administration:</span> Weight Brackets</div>
                 <table className="weight-brackets-table">
                     <tbody>
                         {

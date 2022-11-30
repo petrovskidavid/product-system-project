@@ -32,7 +32,7 @@ export default function Navbar() {
                     {(location.pathname === "/store" || location.pathname === "/checkout" || location.pathname === "/cart") && <Dropdown.Item href="/orders">View Orders</Dropdown.Item>}
                     {location.pathname === "/emp/admin/weight-brackets" && <Dropdown.Item href="/emp/admin">View Orders</Dropdown.Item>}
                     {location.pathname === "/emp/admin" && <Dropdown.Item href="/emp/admin/weight-brackets">View Brackets</Dropdown.Item>}
-                    <Dropdown.Divider />
+                    {location.pathname !== "/emp/receiving" && <Dropdown.Divider />}
                     <Dropdown.Item href="/">Logout</Dropdown.Item>
                 </DropdownButton>
             }

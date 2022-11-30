@@ -20,28 +20,6 @@
     margin-bottom: 50px;
 }
 
-.admin-orders {
-    display: block;
-    text-align: center;
-}
-
-.admin-orders-label {
-    font-weight: bold;
-    font-size: 20px;
-    margin-top: 30px;
-    margin-bottom: 15px;
-}
-
-
-.admin-order-cards-container{
-    display: inline-grid;
-    justify-items: center;
-    align-items: center;
-    row-gap: 50px;
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-
 .order-card {
     background-color: #E8E9EB;
     width: 600px;

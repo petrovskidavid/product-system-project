@@ -113,3 +113,24 @@
 .new-weight-bracket-add-button:hover  {
     opacity: 50%;
 }
+
+.admin-orders {
+    display: block;
+    text-align: center;
+}
+
+.admin-orders-label {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+
+.admin-order-cards-container{
+    display: inline-grid;
+    justify-items: center;
+    align-items: center;
+    row-gap: 50px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}

@@ -35,7 +35,7 @@ export default function Orders() {
     return (
         <div className="admin-orders">
             <div className="admin-orders-label">
-                Orders
+                <span className="bold">Administration:</span> Orders
             </div>
 
             <div className="admin-order-cards-container">
