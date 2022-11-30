@@ -4,6 +4,18 @@
   overflow: hidden;
 }
 
+.receiving {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+}
+
+.receiving-label {
+  font-size: 20px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
 .product-cards-container {
   display: inline-grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -53,6 +65,11 @@
 }
 
 .product-card-button:hover {
+  opacity: 50%;
+}
+
+.product-card-button:disabled {
+  cursor: auto;
   opacity: 50%;
 }
 

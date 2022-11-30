@@ -411,10 +411,10 @@ function updateProductQuantity(req, res) {
             
             if(updated.value != null){
                 // if the update was successful, send response to client indicating success
-                res.send({"updated": true})
+                res.send({"updatedQauntity": true})
             } else {
                 // if the update was not successful, send response to client indicating failure
-                res.send({"updated": false})
+                res.send({"updatedQuantity": false})
             }
         })
     })

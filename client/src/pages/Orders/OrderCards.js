@@ -14,8 +14,7 @@ export default function OrderCards() {
     },[])
 
     const orderCards = ordersData.map(order => {
-        console.log(order)
-
+    
         return (
             <OrderCard 
                 key={order._id.toUpperCase()}

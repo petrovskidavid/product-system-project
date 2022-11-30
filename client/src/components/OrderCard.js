@@ -87,7 +87,7 @@ export default function OrderCard(props) {
             </div>
         )
     
-    } else if (location.pathname === "orders") {
+    } else if (location.pathname === "/orders") {
         orderCard = (
                 <div className="order-card">
                 <br/>

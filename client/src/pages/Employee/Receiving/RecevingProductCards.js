@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import Axios from "axios";
-import SearchField from "../../components/SearchField"
-import ProductCard from "../../components/ProductCard"
+import SearchField from "../../../components/SearchField"
+import ProductCard from "../../../components/ProductCard"
 
-export default function ProductCards() {
+export default function ReceivingProductCards() {
 
     const [productsData, setProductsData] = useState([]) //< Holds the list of all the products
     const [searchQuery, setSearchQuery] = useState("")   //< Holds the search query provided by the user
@@ -26,17 +26,20 @@ export default function ProductCards() {
 
     // Filters through all the products
     const productCards = productsData.filter((searchResults) => {
-
+        console.log(searchQuery)
         if (searchQuery === "")
         {
             // Empty query, returns all the products
             return searchResults
 
-        } else if (searchResults.description.toLowerCase().includes(searchQuery.toLowerCase())){
-            
-            // Checks to see if any part of the serach query can be found in the products description and returns the matching ones
+        } else if(parseInt(searchResults.ProductID) === parseInt(searchQuery)){
+
             return searchResults
         }
+        else if (searchResults.description.toLowerCase().includes(searchQuery.toLowerCase())){
+
+            return searchResults
+        } 
 
         return null //< Fixes warnings
 
@@ -58,7 +61,10 @@ export default function ProductCards() {
 
 
     return (
-        <div className="store">
+        <div className="receiving">
+            <div className="receiving-label">
+                <span className="bold">Receiving Desk:</span> Products
+            </div>
             <SearchField placeholder="Search" onChange={searchProducts}/>
             <div className="product-cards-container">
                 {productCards}

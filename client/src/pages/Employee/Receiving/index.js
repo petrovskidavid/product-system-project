@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-custom-alert"
 import Navbar from "../../../components/Navbar"
+import ReceivingProductCards from "./RecevingProductCards";
 
 export default function ReceivingPage() {
 
@@ -19,7 +20,7 @@ export default function ReceivingPage() {
         <div>
             <Navbar />
             <ToastContainer floatingTime={5000} />
-            This is the receiving page
+            <ReceivingProductCards />
         </div>
     )
 }

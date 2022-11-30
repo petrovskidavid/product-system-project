@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import CartItemCard from "../../components/CartItemCard"
-import "../../assets/css/StorePage.css"
 
 export default function CartItemCards() {
 
