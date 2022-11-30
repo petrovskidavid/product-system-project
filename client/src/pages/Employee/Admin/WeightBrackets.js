@@ -72,7 +72,7 @@ export default function WeightBrackets() {
                         {"Over " + weightBrackets[i].StartRange + " lbs"}
                     </td>
                     <td className="weight-brackets-table-charge">
-                        {weightBrackets[i].Charge === 0 ? "Free shipping" : "$" + weightBrackets[i].Charge}
+                        {weightBrackets[i].Charge === 0 ? "Free shipping" : "$" + weightBrackets[i].Charge.toFixed(2)}
                     </td>
                     <td>
                         <button id={weightBrackets[i].StartRange} className="weight-brackets-remove-button" onClick={removeWeightBracket}>Remove</button>
@@ -86,7 +86,7 @@ export default function WeightBrackets() {
                         {"From " + weightBrackets[i].StartRange + " to " + weightBrackets[i + 1].StartRange + " lbs"}
                     </td>
                     <td className="weight-brackets-table-charge">
-                        {weightBrackets[i].Charge === 0 ? "Free shipping" : "$" + weightBrackets[i].Charge}
+                        {weightBrackets[i].Charge === 0 ? "Free shipping" : "$" + weightBrackets[i].Charge.toFixed(2)}
                     </td>
                     <td>     
                         <button id={weightBrackets[i].StartRange} className="weight-brackets-remove-button " onClick={removeWeightBracket}>Remove</button>

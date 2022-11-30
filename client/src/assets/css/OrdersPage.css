@@ -1,0 +1,80 @@
+.customer-orders {
+    display: block;
+    text-align: center;
+}
+
+.customer-orders-label {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+
+.customer-order-cards-container{
+    display: inline-grid;
+    justify-items: center;
+    align-items: center;
+    row-gap: 50px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.admin-orders {
+    display: block;
+    text-align: center;
+}
+
+.admin-orders-label {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+
+.admin-order-cards-container{
+    display: inline-grid;
+    justify-items: center;
+    align-items: center;
+    row-gap: 50px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.order-card {
+    background-color: #E8E9EB;
+    width: 600px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px 5px #748083;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+
+.order-card-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+.order-card-table-label {
+    font-weight: bold;
+    float: left;
+}
+
+.order-card-table-value {
+    float: right;
+}
+
+.order-shipped {
+    font-weight: bold;
+    color: rgb(43, 197, 9);
+}
+
+.order-not-shipped {
+    font-weight: bold;
+    color: rgb(227, 171, 5);
+}

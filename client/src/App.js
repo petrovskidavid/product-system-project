@@ -3,6 +3,7 @@ import LogInPage from "./pages/LogIn"
 import SignUpPage from "./pages/SignUp"
 import StorePage from "./pages/Store"
 import CartPage from "./pages/Cart"
+import OrdersPage from "./pages/Orders"
 import CheckoutPage from "./pages/Checkout"
 import AdminPage from "./pages/Employee/Admin"
 import './assets/css/App.css';
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
       </BrowserRouter>

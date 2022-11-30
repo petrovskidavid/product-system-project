@@ -50,6 +50,12 @@ export default function CheckoutForm() {
     // Only calls once per render of the component
     useEffect(() => {
 
+        // Requests a list of all the products in the database
+        Axios.get("http://localhost:8800/api/getCart?email=" + localStorage.getItem("customerEmail")).then((res) => {
+            setCartItemsData(res.data)
+            setRetrievedCartItems(true)
+        })
+
         Axios.get("http://localhost:8800/api/getWeightBrackets").then((res) => {
             setWeightBrackets(res.data)
             setRetrievedWeightBrackets(true)
@@ -61,13 +67,7 @@ export default function CheckoutForm() {
             setRetrievedProducts(true)
         })
 
-        // Requests a list of all the products in the database
-        Axios.get("http://localhost:8800/api/getCart?email=" + localStorage.getItem("customerEmail")).then((res) => {
-            setCartItemsData(res.data)
-            setRetrievedCartItems(true)
-        })
-
-    }, [])
+    }, [nav, retrievedCartItems])
 
     
     if (retrievedCartItems && retrievedWeightBrackets && retrievedProducts){
@@ -95,10 +95,6 @@ export default function CheckoutForm() {
         }
 
         orderTotal = orderTotalBefore + orderShippingCharge
-
-        if (orderTotal === 0){
-            nav("/cart")
-        }
     }
 
     const submitPurchase = (data) => {
@@ -135,7 +131,7 @@ export default function CheckoutForm() {
 
                 }).then(() => {
                     // Change later
-                    nav("/store?authorization=" + orderAuthorizationNum)
+                    nav("/orders?auth=" + orderAuthorizationNum)
                 })
             }
             
@@ -313,8 +309,7 @@ export default function CheckoutForm() {
                         <div className="form-error">
                             {bottomThreeErrMessage}
                         </div>
-
-                        <input type="submit" value="Confirm Purchase" className="checkout-form-btn"/>
+                        {orderTotal !== 0 && <input type="submit" value="Confirm Purchase" className="checkout-form-btn"/>}
                         <br/>
                         <br/>
                     </form>

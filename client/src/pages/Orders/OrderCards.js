@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react"
 import Axios from "axios";
-import OrderCard from "../../../components/OrderCard"
+import OrderCard from "../../components/OrderCard"
 
-export default function Orders() {
+export default function OrderCards() {
 
     const [ordersData, setOrdersData] = useState([])
 
     useEffect(() => {
 
-        Axios.get("http://localhost:8800/api/retrieveOrders?orderStatus=all").then((res) => {
-            console.log(res.data)
+        Axios.get("http://localhost:8800/api/retrieveOrders?orderStatus=all&customerEmail=" + localStorage.getItem("customerEmail")).then((res) => {
             setOrdersData(res.data)
         })
     },[])
@@ -22,9 +21,7 @@ export default function Orders() {
                 key={order._id.toUpperCase()}
                 orderID={order._id.toUpperCase()}
                 authNum={order.AuthorizationNumber}
-                email={order.Email}
                 timeStamp={order.TimeStamp}
-                totalWeight={order.ItemsTotalWeight}
                 orderTotal={order.OrderTotal}
                 orderStatus={order.OrderStatus}
             />
@@ -33,12 +30,12 @@ export default function Orders() {
 
 
     return (
-        <div className="admin-orders">
-            <div className="admin-orders-label">
-                Orders
+        <div className="customer-orders">
+            <div className="customer-orders-label">
+                Order History
             </div>
 
-            <div className="admin-order-cards-container">
+            <div className="customer-order-cards-container">
                 {orderCards}
             </div>
         </div>
