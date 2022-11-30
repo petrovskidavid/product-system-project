@@ -194,6 +194,7 @@ function addToCart (req, res) {
                         if (!inserted.acknowledged)
                             throw (inserted)
                         
+                        // Sends data to the client indicating that the product was inserted into the cart
                         console.log(greenFont, "Product inserted into Carts table")
                         res.send({"addedToCart": true, "quantity": requestedQuantity})
                         console.log(greenFont, "Sent response to client\n")
@@ -219,12 +220,14 @@ function addToCart (req, res) {
                             if (!inserted.acknowledged)
                                 throw (inserted)
                             
+                            // Sends data to the client indicating that the product was inserted into the cart
                             console.log(greenFont, "Product inserted into Carts table")
                             res.send({"addedToCart": true, "quantity": requestedQuantity})
                             console.log(greenFont, "Sent response to client\n")
                         })
                     
                     } else {
+                        // Sends data to the client indicating that the product was inserted into the cart
                         console.log(greenFont, "Product quantity updated into Carts table")
                         res.send({"addedToCart": true, "quantity": requestedQuantity})
                         console.log(greenFont, "Sent response to client\n")
@@ -247,14 +250,18 @@ function updateCart(req, res) {
     mongoDb.then(connection => {
 
         console.log(yellowFont, "Searching for the product in the customers cart...")
+
+        // look through internal DB to update product quantity in the customer's cart
         connection.db("InternalDb").collection("Carts").updateOne({OrderID: ObjectId(orderID), ProductID: productID}, { $set: {Quantity: newQuantity}}).then(updated => {
             
             if (updated.modifiedCount > 0){
+                // if the update was successful, send response to client indicating success
                 console.log(greenFont, "Updated product quantity in customers cart")
                 res.send({"cartItemUpdated": true})
                 console.log(greenFont, "Sent response to client\n")
 
             } else {
+                // if the update was not successful, send response to client indicating failure
                 console.log(redFont, "Didn't update product quantity in customers cart")
                 res.send({"cartItemUpdated": false})
                 console.log(greenFont, "Sent response to client\n")
@@ -273,14 +280,18 @@ function removeFromCart(req, res) {
     mongoDb.then(connection => {
 
         console.log(yellowFont, "Searching for the product in the customers cart...")
+
+        // look through internal DB to delete product from the customer's cart
         connection.db("InternalDb").collection("Carts").deleteOne({OrderID: ObjectId(orderID), ProductID: productID}).then(deleted => {
             
             if(deleted.deletedCount > 0){
+                // if the removal was successful, send response to client indicating success
                 console.log(greenFont, "Removed product from customers cart")
                 res.send({"cartItemRemoved": true})
                 console.log(greenFont, "Sent response to client\n")
 
             } else {
+                // if the removal was not successful, send response to client indicating failure
                 console.log(redFont, "Didn't remove product from customers cart")
                 res.send({"cartItemRemoved": false})
                 console.log(greenFont, "Sent response to client\n")
@@ -306,21 +317,26 @@ function updateOrder(req, res) {
 
     mongoDb.then(connection => {
         
-        console.log(yellowFont, "Searching for the customers open order...")
+        console.log(yellowFont, "Searching for the customer's open order...")
         
+        // look through internal DB to find the customer's open order and update the information
         connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set: {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
 
+            // check if the update was successful
             if(updatedOrder.value != null){
 
+                // loop through the entire Products table in internal DB to update the quantities based on what the customer purchased
                 productsPurchased.map(product => {
                     connection.db("InternalDb").collection("Products").findOneAndUpdate({ProductID: product.ProductID}, {$inc: {Quantity: -(product.Quantity)}})
                 })
 
+                // if the update was successful, send response to client indicating success
                 console.log(greenFont, "Updated order status and inserted new data")
                 res.send({"updatedOrder": true})
                 console.log(greenFont, "Sent response to client\n")
 
             } else {
+                // if the update was not successful, send response to client indicating failure
                 console.log(redFont, "Failed to update order status and insert new data")
                 res.send({"updatedOrder": false})
                 console.log(greenFont, "Sent response to client\n")
@@ -337,19 +353,25 @@ function updateWeightBrackets(req, res) {
     const newStartRange = req.body.newWeight
     const newCharge = req.body.newCharge
 
+    // check if either the start range or shipping charge is empty
+    // if so, send response to client indicating failure
     if(newStartRange === null || newCharge === null)
         res.send({addedWeightBracket: false})
 
     mongoDb.then(connection => {
 
+        // look through internal DB to find the weight bracket
         connection.db("InternalDb").collection("WeightBrackets").findOne({StartRange: newStartRange}).then(found => {
 
             if(found === null){
+                // insert the updated weight bracket and shipping charge
                 connection.db("InternalDb").collection("WeightBrackets").insertOne({StartRange: newStartRange, Charge: newCharge}).then(added => {
+                    // send response to client indicating success
                     res.send({addedWeightBracket: true})
                 })
             
             } else {
+                // send response to client indicating failure
                 res.send({addedWeightBracket: false})
             }
         })
@@ -364,12 +386,15 @@ function removeWeightBracket(req, res) {
     
     mongoDb.then(connection => {
 
+        // look through internal DB to find and delete the weight bracket
         connection.db("InternalDb").collection("WeightBrackets").deleteOne({StartRange: removeStartRange}).then(deleted => {
 
             if(deleted.deletedCount != 0){
+                // if the removal was successful, send response to client indicating success
                 res.send({removedWeightBracket: true})
             
             } else {
+                // if the removal was not successful, send response to client indicating failure
                 res.send({removedWeightBracket: false})
             }
         })
@@ -378,17 +403,48 @@ function removeWeightBracket(req, res) {
 
 
 function updateProductQuantity(req, res) {
-    console.log(`[${request.type} #${++request.number}] Request to remove a weight bracket (removeWeightBracket)`)
+    console.log(`[${request.type} #${++request.number}] Request to update the quantity of a product (updateProductQuantity)`)
     
     const productID = req.body.productID
     const incQuantity = req.body.incQuantity
+
+    mongoDb.then(connection => {
+
+        // look through internal DB to find the product and update the inventory
+        connection.db("InternalDb").collection("Products").findOneAndUpdate({ProductID: productID},  {$inc: {Quantity: incQuantity}}).then(updated => {
+            
+            if(updated.value != null){
+                // if the update was successful, send response to client indicating success
+                res.send({"updated": true})
+            } else {
+                // if the update was not successful, send response to client indicating failure
+                res.send({"updated": false})
+            }
+        })
+    })
 }
 
 
 function shipOrder(req, res) {
-    console.log(`[${request.type} #${++request.number}] Request to remove a weight bracket (removeWeightBracket)`)
+    console.log(`[${request.type} #${++request.number}] Request to ship an order (shipOrder)`)
 
     const orderID = req.body.orderID
+    const newOrderStatus = "Shipped"
+
+    mongoDb.then(connection => {
+
+        // look through internal DB to find the order and update the status to "Shipped"
+        connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)},  {$set: {OrderStatus: newOrderStatus}}).then(updated => {
+            
+            if(updated.value != null){
+                // if the update was successful, send response to client indicating success
+                res.send({"shipped": true})
+            } else {
+                // if the update was not successful, send response to client indicating failure
+                res.send({"shipped": false})
+            }
+        })
+    })
 }
 
 
