@@ -10,7 +10,8 @@
 }
 
 .navbar-title {
-  text-align: center;
+  margin-left: 20px;
+  font-size: 26px;
 }
 
 .dropdown-basic-button {
@@ -48,7 +49,10 @@
   color: black;
 }
 
-
+.dropdown-item:active {
+  background-color: #E8E9EB;
+  color: black;
+}
 
 .logout-btn {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

@@ -14,26 +14,28 @@ export default function Navbar() {
     let showDropdown = true
 
 
-    if(location.pathname === "/" || location.pathname === "/signup" || location.pathname === "/emp/login")
+    if(location.pathname === "/" || location.pathname === "/signup" || location.pathname === "/emp/login" || location.pathname === "/orders/details" || location.pathname === "/emp/admin/order-details" || location.pathname === "/emp/workstations/order-details")
         showDropdown = false
 
 
     return (
         <div className="navbar">
             <header className="navbar-title">
-                This will be the navbar
+                Muffler Man
             </header>
             {
                 showDropdown 
                 &&
                 <DropdownButton className="dropdown-basic-button" title={<FaBars className="dropdown-icon"/>} size="sm">
-                    <Dropdown.Item href="#/action-1">View Cart</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">View Orders</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item href="/">Logout</Dropdown.Item>
+                    {(location.pathname === "/cart" || location.pathname === "/orders") && <Dropdown.Item href="/store">View Products</Dropdown.Item>}
+                    {(location.pathname === "/store" || location.pathname === "/checkout" || location.pathname === "/orders") && <Dropdown.Item href="/cart">View Cart</Dropdown.Item>}
+                    {(location.pathname === "/store" || location.pathname === "/checkout" || location.pathname === "/cart") && <Dropdown.Item href="/orders">View Orders</Dropdown.Item>}
+                    {location.pathname === "/emp/admin/weight-brackets" && <Dropdown.Item href="/emp/admin">View Orders</Dropdown.Item>}
+                    {location.pathname === "/emp/admin" && <Dropdown.Item href="/emp/admin/weight-brackets">View Brackets</Dropdown.Item>}
+                    {(location.pathname !== "/emp/receiving" && location.pathname !== "/emp/workstations") && <Dropdown.Divider />}
+                    <Dropdown.Item href={location.pathname.includes("/emp") ? "/emp/login" : "/"}>Logout</Dropdown.Item>
                 </DropdownButton>
             }
-            
         </div>
     )
 }

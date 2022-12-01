@@ -1,4 +1,5 @@
 import {legacyDb, mongoDb} from "./db.js"
+import {ObjectId} from "mongodb"
 import {greenFont, yellowFont, redFont} from "./server.js"
 
 
@@ -51,4 +52,128 @@ function getProducts(req, res) {
     })
 }
 
-export {getProducts}
+
+function getCart(req, res) {
+    console.log(`\n[${request.type} #${++request.number}] Request to get all products in the customers cart (getCart)`)
+
+    const email = req.query.email
+    let orderId
+
+
+    mongoDb.then(connection => {
+        console.log(yellowFont, "Looking for customers cart...")
+        connection.db("InternalDb").collection("Orders").findOne({Email: email, OrderStatus: "cart"}).then(openOrder => {
+
+            if (openOrder != null) {
+                console.log(greenFont, "Customer cart found")
+                
+                orderId = openOrder._id
+
+                console.log("Retriving cart data...")
+                connection.db("InternalDb").collection("Carts").find({OrderID: orderId}).toArray().then(cartItems => {
+
+                    res.send(cartItems)
+                    console.log(greenFont, "Sent response to client\n")
+                })
+
+            } else {
+
+                console.log(redFont, "No customer cart found")
+                // res.send({openCart: false});
+                // console.log(greenFont, "Sent response to client\n")
+            }
+            
+        })
+    })
+}
+
+
+function retrieveOrders(req, res) {
+    // Store request data
+    const email = req.query.customerEmail;
+    const orderState = req.query.orderStatus;
+
+
+    // find all documents pertaining to requested "State": ("authorized" or "shipped")
+    mongoDb.then(connection => {
+        // log
+        console.log(yellowFont, `Fetching all ${orderState} orders...`);
+
+        // * find() specified orders in requested state * // 
+        
+        // reference "InternalDb"
+        var dbo = connection.db("InternalDb");
+        var col = dbo.collection("Orders");
+        
+        if(orderState === "all") {
+
+            if(email === undefined){
+                // run find
+                col.find({OrderStatus: {$ne: "cart"}}).sort({TimeStamp: 1}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+
+            } else {
+                // run find
+                col.find({OrderStatus: {$ne: "cart"}, Email: email}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })   
+            }
+
+        } else {
+
+            if(email === undefined){
+                // run find
+                col.find({OrderStatus: orderState}).sort({TimeStamp: 1}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+
+            } else {
+                col.find({OrderStatus: orderState, Email: email}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
+                    res.send(listOfOrders);       
+                })
+            }
+        }
+    })
+}
+
+
+function retrieveProductsInOrder(req, res) {
+    // Store request data
+    const requestedID = req.query.orderID;
+
+
+    // retrieve all products in cart linked to requested ID
+    mongoDb.then(connection => {
+        // logging
+        console.log(yellowFont, "Fetching all products in cart with requested ID");
+
+        // * find() specified orders in requested state * //
+        
+        // reference "InternalDb"
+        var dbo = connection.db("InternalDb");
+        var col = dbo.collection("Carts");
+
+        // run find
+        col.find({OrderID: ObjectId(requestedID)}).toArray().then(listofProducts => {
+            res.send(listofProducts);
+        })
+    })
+}
+
+
+function getWeightBrackets (req, res) {
+    console.log(`\n[${request.type} #${++request.number}] Request to get the weight brackets data (getWeightBrackets)`)
+
+
+    mongoDb.then(connection => {
+
+        connection.db("InternalDb").collection("WeightBrackets").find({}).sort({StartRange: 1}).project({_id: 0}).toArray().then(weightBrackets => {
+            
+            res.send(weightBrackets)
+        })
+    })
+}
+
+
+export { getProducts, getCart, retrieveOrders, retrieveProductsInOrder, getWeightBrackets}

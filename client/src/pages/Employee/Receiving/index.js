@@ -1,17 +1,17 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-custom-alert"
-import Navbar from "../../components/Navbar"
-import ProductCards from "./ProductCards"
+import Navbar from "../../../components/Navbar"
+import ReceivingProductCards from "./RecevingProductCards";
 
-export default function StorePage() {
+export default function ReceivingPage() {
 
     const nav = useNavigate() //< Used to redirect client
 
     useEffect(() => {
-        if(localStorage.getItem("customerEmail") === null)
+        if(localStorage.getItem("employeeID") === null)
         {
-            nav("/")
+            nav("/emp/login")
         }
     }, [nav])
 
@@ -19,8 +19,8 @@ export default function StorePage() {
     return (
         <div>
             <Navbar />
-            <ToastContainer floatingTime={6000} />
-            <ProductCards />
+            <ToastContainer floatingTime={5000} />
+            <ReceivingProductCards />
         </div>
     )
 }

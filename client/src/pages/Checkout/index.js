@@ -2,9 +2,9 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-custom-alert"
 import Navbar from "../../components/Navbar"
-import ProductCards from "./ProductCards"
+import CheckoutForm from "./CheckoutForm"
 
-export default function StorePage() {
+export default function CheckoutPage() {
 
     const nav = useNavigate() //< Used to redirect client
 
@@ -15,12 +15,11 @@ export default function StorePage() {
         }
     }, [nav])
 
-
     return (
         <div>
             <Navbar />
-            <ToastContainer floatingTime={6000} />
-            <ProductCards />
+            <ToastContainer floatingTime={5000} />
+            <CheckoutForm />
         </div>
     )
 }

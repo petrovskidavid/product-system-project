@@ -1,10 +1,10 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-custom-alert"
 import Navbar from "../../components/Navbar"
-import ProductCards from "./ProductCards"
+import CartItemCards from "./CartItemCards";
+import "../../assets/css/CartPage.css"
 
-export default function StorePage() {
+export default function CartPage() {
 
     const nav = useNavigate() //< Used to redirect client
 
@@ -15,12 +15,11 @@ export default function StorePage() {
         }
     }, [nav])
 
-
+    
     return (
         <div>
             <Navbar />
-            <ToastContainer floatingTime={6000} />
-            <ProductCards />
+            <CartItemCards />
         </div>
     )
 }

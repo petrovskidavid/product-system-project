@@ -8,7 +8,7 @@ import * as yup from 'yup'
 
 // Holds validation rules for the log in form inputs for the employee
 const logInValidation = yup.object().shape({
-    empID: yup.string().length(7).required("Please provide your employee ID"),
+    empID: yup.string().min(7, "Employee ID's are a minimum of 7 characters").required("Please provide your employee ID"),
     password: yup.string().required("Please provide your password")
 })
 
@@ -23,6 +23,7 @@ export default function EmployeeLogInForm() {
     // Removes all localStorage items connected to user login info for employee
     localStorage.removeItem("employeeName")
     localStorage.removeItem("employeeID")
+    localStorage.removeItem("employeeType")
 
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
@@ -49,9 +50,22 @@ export default function EmployeeLogInForm() {
                 // Adds data to localStorage for later use
                 localStorage.setItem("employeeName", res.data.empName)
                 localStorage.setItem("employeeID", res.data.empID)
+                localStorage.setItem("employeeType", res.data.empType)
 
-                // Redirects client
-                nav("/store")
+
+                if(res.data.empType === "admin"){
+                    // Redirects client
+                    nav("/emp/admin")
+
+                } else if(res.data.empType === "receiving"){
+                    // Redirects client
+                    nav("/emp/receiving")
+
+                } else if(res.data.empType === "workstations"){
+                    // Redirects client
+                    nav("/emp/workstations")
+                    
+                }
 
             } else if (res.data.loginVerified === false) {
 
@@ -82,24 +96,24 @@ export default function EmployeeLogInForm() {
                     Employee Log In
                 </div>
 
-                <div className="form-error">
-                    {errors.empID?.type === "length" ? "The employee ID must be 7 characters" : errors.empID?.message}
-                    
-                </div>
                 <input 
                     {...register("empID")}
                     placeholder="Employee ID"
                     type="text"
                 />
-
                 <div className="form-error">
-                    {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
+                    {errors.empID?.type === "length" ? "The employee ID must be 7 characters" : errors.empID?.message}
                 </div>
+
+
                 <input 
                     {...register('password')}
                     placeholder="Password"
                     type="password"
                 />
+                <div className="form-error">
+                    {errors.password?.type && errors.password?.type === "required" && "Please provide your password"}
+                </div>
 
                 <input 
                         type="submit" 
@@ -108,7 +122,7 @@ export default function EmployeeLogInForm() {
                 />
 
                 <div className="redirect-form">
-                    <div className="emp-login-redirect-form">
+                    <div className="customer-login-redirect-form">
                         Are you a customer? <a href="/">Log in here</a>
                     </div>
                 </div>

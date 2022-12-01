@@ -3,6 +3,11 @@
     text-align: center;
 }
 
+.checkout-form {
+    display: block;
+    text-align: center;
+}
+
 .form-title {
     font-weight: bold;
     font-size: 18px;
@@ -10,10 +15,10 @@
 }
 
 .form-error {
-    color: rgb(255, 0, 0);
+    color: #ca291d;
     font-weight: bold;
     font-size: 12px;
-    margin-bottom: 2px;
+    margin-bottom: 18px;
 }
 
 .form form {
@@ -24,10 +29,21 @@
     text-align: center;
     border-radius: 20px;
     box-shadow: 5px 5px 10px 5px #748083;
+    height: 100%;
+}
+
+.checkout-form form {
+    margin-top: 30px;
+    background-color: #E8E9EB;
+    width: 400px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px 5px #748083;
 }
 
 .form input {
-    margin-bottom: 25px;
+    margin-bottom: 2px;
     width: 250px;
     height: 30px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -36,6 +52,75 @@
     border-radius: 8px;
     border: none;
     text-indent: 5px;
+}
+
+.form input:focus-visible {
+    border-color: #4F5F95;
+    outline: 2px solid #4F5F95;
+}
+
+.checkout-form input:focus-visible {
+    border-color: #4F5F95;
+    outline: 2px solid #4F5F95;
+}
+
+.checkout-form, .checkout-state, .checkout-first-name, .checkout-last-name, .checkout-address, .checkout-city, .checkout-zip, .checkout-ccNum {
+    margin-bottom: 2px;
+    width: 332.78px;
+    height: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
+    sans-serif;
+    border-radius: 8px;
+    border: none;
+    text-indent: 5px;
+    font-size: 16px;
+}
+
+.checkout-expMonth, .checkout-expYear{
+    width: 30px;
+    margin-bottom: 2px;
+    margin-right: 16.385px;
+    width: 100px;
+    height: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
+    sans-serif;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+.checkout-cvv {
+    width: 30px;
+    margin-bottom: 2px;
+    width: 100px;
+    height: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
+    sans-serif;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+select:invalid {
+    color: #696969;
+}
+
+.form input::placeholder {
+    color:#696969;
+}
+
+.checkout-form input::placeholder {
+    color: #696969;
+}
+
+.checkout-first-name:focus-visible, .checkout-last-name:focus-visible, .checkout-state:focus-visible {
+    border-color: #4F5F95;
+    outline: 2px solid #4F5F95;
 }
 
 .form-btn {
@@ -52,8 +137,24 @@
     cursor: pointer;
 }
 
-.form-btn:hover  {
+.form-btn:hover, .checkout-form-btn:hover  {
     opacity: 50%;
+}
+
+.checkout-form-btn {
+    width: 250px;
+    height: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
+    sans-serif;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    border-radius: 8px;
+    background-color: #748083;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
 }
 
 .redirect-form {
@@ -61,14 +162,21 @@
 }
 
 .signup-redirect-form {
-    margin-bottom: 8px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .emp-login-redirect-form {
     margin-bottom: 15px;
 }
 
+.customer-login-redirect-form {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
 .login-redirect-form {
+    margin-top: 10px;
     margin-bottom: 15px;
 }
 
@@ -76,4 +184,8 @@
     text-decoration: none;
     font-weight: bold;
     color: #445aa3;
+}
+
+.sc-bcXHqe {
+    margin-bottom: 20px;
 }

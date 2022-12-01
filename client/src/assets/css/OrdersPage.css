@@ -1,0 +1,78 @@
+.customer-orders {
+    display: block;
+    text-align: center;
+}
+
+.customer-orders-label {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+
+.customer-order-cards-container{
+    display: inline-grid;
+    justify-items: center;
+    align-items: center;
+    row-gap: 50px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.order-card {
+    background-color: #E8E9EB;
+    width: 600px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px 5px #748083;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+
+.order-card-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+.order-card-table-label {
+    font-weight: bold;
+    float: left;
+}
+
+.order-card-table-value {
+    float: right;
+}
+
+.orders-button {
+    width: 150px;
+    height: 28px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
+    sans-serif;
+    margin-top: 25px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    background-color: #748083;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.orders-button:hover {
+    opacity: 50%;
+}
+
+.order-shipped {
+    font-weight: bold;
+    color: rgb(43, 197, 9);
+}
+
+.order-not-shipped {
+    font-weight: bold;
+    color: rgb(227, 171, 5);
+}
