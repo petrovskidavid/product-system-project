@@ -28,7 +28,7 @@ export default function OrderCard(props) {
                             </td>
                             
                             <td className="order-card-table-value">
-                            {(new Date(props.timeStamp)).getDate().toString().padStart(2, '0')}/{((new Date(props.timeStamp)).getMonth() + 1).toString().padStart(2, '0')}/{(new Date(props.timeStamp)).getFullYear()}
+                            {((new Date(props.timeStamp)).getMonth() + 1).toString().padStart(2, '0')}/{(new Date(props.timeStamp)).getDate().toString().padStart(2, '0')}/{(new Date(props.timeStamp)).getFullYear()}
                             </td>
                         </tr>
 
@@ -91,7 +91,7 @@ export default function OrderCard(props) {
                             </td>
                             
                             <td className="order-card-table-value">
-                                {(new Date(props.timeStamp)).getDate().toString().padStart(2, '0')}/{((new Date(props.timeStamp)).getMonth() + 1).toString().padStart(2, '0')}/{(new Date(props.timeStamp)).getFullYear()}
+                                {((new Date(props.timeStamp)).getMonth() + 1).toString().padStart(2, '0')}/{(new Date(props.timeStamp)).getDate().toString().padStart(2, '0')}/{(new Date(props.timeStamp)).getFullYear()}
                             </td>
                         </tr>
 

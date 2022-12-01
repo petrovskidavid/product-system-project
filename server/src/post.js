@@ -428,7 +428,7 @@ function shipOrder(req, res) {
     console.log(`[${request.type} #${++request.number}] Request to ship an order (shipOrder)`)
 
     const orderID = req.body.orderID
-    const newOrderStatus = "Shipped"
+    const newOrderStatus = "shipped"
 
     mongoDb.then(connection => {
 
