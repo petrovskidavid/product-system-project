@@ -4,10 +4,10 @@ import { ToastContainer, toast } from "react-custom-alert"
 import Navbar from "../../../components/Navbar"
 import AuthorizedOrders from "./AuthorizedOrders"
 import OrderDetails from "../../../components/OrderDetails"
-import "../../../assets/css/WarehousePage.css"
+import "../../../assets/css/WorkstationsPage.css"
 
 
-export default function WarehousePage() {
+export default function WorkstationsPage() {
 
     const location = useLocation()
     const nav = useNavigate() //< Used to redirect client
@@ -21,7 +21,7 @@ export default function WarehousePage() {
 
         if(shippedOrder){
             toast.success("Order " + shippedOrder + " has been successfully shipped!")
-            nav("/emp/warehouse")
+            nav("/emp/workstations")
         }
     }, [nav])
 
@@ -29,8 +29,8 @@ export default function WarehousePage() {
         <div>
         <Navbar />
         <ToastContainer floatingTime={6000} />
-        {location.pathname === "/emp/warehouse" && <AuthorizedOrders />}
-        {location.pathname === "/emp/warehouse/order-details" && <OrderDetails />}
+        {location.pathname === "/emp/workstations" && <AuthorizedOrders />}
+        {location.pathname === "/emp/workstations/order-details" && <OrderDetails />}
         </div>
     )
 }

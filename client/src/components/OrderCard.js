@@ -121,7 +121,7 @@ export default function OrderCard(props) {
             </div>
         )
 
-    } else if(location.pathname === "/emp/warehouse"){
+    } else if(location.pathname === "/emp/workstations"){
         orderCard = (
                 <div className="order-card">
                 <br/>
@@ -158,7 +158,7 @@ export default function OrderCard(props) {
                         </tr>
                     </tbody>
                 </table>
-                <button className="orders-button" onClick={() => {nav("/emp/warehouse/order-details", {state: props})}}>Order Details</button>
+                <button className="orders-button" onClick={() => {nav("/emp/workstations/order-details", {state: props})}}>Order Details</button>
 
             </div>
         )

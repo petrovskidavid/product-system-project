@@ -311,7 +311,7 @@ export default function OrderDetails() {
             </div>
         )
 
-    } else if("/emp/warehouse/order-details"){
+    } else if("/emp/workstations/order-details"){
 
         const shipOrder = () => {
             
@@ -321,7 +321,7 @@ export default function OrderDetails() {
             }).then(res => {
 
                 if(res.data.shipped){
-                    nav("/emp/warehouse?shippedOrder=" + orderInfo.orderID)
+                    nav("/emp/workstations?shippedOrder=" + orderInfo.orderID)
 
                 } else {
                     toast.error("Failed to update order status. Try again!")
@@ -485,7 +485,7 @@ export default function OrderDetails() {
                         </div>
                     </div>
 
-                    <button className="order-details-button" onClick={() => {nav("/emp/warehouse")}}>Close Details</button>
+                    <button className="order-details-button" onClick={() => {nav("/emp/workstations")}}>Close Details</button>
                     <button className="order-ship-button" onClick={shipOrder}>Ship Order</button>
                 </div>
             </div>

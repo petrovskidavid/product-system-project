@@ -38,7 +38,7 @@ export default function AuthorizedOrders() {
     return (
         <div className="warehouse-orders">
             <div className="warehouse-orders-label">
-                <span className="bold">Warehouse:</span> Orders
+                <span className="bold">Workstations:</span> Orders
             </div>
 
             <div className="warehouse-order-cards-container">

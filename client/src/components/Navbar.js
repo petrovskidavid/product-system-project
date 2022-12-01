@@ -14,7 +14,7 @@ export default function Navbar() {
     let showDropdown = true
 
 
-    if(location.pathname === "/" || location.pathname === "/signup" || location.pathname === "/emp/login" || location.pathname === "/orders/details" || location.pathname === "/emp/admin/order-details" || location.pathname === "/emp/warehouse/order-details")
+    if(location.pathname === "/" || location.pathname === "/signup" || location.pathname === "/emp/login" || location.pathname === "/orders/details" || location.pathname === "/emp/admin/order-details" || location.pathname === "/emp/workstations/order-details")
         showDropdown = false
 
 
@@ -32,7 +32,7 @@ export default function Navbar() {
                     {(location.pathname === "/store" || location.pathname === "/checkout" || location.pathname === "/cart") && <Dropdown.Item href="/orders">View Orders</Dropdown.Item>}
                     {location.pathname === "/emp/admin/weight-brackets" && <Dropdown.Item href="/emp/admin">View Orders</Dropdown.Item>}
                     {location.pathname === "/emp/admin" && <Dropdown.Item href="/emp/admin/weight-brackets">View Brackets</Dropdown.Item>}
-                    {(location.pathname !== "/emp/receiving" && location.pathname !== "/emp/warehouse") && <Dropdown.Divider />}
+                    {(location.pathname !== "/emp/receiving" && location.pathname !== "/emp/workstations") && <Dropdown.Divider />}
                     <Dropdown.Item href={location.pathname.includes("/emp") ? "/emp/login" : "/"}>Logout</Dropdown.Item>
                 </DropdownButton>
             }
