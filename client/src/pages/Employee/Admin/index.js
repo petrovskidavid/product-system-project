@@ -20,7 +20,7 @@ export default function AdminPage() {
     return(
         <div>
         <Navbar />
-        <ToastContainer floatingTime={5000} />
+        <ToastContainer floatingTime={6000} />
         {location.pathname === "/emp/admin/weight-brackets" && <WeightBrackets />}
         {location.pathname === "/emp/admin" && <Orders />}
         </div>

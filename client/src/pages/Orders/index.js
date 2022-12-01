@@ -19,7 +19,7 @@ export default function OrdersPage() {
         }
 
         if(authorizationNumber.get("auth")){
-            toast.success("Your order was successfully placed! An email with the authorization code " + authorizationNumber.get("auth") + " has been sent to you.")
+            toast.success("Your order was successfully placed! An email with the authorization code " + authorizationNumber.get("auth") + " has been sent to your email.")
             nav("/orders")
         }
     }, [nav])
@@ -28,7 +28,7 @@ export default function OrdersPage() {
     return (
         <div>
             <Navbar />
-            <ToastContainer floatingTime={5000} />
+            <ToastContainer floatingTime={9000} />
             <OrderCards />
         </div>
     )

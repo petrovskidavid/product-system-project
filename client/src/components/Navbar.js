@@ -33,7 +33,7 @@ export default function Navbar() {
                     {location.pathname === "/emp/admin/weight-brackets" && <Dropdown.Item href="/emp/admin">View Orders</Dropdown.Item>}
                     {location.pathname === "/emp/admin" && <Dropdown.Item href="/emp/admin/weight-brackets">View Brackets</Dropdown.Item>}
                     {location.pathname !== "/emp/receiving" && <Dropdown.Divider />}
-                    <Dropdown.Item href="/">Logout</Dropdown.Item>
+                    <Dropdown.Item href={location.pathname.includes("/emp") ? "/emp/login" : "/"}>Logout</Dropdown.Item>
                 </DropdownButton>
             }
         </div>
