@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { toast } from "react-custom-alert"
-import "../../../assets/css/AdminPage.css"
 
 // Holds validation rules for the sign up form inputs
 const weightBracketValidation = yup.object().shape({
@@ -98,8 +97,8 @@ export default function WeightBrackets() {
 
     return (
         <div className="weight-brackets">
+            <div className="weight-brackets-title"><span className="bold">Administration:</span> Weight Brackets</div>
             <div className="weight-brackets-container">
-                <div className="weight-brackets-title"><span className="bold">Administration:</span> Weight Brackets</div>
                 <table className="weight-brackets-table">
                     <tbody>
                         {

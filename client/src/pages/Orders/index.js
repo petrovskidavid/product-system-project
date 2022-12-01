@@ -1,13 +1,15 @@
 import { useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-custom-alert"
 import Navbar from "../../components/Navbar"
 import OrderCards from "./OrderCards"
+import OrderDetails from "../../components/OrderDetails"
 import "../../assets/css/OrdersPage.css"
 
 export default function OrdersPage() {
 
     const nav = useNavigate() //< Used to redirect client
+    const location = useLocation()
 
     const authorizationNumber = new URLSearchParams(window.location.search)
        
@@ -29,7 +31,7 @@ export default function OrdersPage() {
         <div>
             <Navbar />
             <ToastContainer floatingTime={9000} />
-            <OrderCards />
+            {location.pathname === "/orders" ? (<OrderCards />) : (<OrderDetails />)}
         </div>
     )
 }

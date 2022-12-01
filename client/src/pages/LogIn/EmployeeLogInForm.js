@@ -60,6 +60,11 @@ export default function EmployeeLogInForm() {
                 } else if(res.data.empType === "receiving"){
                     // Redirects client
                     nav("/emp/receiving")
+
+                } else if(res.data.empType === "warehouse"){
+                    // Redirects client
+                    nav("/emp/warehouse")
+                    
                 }
 
             } else if (res.data.loginVerified === false) {

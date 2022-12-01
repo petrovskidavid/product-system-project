@@ -160,6 +160,8 @@ function addToCart (req, res) {
 
     const email = req.body.email
     const productID = req.body.productID
+    const productDesc = req.body.productDesc
+    const productWeight = req.body.weight
     const requestedQuantity = req.body.quantity
     const price = req.body.price
     
@@ -188,7 +190,7 @@ function addToCart (req, res) {
                     orderId = queryRes.insertedId
 
                     // insert the new item into Carts table
-                    connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
+                    connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, ProductDesc: productDesc, ProductWeight: productWeight, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
                         if (!inserted.acknowledged)
                             throw (inserted)
                         
@@ -214,7 +216,7 @@ function addToCart (req, res) {
                     if(!updatedQuantity.value){
 
                         // insert the new item into Carts table
-                        connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
+                        connection.db("InternalDb").collection("Carts").insertOne({Email: email, ProductID: productID, ProductDesc: productDesc, ProductWeight: productWeight, Quantity: requestedQuantity, OrderID: orderId, Price: price}).then(inserted => {
                             
                             // Sends data to the client indicating that the product was inserted into the cart
                             console.log(greenFont, "Product inserted into Carts table")
@@ -306,6 +308,7 @@ function updateOrder(req, res) {
     const itemsTotal = req.body.itemsTotal
     const itemsTotalWeight = req.body.totalWeight
     const shipping = req.body.shipping
+    const address = req.body.shippingAddress
     const orderTotal = req.body.orderTotal
     const authorizationNumber = req.body.authorizationNumber
     const timeStamp = req.body.timeStamp
@@ -316,7 +319,7 @@ function updateOrder(req, res) {
         console.log(yellowFont, "Searching for the customer's open order...")
         
         // look through internal DB to find the customer's open order and update the information
-        connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set: {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
+        connection.db("InternalDb").collection("Orders").findOneAndUpdate({_id: ObjectId(orderID)}, {$set: {Name: name, OrderStatus: newOrderStatus, ItemsTotal: itemsTotal, ItemsTotalWeight: itemsTotalWeight, ShippingCharge: shipping, ShippingAddress: address, OrderTotal: orderTotal, AuthorizationNumber: authorizationNumber, TimeStamp: timeStamp}}).then(updatedOrder => {
 
             // check if the update was successful
             if(updatedOrder.value != null){

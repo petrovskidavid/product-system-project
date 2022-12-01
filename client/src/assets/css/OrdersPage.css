@@ -47,6 +47,26 @@
     float: right;
 }
 
+.orders-button {
+    width: 150px;
+    height: 28px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', "sans-serif",
+    sans-serif;
+    margin-top: 25px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    background-color: #748083;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.orders-button:hover {
+    opacity: 50%;
+}
+
 .order-shipped {
     font-weight: bold;
     color: rgb(43, 197, 9);

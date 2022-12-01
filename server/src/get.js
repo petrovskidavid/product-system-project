@@ -1,4 +1,5 @@
 import {legacyDb, mongoDb} from "./db.js"
+import {ObjectId} from "mongodb"
 import {greenFont, yellowFont, redFont} from "./server.js"
 
 
@@ -139,7 +140,7 @@ function retrieveOrders(req, res) {
 
 function retrieveProductsInOrder(req, res) {
     // Store request data
-    const requestedID = req.query.ID;
+    const requestedID = req.query.orderID;
 
 
     // retrieve all products in cart linked to requested ID
@@ -151,10 +152,10 @@ function retrieveProductsInOrder(req, res) {
         
         // reference "InternalDb"
         var dbo = connection.db("InternalDb");
-        var col = connection.db("Carts");
+        var col = dbo.collection("Carts");
 
         // run find
-        col.find({OrderID: requestedID}).toArray().then(listofProducts => {
+        col.find({OrderID: ObjectId(requestedID)}).toArray().then(listofProducts => {
             res.send(listofProducts);
         })
     })

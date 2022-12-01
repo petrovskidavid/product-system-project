@@ -41,6 +41,7 @@ export default function CheckoutForm() {
     let orderTimeStamp
     let orderPurchasedProducts = []
     let bottomThreeErrMessage
+    let shippingAddress
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, setValue, handleSubmit, formState: { errors } } = useForm({
@@ -116,6 +117,7 @@ export default function CheckoutForm() {
 
                 orderAuthorizationNum = response.data.authorization
                 orderTimeStamp = response.data.timeStamp
+                shippingAddress = data.address + ", " + data.city + ", " + data.state + " " + data.zipCode
 
                 Axios.post("http://localhost:8800/api/updateOrder", {
                     name: localStorage.getItem("customerName"),
@@ -124,6 +126,7 @@ export default function CheckoutForm() {
                     itemsTotal: orderTotalBefore.toFixed(2),
                     totalWeight: orderTotalWeight.toFixed(2),
                     shipping: orderShippingCharge,
+                    shippingAddress: shippingAddress,
                     orderTotal: orderTotal.toFixed(2),
                     authorizationNumber: orderAuthorizationNum,
                     timeStamp: orderTimeStamp,
@@ -320,7 +323,7 @@ export default function CheckoutForm() {
                         <tbody>
                             <tr>
                                 <td className="order-summary-table-label">
-                                    Items:
+                                    Subtotal:
                                 </td>
                                 <td className="order-summary-table-value">
                                     ${orderTotalBefore.toFixed(2)}
