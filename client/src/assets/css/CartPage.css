@@ -4,6 +4,11 @@
     overflow: hidden;
 }
 
+.cart input:focus-visible {
+    border-color: #4F5F95;
+    outline: 1px solid #4F5F95;
+}
+
 .checkout-container-cart {
     margin-top: 30px;
     margin-bottom: 5px;

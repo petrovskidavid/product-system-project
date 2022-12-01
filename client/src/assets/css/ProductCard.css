@@ -40,6 +40,11 @@
   font-size: 14px;
 }
 
+.product-card input:focus-visible {
+  border-color: #4F5F95;
+  outline: 1px solid #4F5F95;
+}
+
 /* .product-card:hover {
   box-shadow: 5px 5px 10px 5px #B4D5E9;
 } */

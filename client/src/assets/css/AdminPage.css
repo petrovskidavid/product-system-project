@@ -150,7 +150,12 @@
     text-align: center;
 }
 
-input:focus-visible {
+.order-card input:focus-visible {
+    border-color: #4F5F95;
+    outline: 2px solid #4F5F95;
+}
+
+.order-card select:focus-visible {
     border-color: #4F5F95;
     outline: 2px solid #4F5F95;
 }
