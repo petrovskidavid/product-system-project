@@ -109,7 +109,7 @@ function retrieveOrders(req, res) {
 
             if(email === undefined){
                 // run find
-                col.find({OrderStatus: {$ne: "cart"}}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
+                col.find({OrderStatus: {$ne: "cart"}}).sort({TimeStamp: 1}).toArray().then(listOfOrders => {
                     res.send(listOfOrders);       
                 })
 
@@ -124,7 +124,7 @@ function retrieveOrders(req, res) {
 
             if(email === undefined){
                 // run find
-                col.find({OrderStatus: orderState}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
+                col.find({OrderStatus: orderState}).sort({TimeStamp: 1}).toArray().then(listOfOrders => {
                     res.send(listOfOrders);       
                 })
 

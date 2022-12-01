@@ -71,8 +71,7 @@ export default function OrderDetails() {
                                 </td>
 
                                 <td className="order-details-table-value">
-                                {(new Date(orderInfo.timeStamp)).getDate()}/{(new Date(orderInfo.timeStamp)).getMonth() + 1}/{(new Date(orderInfo.timeStamp)).getFullYear()}
-                                </td>
+                                {(new Date(orderInfo.timeStamp)).getDate().toString().padStart(2, '0')}/{((new Date(orderInfo.timeStamp)).getMonth() + 1).toString().padStart(2, '0')}/{(new Date(orderInfo.timeStamp)).getFullYear()} {(new Date(orderInfo.timeStamp)).getHours().toString().padStart(2, '0')}:{(new Date(orderInfo.timeStamp)).getMinutes().toString().padStart(2, '0')}:{(new Date(orderInfo.timeStamp)).getSeconds().toString().padStart(2, '0')}                                </td>
                             </tr>
 
                             <tr>
@@ -159,6 +158,7 @@ export default function OrderDetails() {
         )
 
     } else if(location.pathname === "/emp/admin/order-details"){
+
         listOfProducts = productsInOrder.map(product => {
             return (
                 <tr key={product.ProductID}>
@@ -223,7 +223,7 @@ export default function OrderDetails() {
                                 </td>
 
                                 <td className="order-details-table-value">
-                                {(new Date(orderInfo.timeStamp)).getDate()}/{(new Date(orderInfo.timeStamp)).getMonth() + 1}/{(new Date(orderInfo.timeStamp)).getFullYear()}
+                                {(new Date(orderInfo.timeStamp)).getDate().toString().padStart(2, '0')}/{((new Date(orderInfo.timeStamp)).getMonth() + 1).toString().padStart(2, '0')}/{(new Date(orderInfo.timeStamp)).getFullYear()} {(new Date(orderInfo.timeStamp)).getHours().toString().padStart(2, '0')}:{(new Date(orderInfo.timeStamp)).getMinutes().toString().padStart(2, '0')}:{(new Date(orderInfo.timeStamp)).getSeconds().toString().padStart(2, '0')}
                                 </td>
                             </tr>
 
