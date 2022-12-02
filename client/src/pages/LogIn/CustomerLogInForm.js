@@ -73,6 +73,7 @@ export default function CustomerLogInForm() {
         <div className="form">
             <div className="form-error">
                 <br />
+                <br />
                 {verificationErr && "The email and password you entered did not match our records"}
                 {emailErr && "The email you entered is not in our records"}
                 <br />
