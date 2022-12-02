@@ -32,8 +32,16 @@ export default function ProductCard(props) {
             }).then(res => {
     
                 console.log(res.data)
-                if (res.data.addedToCart)
-                    toast.success("Added "+ res.data.quantity + " of " + props.description + " to your cart")
+                if (res.data.addedToCart){
+                    if(parseInt(selectedQuantity) > props.quantity){
+                        toast.warning("You tried to add more than what we have in stock. Only " + props.quantity + " of " + props.description + " were added to your cart.")
+                    
+                    } else {
+                        
+                        toast.success("Added "+ res.data.quantity + " of " + props.description + " to your cart!")
+                    }
+                }
+                    
             })
         }
         
