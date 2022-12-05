@@ -5,6 +5,7 @@ import { FaBars } from "react-icons/fa"
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import "../assets/css/Navbar.css"
+import logo from "../assets/img/logo.png"
 
 
 export default function Navbar() {
@@ -21,7 +22,7 @@ export default function Navbar() {
     return (
         <div className="navbar">
             <header className="navbar-title">
-                Muffler Man
+                <img src={logo} alt="logo" width="80" height="80" /> <span className="store-name">Muffler Man</span>
             </header>
             {
                 showDropdown 

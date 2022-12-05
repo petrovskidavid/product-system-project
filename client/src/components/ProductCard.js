@@ -16,7 +16,6 @@ export default function ProductCard(props) {
     const handleChange = (e) => {
         setSelectedQuantity(e.target.value)
     }
-
     
 
     if(location.pathname === "/store"){
@@ -55,6 +54,11 @@ export default function ProductCard(props) {
         else {
             stockStatus = <div className="product-card-no-stock">Out of Stock</div>
             inStock = false
+        }
+
+        if(selectedQuantity > props.quantity)
+        {
+            setSelectedQuantity(props.quantity)
         }
 
         productCard = (
