@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ErrorPage from "./pages/Error"
 import LogInPage from "./pages/LogIn"
 import SignUpPage from "./pages/SignUp"
 import StorePage from "./pages/Store"
@@ -16,6 +17,7 @@ export default function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<LogInPage type="customer"/>} />
           <Route path="/emp/login" element={<LogInPage type="employee" />} />
           <Route path="/emp/admin" element={<AdminPage />} />

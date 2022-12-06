@@ -29,9 +29,23 @@ export default function OrdersPage() {
 
     return (
         <div>
-            <Navbar />
-            <ToastContainer floatingTime={9000} />
-            {location.pathname === "/orders" ? (<OrderCards />) : (<OrderDetails />)}
+            {location.pathname === "/orders" ? 
+                                            (
+                                                <div>
+                                                    <Navbar />
+                                                    <ToastContainer floatingTime={9000} />
+                                                    <OrderCards />
+                                                </div>
+                                            ) 
+                                            : 
+                                            (
+                                                <div>
+                                                    <Navbar showDropdown={false}/>
+                                                    <ToastContainer floatingTime={9000} />
+                                                    <OrderDetails />
+                                                </div>    
+                                            )
+            }
         </div>
     )
 }

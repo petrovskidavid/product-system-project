@@ -8,14 +8,16 @@ import "../assets/css/Navbar.css"
 import logo from "../assets/img/logo.png"
 
 
-export default function Navbar() {
+export default function Navbar(props) {
 
     const nav = useNavigate() //< Used to redirect client
     const location = useLocation()
-    let showDropdown = true
+    let showDropdown = props.showDropdown === undefined ? true : false
+    console.log(props)
+    console.log(showDropdown)
 
 
-    if(location.pathname === "/" || location.pathname === "/signup" || location.pathname === "/emp/login" || location.pathname === "/orders/details" || location.pathname === "/emp/admin/order-details" || location.pathname === "/emp/workstations/order-details")
+    if(location.pathname === "/orders/details" || location.pathname === "/emp/admin/order-details" || location.pathname === "/emp/workstations/order-details")
         showDropdown = false
 
 

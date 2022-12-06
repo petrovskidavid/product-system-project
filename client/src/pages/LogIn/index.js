@@ -17,7 +17,7 @@ export default function LogInPage(props) {
 
     return (
         <div>
-            <Navbar />
+            <Navbar showDropdown={false}/>
             {props.type === "customer" ? <CustomerLogInForm /> : <EmployeeLogInForm />}
         </div>
     )

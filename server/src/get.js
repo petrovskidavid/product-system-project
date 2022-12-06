@@ -21,32 +21,21 @@ function getProducts(req, res) {
             throw err
         
 
-        for(let i = 0; i < legacyRows.length; i++) {
-            
-            // mongoDb.then(connection => {
-
-            //     connection.db("InternalDb").collection("Products").insertOne({"_id": legacyRows[i].number, "ProductID": legacyRows[i].number, "Quantity": (Math.floor(Math.random() * 100))}).then(res => {
-            //         console.log(res)
-            //     })
-            // })
-        }
-
         const productsList = [] //< Stores all the data for the products
 
         mongoDb.then(connection => {
             // Gets all the products and quantities from internal databse
-            console.log(yellowFont, "Retriving internal DB data...")
             connection.db("InternalDb").collection("Products").find({}).sort({ProductID: 1}).project({_id: 0}).toArray().then((internalRows) => {
 
                 // Combines legact database data with the corresponding internal database data
-                console.log("Combining data...")
+                console.log("Combining internal DB and legacy DB data...")
                 for(let i = 0; i < legacyRows.length; i++) {
                     productsList.push({...legacyRows[i], ...internalRows[i]})
                 }
 
                 // Sends the data to the client
+                console.log(greenFont, "Retrieved data\n")
                 res.send(productsList)
-                console.log(greenFont, "Sent response to client\n")
             })
         })
     })
@@ -61,26 +50,25 @@ function getCart(req, res) {
 
 
     mongoDb.then(connection => {
-        console.log(yellowFont, "Looking for customers cart...")
+
+        // Looks for the customers cart
         connection.db("InternalDb").collection("Orders").findOne({Email: email, OrderStatus: "cart"}).then(openOrder => {
 
+            
             if (openOrder != null) {
-                console.log(greenFont, "Customer cart found")
+                // Found a cart
                 
                 orderId = openOrder._id
-
-                console.log("Retriving cart data...")
                 connection.db("InternalDb").collection("Carts").find({OrderID: orderId}).toArray().then(cartItems => {
 
+                    console.log(greenFont, "Found the customers cart\n")
                     res.send(cartItems)
-                    console.log(greenFont, "Sent response to client\n")
                 })
 
             } else {
-
-                console.log(redFont, "No customer cart found")
-                // res.send({openCart: false});
-                // console.log(greenFont, "Sent response to client\n")
+                // No cart found
+                console.log(redFont, "No cart found for the customer\n")
+                res.send({openCart: false});
             }
             
         })
@@ -89,6 +77,8 @@ function getCart(req, res) {
 
 
 function retrieveOrders(req, res) {
+    console.log(`\n[${request.type} #${++request.number}] Request to get orders (retrieveOrders)`)
+
     // Store request data
     const email = req.query.customerEmail;
     const orderState = req.query.orderStatus;
@@ -96,8 +86,6 @@ function retrieveOrders(req, res) {
 
     // find all documents pertaining to requested "State": ("authorized" or "shipped")
     mongoDb.then(connection => {
-        // log
-        console.log(yellowFont, `Fetching all ${orderState} orders...`);
 
         // * find() specified orders in requested state * // 
         
@@ -106,30 +94,41 @@ function retrieveOrders(req, res) {
         var col = dbo.collection("Orders");
         
         if(orderState === "all") {
+            // Find all the orders that are not of status 'cart'
 
             if(email === undefined){
-                // run find
+                // Sends all the orders
+                
                 col.find({OrderStatus: {$ne: "cart"}}).sort({TimeStamp: 1}).toArray().then(listOfOrders => {
+                    console.log(greenFont, "All orders found\n")
                     res.send(listOfOrders);       
                 })
 
             } else {
-                // run find
+                // Sends all the orders for the specified customer
+
                 col.find({OrderStatus: {$ne: "cart"}, Email: email}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
+                    console.log(greenFont, "All customer orders found\n")
                     res.send(listOfOrders);       
                 })   
             }
 
         } else {
+            // Looks for orders of specified order status
 
             if(email === undefined){
-                // run find
+                // Sends all the specified orders
+
                 col.find({OrderStatus: orderState}).sort({TimeStamp: 1}).toArray().then(listOfOrders => {
+                    `All orders of status ${orderState} found`
                     res.send(listOfOrders);       
                 })
 
             } else {
+                // Sends all the specified orders for the specified customer
+
                 col.find({OrderStatus: orderState, Email: email}).sort({TimeStamp: -1}).toArray().then(listOfOrders => {
+                    console.log(greenFont, `Customer orders of status ${orderState} found\n`)
                     res.send(listOfOrders);       
                 })
             }
@@ -139,14 +138,13 @@ function retrieveOrders(req, res) {
 
 
 function retrieveProductsInOrder(req, res) {
+    console.log(`\n[${request.type} #${++request.number}] Request to get all the products in an order (retrieveProductsInOrders)`)
+
     // Store request data
     const requestedID = req.query.orderID;
 
-
     // retrieve all products in cart linked to requested ID
     mongoDb.then(connection => {
-        // logging
-        console.log(yellowFont, "Fetching all products in cart with requested ID");
 
         // * find() specified orders in requested state * //
         
@@ -156,6 +154,7 @@ function retrieveProductsInOrder(req, res) {
 
         // run find
         col.find({OrderID: ObjectId(requestedID)}).toArray().then(listofProducts => {
+            console.log(greenFont, "Found all the products in the specified order\n")
             res.send(listofProducts);
         })
     })
@@ -165,11 +164,10 @@ function retrieveProductsInOrder(req, res) {
 function getWeightBrackets (req, res) {
     console.log(`\n[${request.type} #${++request.number}] Request to get the weight brackets data (getWeightBrackets)`)
 
-
     mongoDb.then(connection => {
 
-        connection.db("InternalDb").collection("WeightBrackets").find({}).sort({StartRange: 1}).project({_id: 0}).toArray().then(weightBrackets => {
-            
+        connection.db("InternalDb").collection("WeightBrackets").find({}).sort({StartRange: 1}).project({_id: 0}).toArray().then(weightBrackets => {     
+            console.log(greenFont, "Found all the weights and their charges for the brackets\n")
             res.send(weightBrackets)
         })
     })
