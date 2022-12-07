@@ -8,4 +8,4 @@ To run both the client and server side at the same time:
 1. Ensure that you are in the `./` path of the project
 2. In your terminal type `npm start`
 
-This will start both the client and server in one terminal window and you will be able to view the application under: **localhost:3000**
+This will start both the client and server in one terminal window and you will be able to view the application at: **localhost:3000**
