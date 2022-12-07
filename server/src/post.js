@@ -10,7 +10,7 @@ const request = {
     number: 0
 }
 
-// Checks if a customer account can be created and creates one if possible
+
 function signUpCustomer(req, res) {
     console.log(`[${request.type} #${++request.number}] Request to create new customer (signup)`)
 

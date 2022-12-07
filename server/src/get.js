@@ -10,7 +10,7 @@ const request = {
     number: 0
 }
 
-// Gets all the products from the legacy and internal database and combines then to the client side
+
 function getProducts(req, res) {
     console.log(`[${request.type} #${++request.number}] Request to get all products (getProducts)`)
 
