@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import CartItemCard from "../../components/CartItemCard"
+import CartItemCard from "../../../components/CartItemCard"
 
+
+/**
+ * Creates a list of all the cart cards for the customers cart.
+ * 
+ * @returns A list of all the cart card components for the customers cart
+ */
 export default function CartItemCards() {
 
-    const nav = useNavigate() //< Used to redirect client
-    const [cartItemsData, setCartItemsData] = useState([]) //< Holds the list of all the products
-    const [productsData, setProductsData] = useState([]) //< Holds the list of all the products
-    const [retrievedProducts, setRetrievedProducts] = useState(false)
-    const [retrievedCartItems, setRetrievedCartItems] = useState(false)
-    let cartItemCards
-    let totalItems = 0
-    let totalPrice = 0
+    const nav = useNavigate()                                           //< Holds functions to be able to navigate to different pages
+    const [cartItemsData, setCartItemsData] = useState([])              //< Holds the list of all the products
+    const [productsData, setProductsData] = useState([])                //< Holds the list of all the products
+    const [retrievedProducts, setRetrievedProducts] = useState(false)   //< Holds info if the products were retrieved or not
+    const [retrievedCartItems, setRetrievedCartItems] = useState(false) //< Holds info if the cart items were retrieved or not
+    let cartItemCards                                                   //< Holds a list of all the cart cards
+    let totalItems = 0                                                  //< Holds the total number of items in the customers cart
+    let totalPrice = 0                                                  //< Holds the total price of all the items in the customers cart
     
 
-    // Only calls once per render of the component
     useEffect(() => {
 
         // Requests a list of all the products in the database
@@ -33,7 +38,9 @@ export default function CartItemCards() {
     }, [])
 
 
+    // Checks if all the needed data was retrieved
     if(retrievedCartItems && retrievedProducts){
+
         // Filters through all the products
         cartItemCards = cartItemsData.map((cartItem) => {
 
@@ -64,6 +71,7 @@ export default function CartItemCards() {
         })
     }
     
+    // The infromation to display if a cart is not empty
     const nonEmpty = (
                         <div className="cart">
                             <div className="checkout-container-cart">
@@ -80,6 +88,7 @@ export default function CartItemCards() {
                         </div>
                     )
     
+    // The infromation to display if a cart is empty
     const empty = (
                     <div className="cart">
                         <div className="checkout-container-cart">
@@ -90,6 +99,7 @@ export default function CartItemCards() {
                     </div>
                 )
 
+                
     return (
         <div>
             {totalItems === 0 ? empty : nonEmpty}

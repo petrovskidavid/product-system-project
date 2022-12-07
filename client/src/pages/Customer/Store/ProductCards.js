@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react"
 import Axios from "axios";
-import SearchField from "../../components/SearchField"
-import ProductCard from "../../components/ProductCard"
+import SearchField from "../../../components/SearchField"
+import ProductCard from "../../../components/ProductCard"
 
+
+/**
+ * Creates a list of all the product cards of the current products that the store offers.
+ * 
+ * @returns A list of all the product card components for the current products the store offers
+ */
 export default function ProductCards() {
 
     const [productsData, setProductsData] = useState([]) //< Holds the list of all the products
     const [searchQuery, setSearchQuery] = useState("")   //< Holds the search query provided by the user
 
 
-    // Only calls once per render of the component
     useEffect(() => {
 
         // Requests a list of all the products in the database

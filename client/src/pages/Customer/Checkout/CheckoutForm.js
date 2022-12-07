@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import valid from "card-validator"
 import { toast } from "react-custom-alert"
-import "../../assets/css/CheckoutPage.css"
+import "../../../assets/css/CheckoutPage.css"
 
 
 // Holds validation rules for the sign up form inputs
@@ -24,31 +24,37 @@ const checkoutValidation = yup.object().shape({
 })
 
 
+/**
+ * Creats the checkout form and displays the order summary along side.
+ * 
+ * @returns The form to complete a purchase and the order summary
+ */
 export default function CheckoutForm() {
 
-    const nav = useNavigate() //< Used to redirect client
-    const [weightBrackets, setWeightBrackets] = useState([]) //< Holds the list of all the products
-    const [cartItemsData, setCartItemsData] = useState([]) //< Holds the list of all the products
-    const [productsData, setProductsData] = useState([]) //< Holds the list of all the products
-    const [retrievedWeightBrackets, setRetrievedWeightBrackets] = useState(false)
-    const [retrievedProducts, setRetrievedProducts] = useState(false)
-    const [retrievedCartItems, setRetrievedCartItems] = useState(false)
-    let orderTotalBefore = 0
-    let orderTotalWeight = 0
-    let orderShippingCharge = 0
-    let orderTotal = 0
-    let orderAuthorizationNum
-    let orderTimeStamp
-    let orderPurchasedProducts = []
-    let bottomThreeErrMessage
-    let shippingAddress
+    const nav = useNavigate()                                                     //< Holds functions to be able to navigate to different pages
+    const [weightBrackets, setWeightBrackets] = useState([])                      //< Holds the list of all the products
+    const [cartItemsData, setCartItemsData] = useState([])                        //< Holds the list of all the products
+    const [productsData, setProductsData] = useState([])                          //< Holds the list of all the products
+    const [retrievedWeightBrackets, setRetrievedWeightBrackets] = useState(false) //< Holds info if the weight brackets were retrieved or not
+    const [retrievedProducts, setRetrievedProducts] = useState(false)             //< Holds info if the products were retrieved or not
+    const [retrievedCartItems, setRetrievedCartItems] = useState(false)           //< Holds info if the cart items were retrieved or not
+    let orderTotalBefore = 0                                                      //< Holds the order subtotal 
+    let orderTotalWeight = 0                                                      //< Holds the total weight of the order
+    let orderShippingCharge = 0                                                   //< Holds the shipping charge
+    let orderTotal = 0                                                            //< Holds the order total
+    let orderAuthorizationNum                                                     //< Holds the authorization number of the order once the transaction goes through
+    let orderTimeStamp                                                            //< Holds the time stamp of when the order was purchased
+    let orderPurchasedProducts = []                                               //< Holds a list of the products in the order
+    let bottomThreeErrMessage                                                     //< Holds error messages for the checkout form
+    let shippingAddress                                                           //< Holds the customers shipping address
+
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, setValue, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(checkoutValidation)
     })
 
-    // Only calls once per render of the component
+
     useEffect(() => {
 
         // Requests a list of all the products in the database
@@ -57,6 +63,7 @@ export default function CheckoutForm() {
             setRetrievedCartItems(true)
         })
 
+        // Requests a list of the weight brackets
         Axios.get("http://localhost:8800/api/getWeightBrackets").then((res) => {
             setWeightBrackets(res.data)
             setRetrievedWeightBrackets(true)
@@ -67,11 +74,13 @@ export default function CheckoutForm() {
             setProductsData(res.data)
             setRetrievedProducts(true)
         })
-
     }, [nav, retrievedCartItems])
 
-    
+
+    // Checks if all the needed data was retrieved
     if (retrievedCartItems && retrievedWeightBrackets && retrievedProducts){
+
+        // Calculates the order total weight, subtotal and puts in the products and their quantity
         cartItemsData.map((cartItem) => {
 
             let productInCart = productsData.find(product => cartItem.ProductID === product.number)
@@ -83,6 +92,8 @@ export default function CheckoutForm() {
             return null
         })
 
+
+        // Iterates through the list of weight brackets and determines the shipping charge for the current order based on its total weight
         for(let i = 0; i < weightBrackets.length; i++){
 
             if (i === weightBrackets.length - 1){
@@ -98,8 +109,9 @@ export default function CheckoutForm() {
         orderTotal = orderTotalBefore + orderShippingCharge
     }
 
-    const submitPurchase = (data) => {
 
+    // Creates a request to process the transaction once the customer fills out the checkout form
+    const submitPurchase = (data) => {
         Axios.post("http://blitz.cs.niu.edu/creditcard", {
             vendor: "Muffler Man",
             trans: cartItemsData[0].OrderID.toUpperCase(),
@@ -111,14 +123,18 @@ export default function CheckoutForm() {
         }).then(response => {
 
             if(response.data.errors){
+                // Displays the error that occured when trying to process the transaction
+
                 toast.error("There was an error processing your transaction. Please check your payment infromation. (Error: " + response.data.errors[0] + ")")
-            
+        
             } else {
+                // Order transaction was successfull
 
                 orderAuthorizationNum = response.data.authorization
                 orderTimeStamp = response.data.timeStamp
                 shippingAddress = data.address + ", " + data.city + ", " + data.state + " " + data.zipCode
 
+                // Updates order status
                 Axios.post("http://localhost:8800/api/updateOrder", {
                     name: localStorage.getItem("customerName"),
                     orderID: cartItemsData[0].OrderID,
@@ -131,9 +147,9 @@ export default function CheckoutForm() {
                     authorizationNumber: orderAuthorizationNum,
                     timeStamp: orderTimeStamp,
                     productsPurchased: orderPurchasedProducts
-
                 }).then(() => {
-                    // Change later
+
+                    // Redirects the customer to their order history page with the authorization number
                     nav("/orders?auth=" + orderAuthorizationNum)
                 })
             }
@@ -142,6 +158,7 @@ export default function CheckoutForm() {
     }
 
 
+    // Displays correct error message depending on the error type
     if(errors.expMonth?.type === "length" || errors.expYear?.type === "length" || errors.cvv?.type === "length"){
         bottomThreeErrMessage = "Please provide the correct number of digits"
 
