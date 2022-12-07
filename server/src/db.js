@@ -14,7 +14,7 @@ legacyDb.connect()
 
 // Creates a connection to the internal MongoDB database
 const mongoClient = mongodb.MongoClient;
-const mongoDb = mongoClient.connect("mongodb+srv://testing:testingDB@csci-467-project.rxzknis.mongodb.net/?retryWrites=true&w=majority");
+const mongoDb = mongoClient.connect("mongodb+srv://group-3A:csci467@csci-467-project.rxzknis.mongodb.net/?retryWrites=true&w=majority");
 
 
 export {legacyDb, mongoDb}
