@@ -5,27 +5,37 @@ import Axios from "axios"
 import { toast } from "react-custom-alert"
 import "../assets/css/OrderDetails.css"
 
-
+/**
+ * Displays the order details for the order depending on the current page.
+ * 
+ * It displays the relevant infromation for the customer, administrator employees and workstations employees.
+ * 
+ * @returns The order details component
+ */
 export default function OrderDetails() {
 
-    const [productsInOrder, setProductsInOrder] = useState([])
-    const nav = useNavigate()
-    const location = useLocation()
-    const orderInfo = location.state
-    let listOfProducts
-    let orderDetails
-    const packingListRef = useRef()
-    const invoiceRef = useRef()
-    const shippingLabelRef = useRef()
+    const [productsInOrder, setProductsInOrder] = useState([]) //< Holds the list of products in the order
+    const nav = useNavigate()                                  //< Holds functions to be able to navigate to different pages
+    const location = useLocation()                             //< Holds infromation about the current url
+    const orderInfo = location.state                           //< Holds the GET parameters if any in the current url
+    let listOfProducts                                         //< Holds a list of table rows for each product
+    let orderDetails                                           //< Holds the order details component depending on the current url
+    const packingListRef = useRef()                            //< References the packing list from the workstation order details component
+    const invoiceRef = useRef()                                //< References the invoice from the workstation order details component
+    const shippingLabelRef = useRef()                          //< References the shipping label from the workstation order details component
+
 
     useEffect(() => {
 
+        // Gets all the products in the current order
         Axios.get("http://localhost:8800/api/retrieveProductsInOrder?orderID=" + orderInfo.orderID).then((res) => {
             setProductsInOrder(res.data)
         })
     },[orderInfo.orderID])
 
+
     if(location.pathname === "/orders/details"){
+        // Creates the order details component for the customers order details
 
         listOfProducts = productsInOrder.map(product => {
             return (
@@ -39,7 +49,6 @@ export default function OrderDetails() {
         })
 
         orderDetails = (
-            
             <div className="order-details">
                 <div className="order-details-title">Order #{orderInfo.orderID} Details</div>
                 <div className="order-details-container">
@@ -159,6 +168,7 @@ export default function OrderDetails() {
         )
 
     } else if(location.pathname === "/emp/admin/order-details"){
+        // Creates the order details component for the administrator employees
 
         listOfProducts = productsInOrder.map(product => {
             return (
@@ -172,7 +182,6 @@ export default function OrderDetails() {
         })
 
         orderDetails = (
-            
             <div className="order-details">
                 <div className="order-details-title">Order #{orderInfo.orderID} Details</div>
                 <div className="order-details-container">
@@ -312,7 +321,9 @@ export default function OrderDetails() {
         )
 
     } else if("/emp/workstations/order-details"){
+        // Creates the order details component for the workstation employees
 
+        // Updates the order status to shipped once the employee fulfills the order
         const shipOrder = () => {
             
             Axios.post("http://localhost:8800/api/shipOrder", {
@@ -321,9 +332,11 @@ export default function OrderDetails() {
             }).then(res => {
 
                 if(res.data.shipped){
+                    // Shipping was successfull and the employee is redirected to the homepage
                     nav("/emp/workstations?shippedOrder=" + orderInfo.orderID)
 
                 } else {
+                    // There was an error with shipping
                     toast.error("Failed to update order status. Try again!")
                 }
             })
@@ -352,7 +365,6 @@ export default function OrderDetails() {
         })
 
         orderDetails = (
-            
             <div className="order-details">
                 <div className="order-details-title">Order #{orderInfo.orderID} Details</div>
 
@@ -492,7 +504,6 @@ export default function OrderDetails() {
         )
     }
 
-    
     
     return(
         orderDetails

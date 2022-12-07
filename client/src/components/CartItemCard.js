@@ -2,15 +2,34 @@ import { useState } from "react"
 import Axios from "axios"
 import "react-custom-alert/dist/index.css"
 
+
+/**
+ * Creates a card for each item in the customers cart.
+ * 
+ * The cart contains an image of the product, the products description, weight, price, and
+ * the quantity that the user selected with buttons that enable the user to update the quantity.
+ * 
+ * @param props.productID The ID of the product
+ * @param props.img A link to the image of the product
+ * @param props.description The descriptions of the product
+ * @param props.weight The weight of the product
+ * @param props.price The price per item of the proudct
+ * @param props.quantity The avaliable quantity of the product
+ * @param props.selectedQuantity The amount the customer selected to purchase of this product
+ * @param props.orderID The order ID associated with the customers cart 
+ * 
+ * @return The card component for the product in the customers cart
+ */
 export default function CartItemCard(props) {
 
-    let stockStatus     //< Holds the text to display the status of the stock
-    const [selectedQuantity, setSelectedQuantity] = useState(props.selectedQuantity)
+    let stockStatus                                                                  //< Holds the text to display the status of the stock
+    const [selectedQuantity, setSelectedQuantity] = useState(props.selectedQuantity) //< Holds the customers selected quantity
 
     const handleChange = (e) => {
         setSelectedQuantity(e.target.value)
     }
 
+    // Updates the selected quantity of a product if the customers updates their selected quantity field
     const updateCart = () => {
         Axios.post("http://localhost:8800/api/updateCart", {
             OrderID: props.orderID,
@@ -19,6 +38,7 @@ export default function CartItemCard(props) {
         })  
     }
 
+    // If the customer has selected more than the avaliable quantity this updates it to hold whatever is in stock right now
     const updateCartOverflow = (newQuantity) => {
         Axios.post("http://localhost:8800/api/updateCart", {
             OrderID: props.orderID,
@@ -28,13 +48,14 @@ export default function CartItemCard(props) {
     }
 
 
+    // Removes the product from the customers cart
     const removeFromCart = async () => {
-
         await Axios.post("http://localhost:8800/api/removeFromCart", {
             OrderID: props.orderID,
             ProductID: props.productID
         })
     }
+
 
     // Checks the avaliability of the cart-item and updates it status on the screen
     if (props.quantity > 15) {
@@ -48,6 +69,8 @@ export default function CartItemCard(props) {
         removeFromCart()
     }
 
+
+    // Checks if the customer tried to select more than the avaliable quantity of a product and updates the field to the max in stock at the moment
     if(selectedQuantity > props.quantity)
     {
         updateCartOverflow(props.quantity)
@@ -56,7 +79,6 @@ export default function CartItemCard(props) {
     
 
     return (
-        
         <div className="cart-item-card">
             <img src={props.img} alt={props.description} className="cart-item-card-img" />
 

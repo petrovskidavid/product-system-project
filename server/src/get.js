@@ -43,7 +43,7 @@ function getProducts(req, res) {
 
 
 function getCart(req, res) {
-    console.log(`\n[${request.type} #${++request.number}] Request to get all products in the customers cart (getCart)`)
+    console.log(`[${request.type} #${++request.number}] Request to get all products in the customers cart (getCart)`)
 
     const email = req.query.email
     let orderId
@@ -77,7 +77,7 @@ function getCart(req, res) {
 
 
 function retrieveOrders(req, res) {
-    console.log(`\n[${request.type} #${++request.number}] Request to get orders (retrieveOrders)`)
+    console.log(`[${request.type} #${++request.number}] Request to get orders (retrieveOrders)`)
 
     // Store request data
     const email = req.query.customerEmail;
@@ -138,7 +138,7 @@ function retrieveOrders(req, res) {
 
 
 function retrieveProductsInOrder(req, res) {
-    console.log(`\n[${request.type} #${++request.number}] Request to get all the products in an order (retrieveProductsInOrders)`)
+    console.log(`[${request.type} #${++request.number}] Request to get all the products in an order (retrieveProductsInOrders)`)
 
     // Store request data
     const requestedID = req.query.orderID;
@@ -162,7 +162,7 @@ function retrieveProductsInOrder(req, res) {
 
 
 function getWeightBrackets (req, res) {
-    console.log(`\n[${request.type} #${++request.number}] Request to get the weight brackets data (getWeightBrackets)`)
+    console.log(`[${request.type} #${++request.number}] Request to get the weight brackets data (getWeightBrackets)`)
 
     mongoDb.then(connection => {
 

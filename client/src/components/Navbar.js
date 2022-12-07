@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { FaBars } from "react-icons/fa"
@@ -8,17 +8,17 @@ import "../assets/css/Navbar.css"
 import logo from "../assets/img/logo.png"
 
 
+/**
+ * Creates the navigation bar at the top of the page.
+ * 
+ * @param props.showDropdown Tells the component if the dropdown menu should be visible or not
+ *  
+ * @returns The navigation bar component
+ */
 export default function Navbar(props) {
 
-    const nav = useNavigate() //< Used to redirect client
-    const location = useLocation()
-    let showDropdown = props.showDropdown === undefined ? true : false
-    console.log(props)
-    console.log(showDropdown)
-
-
-    if(location.pathname === "/orders/details" || location.pathname === "/emp/admin/order-details" || location.pathname === "/emp/workstations/order-details")
-        showDropdown = false
+    const location = useLocation()                                     //< Holds infromation about the current url
+    let showDropdown = props.showDropdown === undefined ? true : false //< Checks if the dropdown menu should be shown or not
 
 
     return (

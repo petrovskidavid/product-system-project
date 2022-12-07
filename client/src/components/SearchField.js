@@ -1,8 +1,18 @@
 import { FaSearch } from "react-icons/fa"
 import "../assets/css/SearchField.css"
 
-export default function SearchField(props){
 
+/**
+ * Creates a search field component for the user to be able to search through data in the store.
+ * 
+ * @param props.placeholder The text to display in the placeholder of the input field
+ * @param props.onChange The function that defines what to do when a user uses the search field 
+ * 
+ * @returns The search field component
+ */
+export default function SearchField(props){
+    
+    
     return (
         <div className="search">
             <div className="search-border">

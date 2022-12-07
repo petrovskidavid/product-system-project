@@ -6,7 +6,7 @@ export default function SignUpPage() {
 
     return (
         <div>
-            <Navbar />
+            <Navbar showDropdown={false}/>
             <SignUpForm />
         </div>
     )

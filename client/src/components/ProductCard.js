@@ -5,21 +5,41 @@ import { toast } from "react-custom-alert"
 import "react-custom-alert/dist/index.css"
 import "../assets/css/ProductCard.css"
 
+
+/**
+ * Creates a card for each product depending on the current page.
+ * 
+ * The cards are similar for the receiving employees homepage and store front, however
+ * for the store front the customer adds the product and the quantity to the cart and the
+ * employee updates the inventory of the product
+ * 
+ * @param props.description The description of the product
+ * @param props.img A link to an image of the product
+ * @param props.price The price of the product
+ * @param props.productID The ID of the product
+ * @param props.quantity The avaliable quantity of the product
+ * @param props.weight The weight of the product 
+ * 
+ * @returns The product card component
+ */
 export default function ProductCard(props) {
 
-    const location = useLocation()
-    let stockStatus     //< Holds the text to display the status of the stock
-    let inStock = true  //< Indicates if the product is in stock
-    const [selectedQuantity, setSelectedQuantity] = useState((location.pathname === "/store" ? 1 : 0))
-    let productCard
+    const location = useLocation()                                                                     //< Holds infromation about the current url
+    let stockStatus                                                                                    //< Holds the text to display the status of the stock
+    let inStock = true                                                                                 //< Indicates if the product is in stock
+    const [selectedQuantity, setSelectedQuantity] = useState((location.pathname === "/store" ? 1 : 0)) //< Displays the selected quantity of the product to add to cart or to update inventory
+    let productCard                                                                                    //< Holds the correct product card depending on the current url
     
+
     const handleChange = (e) => {
         setSelectedQuantity(e.target.value)
     }
     
 
     if(location.pathname === "/store"){
+        // Creates the product card for the store front
 
+        // Adds the selected quantity of the product to the customers cart
         const addToCart = async () => {
             await Axios.post("http://localhost:8800/api/addToCart", {
                 email: localStorage.getItem("customerEmail"),
@@ -29,18 +49,11 @@ export default function ProductCard(props) {
                 price: props.price,
                 quantity: parseInt(selectedQuantity)
             }).then(res => {
-    
-                console.log(res.data)
                 if (res.data.addedToCart){
-                    if(parseInt(selectedQuantity) > props.quantity){
-                        toast.warning("You tried to add more than what we have in stock. Only " + props.quantity + " of " + props.description + " were added to your cart.")
-                    
-                    } else {
-                        
-                        toast.success("Added "+ res.data.quantity + " of " + props.description + " to your cart!")
-                    }
-                }
-                    
+                    // Succesfully added the selcted quantity of the product to the cart
+
+                    toast.success("Added "+ res.data.quantity + " of " + props.description + " to your cart!")
+                }   
             })
         }
         
@@ -56,6 +69,7 @@ export default function ProductCard(props) {
             inStock = false
         }
 
+        // Ensures that the customer cannot put more than the avaliable quantity in their cart
         if(selectedQuantity > props.quantity)
         {
             setSelectedQuantity(props.quantity)
@@ -84,19 +98,19 @@ export default function ProductCard(props) {
         )
 
     } else if (location.pathname === "/emp/receiving"){
+        // Creates the product card for receiving employees homepage
 
+        // Upates the avaliable inventory of the selected product
         const updateQuantity = async () => {
-
             await Axios.post("http://localhost:8800/api/updateProductQuantity", {
                 productID: props.productID,
                 incQuantity: parseInt(selectedQuantity)
-
             }).then(res => {
-
                 if(!res.data.updateQuantity){
+                    // There was an error trying to update the quantity
+
                     toast.error("Error occured while updating the quantity of " + props.description + ". Try again later!")
                 }
-
             })
         }
 
