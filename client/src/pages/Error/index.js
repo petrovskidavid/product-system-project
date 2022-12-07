@@ -2,9 +2,16 @@ import { useNavigate } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import "../../assets/css/ErrorPage.css"
 
+
+/**
+ * Creates a 404 error page that lets the user redirect to one of the login pages.
+ * 
+ * @returns The 404 error page
+ */
 export default function ErrorPage() {
 
-    const nav = useNavigate()
+    const nav = useNavigate() //< Holds functions to be able to navigate to different pages
+
 
     return (
         <div>

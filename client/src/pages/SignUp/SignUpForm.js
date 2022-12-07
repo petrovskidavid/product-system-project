@@ -16,22 +16,31 @@ const signUpValidation = yup.object().shape({
 })
 
 
+/**
+ * Creates a customer sign up form to create a new account with a unique email address.
+ * 
+ * Provides redirect link to the customer login page.
+ * 
+ * @returns The customer sign up form
+ */
 export default function SignUpForm() {
+
+    const nav = useNavigate()                                       //< Holds functions to be able to navigate to different pages
+    const [addedCustomerErr, setAddedCustomerErr] = useState(false) //< Holds a boolean indicating if an error occured when adding a customer
+
 
     // Removes all localStorage items connected to user login info
     localStorage.removeItem("customerName")
     localStorage.removeItem("customerEmail")
 
-    const nav = useNavigate() //< Used to redirect client
-
-    const [addedCustomerErr, setAddedCustomerErr] = useState(false) //< Holds a boolean indicating if an error occured when adding a customer
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(signUpValidation)
     })
 
-    // Runs when the submit button is clicked
+
+    // Creates the new customers account
     const submitSignUp = async (data) => {
 
         // Sends post request to the backend to handle the data for sign up and awaits a response

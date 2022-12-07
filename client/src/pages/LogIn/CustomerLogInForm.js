@@ -13,9 +13,16 @@ const logInValidation = yup.object().shape({
 })
 
 
+/**
+ * Creates a login form for the customer and checks their login information.
+ * 
+ * Provides redirect links to the employee login and sign up pages.
+ * 
+ * @returns The login form for the customer
+ */
 export default function CustomerLogInForm() {
 
-    const nav = useNavigate()                                     //< Used to redirect client
+    const nav = useNavigate()                                     //< Holds functions to be able to navigate to different pages
     const [emailErr, setEmailErr] = useState(false)               //< Holds a boolean indicating if an email error occured while logging in
     const [verificationErr, setVerificationErr] = useState(false) //< Holds a boolean indicating if a password/email verificaiton error occured while logging in
     
@@ -30,7 +37,8 @@ export default function CustomerLogInForm() {
         resolver: yupResolver(logInValidation)
     })
 
-    // Runs when the submit button is clicked
+
+    // Checks the customers email and password for login
     const submitLogIn = async (data) => {
 
         // Sends post request to the backend to handle the data for log in and awaits a response
