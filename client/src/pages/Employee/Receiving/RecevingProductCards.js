@@ -32,7 +32,7 @@ export default function ReceivingProductCards() {
 
     // Filters through all the products
     const productCards = productsData.filter((searchResults) => {
-        console.log(searchQuery)
+        
         if (searchQuery === ""){
 
             // Empty query, returns all the products

@@ -68,7 +68,6 @@ function getCart(req, res) {
             } else {
                 // No cart found
                 console.log(redFont, "No cart found for the customer\n")
-                res.send({openCart: false});
             }
             
         })
