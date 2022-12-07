@@ -9,13 +9,13 @@
     border: 1px solid black;
     border-radius: 10px;
     height: 30px;
-    width: 260px;
+    width: 300px;
     display: inline-block;
     background-color: white;
 }
 
 .search-field {
-    width: 215px;
+    width: 255px;
     height: 25px;
     font-size: 16px;
     border: none;

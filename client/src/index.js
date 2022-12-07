@@ -4,6 +4,7 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+// Renders the app
 root.render(
   <div>
     <App />

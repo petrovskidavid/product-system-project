@@ -64,7 +64,7 @@ export default function ProductCards() {
 
     return (
         <div className="store">
-            <SearchField placeholder="Search" onChange={searchProducts}/>
+            <SearchField placeholder="Search by Description" onChange={searchProducts}/>
             <div className="product-cards-container">
                 {productCards}
             </div>

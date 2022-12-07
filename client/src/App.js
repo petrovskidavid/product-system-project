@@ -11,7 +11,14 @@ import ReceivingPage from "./pages/Employee/Receiving"
 import WorkstationsPage from "./pages/Employee/Workstations"
 import './assets/css/App.css';
 
+
+/**
+ * The main application, it handles all the routing and displays the corresponding page depenending on the url.
+ * 
+ * @returns The corresponding page for the requested route/url
+ */
 export default function App() {
+  
   
   return (
     <div className="App">

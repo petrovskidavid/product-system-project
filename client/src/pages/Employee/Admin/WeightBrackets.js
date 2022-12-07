@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { toast } from "react-custom-alert"
 
+
 // Holds validation rules for the sign up form inputs
 const weightBracketValidation = yup.object().shape({
     newWeight: yup.number().integer("Please provide a whole number").min(0, "Please provide a positive number").required("Please provide a new weight"),
@@ -12,40 +13,51 @@ const weightBracketValidation = yup.object().shape({
 })
 
 
+/**
+ * Creates the table for the weight brackets, and inputs for the employee to be able to update the weight brackets table.
+ * 
+ * @returns The weight brackets table for the administrators page
+ */
 export default function WeightBrackets() {
 
-    const [weightBrackets, setWeightBrackets] = useState([]) //< Holds the list of all the products
-    let weightBracketsTable = []
+    const [weightBrackets, setWeightBrackets] = useState([]) //< Holds the list of the weight brackets
+    let weightBracketsTable = []                             //< Holds a list of the weight brackets in a table
+
 
     // Uses the above validation rules to handle the forms input and provides parameters to use
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(weightBracketValidation)
     })
 
-    console.log(errors)
-    // Only calls once per render of the component
-    useEffect(() => {
 
+    useEffect(() => {
+        // Requests the weight brackets from the database
         Axios.get("http://localhost:8800/api/getWeightBrackets").then((res) => {
             setWeightBrackets(res.data)
         })
     }, [])
 
 
+    // Updates the weight bracket in the database when the employee adds weight brackets
     const updateWeightBrackets = (data) => {
         Axios.post("http://localhost:8800/api/updateWeightBrackets", {
             newWeight: data.newWeight,
             newCharge: data.newCharge
         }).then(res => {
+
             if(!res.data.addedWeightBracket){
+                // Notifies the employee that there was an error with adding the weight bracket
                 toast.error("There was an error adding the new weight bracket! Make sure that the weight bracket doesn't already exist.")
+
             }else{
+                // Reloads the page to display the new weight bracket
                 window.location.reload(false)
             }
         })
     }
 
 
+    // Updates the weight bracket in the database when the employee removes a weight bracket
     const removeWeightBracket = (data) => {
         console.log(data.target.id)
 
@@ -53,18 +65,20 @@ export default function WeightBrackets() {
             removeWeight: data.target.id
         
         }).then(res => {
+
             if(res.data.removedWeightBracket){
+                // Reloads the page to display the new weight brackets
                 window.location.reload(false)
             }
         })
     }
 
-    // It works to print them, all we gotta do is just make it add to database with start and price, and then to check we can use this list and see where it is with <= and =>
-    // in checkout add post to update order to have the total order, charge amt, total weight, and also add a function where if parm b = undefined then that is ex. 10 -> above lbs
-    // add a update order and transaction request
+    // Loops through the list of all the weight brackets
     for(let i = 0; i < weightBrackets.length; i++){
 
         if (i === weightBrackets.length - 1) {
+            // If its the last weight bracket then it displays the corresponding table row
+
             weightBracketsTable.push(
                 <tr key={weightBrackets[i].StartRange} >
                     <td className="weight-brackets-table-range">
@@ -79,6 +93,8 @@ export default function WeightBrackets() {
                 </tr>
             )
         } else {
+            // Otherwise it displays the row with the starting and ending weight for the table row
+
             weightBracketsTable.push(
                 <tr key={weightBrackets[i].StartRange}>
                     <td className="weight-brackets-table-range">
@@ -94,6 +110,7 @@ export default function WeightBrackets() {
             )
         }                 
     }
+
 
     return (
         <div className="weight-brackets">
