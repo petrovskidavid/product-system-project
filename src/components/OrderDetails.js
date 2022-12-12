@@ -326,7 +326,7 @@ export default function OrderDetails() {
         // Updates the order status to shipped once the employee fulfills the order
         const shipOrder = () => {
             
-            Axios.post("http://localhost:8800/api/shipOrder", {
+            Axios.post(process.env.REACT_APP_API_URL + "/api/shipOrder", {
                 orderID: orderInfo.orderID
 
             }).then(res => {
