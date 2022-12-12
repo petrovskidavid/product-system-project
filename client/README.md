@@ -6,10 +6,10 @@ To run the client side of the project:
 
 This will start the client in your seperate terminal window and you will be able to view the application at: **localhost:3000**
 
-### Customer Log-in/Sign-up
+## Customer Log-in/Sign-up
 To log in as a customer create an account using the Sign-Up page, or using an account you already created.
 
-### Employee Log-in
+## Employee Log-in
 To log in as an employee use the following existing accounts
 
 - Administration Employee:
