@@ -18,6 +18,7 @@ export default function AdminPage() {
 
     const location = useLocation() //< Holds infromation about the current url
     const nav = useNavigate()      //< Holds functions to be able to navigate to different pages
+    let adminDisplay               //< Holds what to display on the administrators page
 
     useEffect(() => {
         if(localStorage.getItem("employeeID") === null) {
@@ -26,15 +27,38 @@ export default function AdminPage() {
             nav("/emp/login")
         }
     }, [nav])
+    
+    
+    if(location.pathname === "/emp/admin/weight-brackets") {
 
+        adminDisplay = (
+            <div>
+                <Navbar />
+                <ToastContainer floatingTime={6000} />
+                <WeightBrackets />
+            </div>
+        )
+    
+    } else if (location.pathname === "/emp/admin") {
 
-    return(
-        <div>
-        <Navbar />
-        <ToastContainer floatingTime={6000} />
-        {location.pathname === "/emp/admin/weight-brackets" && <WeightBrackets />}
-        {location.pathname === "/emp/admin" && <AllOrders />}
-        {location.pathname === "/emp/admin/order-details" && <OrderDetails />}
-        </div>
-    )
+        adminDisplay = (
+            <div>
+                <Navbar />
+                <ToastContainer floatingTime={6000} />
+                <AllOrders />
+            </div>
+        )
+
+    } else if (location.pathname === "/emp/admin/order-details") {
+
+        adminDisplay = (
+            <div>
+                <Navbar showDropdown={false} />
+                <ToastContainer floatingTime={6000} />
+                <OrderDetails />
+            </div>
+        )
+    }
+
+    return adminDisplay
 }

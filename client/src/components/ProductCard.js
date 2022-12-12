@@ -106,7 +106,7 @@ export default function ProductCard(props) {
                 productID: props.productID,
                 incQuantity: parseInt(selectedQuantity)
             }).then(res => {
-                if(!res.data.updateQuantity){
+                if(!res.data.updatedQauntity){
                     // There was an error trying to update the quantity
 
                     toast.error("Error occured while updating the quantity of " + props.description + ". Try again later!")
