@@ -10,7 +10,7 @@ dotenv.config()
 
 // Initializes express server
 const server = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 4000
 const greenFont = "\x1b[32m%s\x1b[0m"
 const yellowFont = "\x1b[33m%s\x1b[0m"
 const redFont = "\x1b[31m%s\x1b[0m"
