@@ -1,12 +1,16 @@
 import express from "express" 
 import cors from "cors"
+import dotenv from "dotenv"
 import {getProducts, getCart, retrieveOrders, retrieveProductsInOrder, getWeightBrackets} from "./get.js"
 import {signUpCustomer, loginCustomer, addToCart, updateCart, removeFromCart, updateOrder, updateWeightBrackets, removeWeightBracket, updateProductQuantity, shipOrder} from "./post.js"
 
 
+// Configures environment variables
+dotenv.config()
+
 // Initializes express server
 const server = express()
-const PORT = 8800
+const PORT = process.env.PORT || 3000
 const greenFont = "\x1b[32m%s\x1b[0m"
 const yellowFont = "\x1b[33m%s\x1b[0m"
 const redFont = "\x1b[31m%s\x1b[0m"
