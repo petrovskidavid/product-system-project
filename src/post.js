@@ -374,7 +374,11 @@ function updateProductQuantity(req, res) {
     console.log(`[${request.type} #${++request.number}] Request to update the quantity of a product (updateProductQuantity)`)
     
     const productID = req.body.productID
-    const incQuantity = req.body.incQuantity
+    let incQuantity = req.body.incQuantity
+
+    if (incQuantity === undefined) {
+        incQuantity = 0
+    }
 
     mongoDb.then(connection => {
 
