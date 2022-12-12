@@ -1,7 +1,6 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "homepage": "https://petrovskidavid.github.io/product-system-project",
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
@@ -25,8 +24,6 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
