@@ -376,7 +376,7 @@ function updateProductQuantity(req, res) {
     const productID = req.body.productID
     let incQuantity = req.body.incQuantity
 
-    if (incQuantity === undefined) {
+    if (incQuantity === null) {
         incQuantity = 0
     }
 
