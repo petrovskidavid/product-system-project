@@ -22,7 +22,7 @@ export default function CheckoutPage() {
         }
 
         // Warns the user about this website being a demo
-        toast.warning("Do NOT provide your real shipping and credit card information! This is a project website!")
+        toast.warning("Do NOT provide your real shipping and credit card information! This website is a school project.")
     }, [nav])
 
     return (

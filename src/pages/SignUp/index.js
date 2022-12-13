@@ -15,7 +15,7 @@ export default function SignUpPage() {
     useEffect(() => {
 
         // Warns the user about this website being a demo
-        toast.warning("Do NOT provide your real email address and do NOT use one of your real passwords! This is a project website!")
+        toast.warning("Do NOT provide your real email address and do NOT use one of your real passwords! This website is a school project.")
     }, [])
 
 
