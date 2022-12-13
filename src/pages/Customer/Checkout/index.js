@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-custom-alert"
+import { toast, ToastContainer } from "react-custom-alert"
 import Navbar from "../../../components/Navbar"
 import CheckoutForm from "./CheckoutForm"
 
@@ -22,6 +22,7 @@ export default function CheckoutPage() {
         }
     }, [nav])
 
+    toast.warning("Do NOT provide your real shipping and credit card information! This is a demo website!")
 
     return (
         <div>
