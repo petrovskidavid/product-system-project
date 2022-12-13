@@ -22,7 +22,7 @@ export default function SignUpPage() {
     return (
         <div>
             <Navbar showDropdown={false}/>
-            <ToastContainer floatingTime={5000} />
+            <ToastContainer floatingTime={7000} />
             <SignUpForm />
         </div>
     )
