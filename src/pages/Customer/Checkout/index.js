@@ -20,9 +20,9 @@ export default function CheckoutPage() {
 
             nav("/")
         }
-    }, [nav])
 
-    toast.warning("Do NOT provide your real shipping and credit card information! This is a demo website!")
+        toast.warning("Do NOT provide your real shipping and credit card information! This is a demo website!")
+    }, [nav])
 
     return (
         <div>
