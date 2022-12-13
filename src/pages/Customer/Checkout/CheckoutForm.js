@@ -112,7 +112,7 @@ export default function CheckoutForm() {
 
     // Creates a request to process the transaction once the customer fills out the checkout form
     const submitPurchase = (data) => {
-        Axios.post("http://blitz.cs.niu.edu/creditcard", {
+        Axios.post("https://blitz.cs.niu.edu/creditcard", {
             vendor: "Muffler Man",
             trans: cartItemsData[0].OrderID.toUpperCase(),
             cc: data.ccNum,
